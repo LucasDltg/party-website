@@ -1,74 +1,74 @@
-"use client";
+'use client'
 
-import { useState, FormEvent } from "react";
-import { auth } from "../../lib/firebaseConfig";
+import { useState, FormEvent } from 'react'
+import { auth } from '../../lib/firebaseConfig'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-} from "firebase/auth";
-import { getIdToken } from "firebase/auth";
+} from 'firebase/auth'
+import { getIdToken } from 'firebase/auth'
 
-import "../../styles/globals.css";
+import '../../styles/globals.css'
 
 export default function AuthPage() {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   const resetForm = () => {
-    setEmail("");
-    setPassword("");
-    setError(null);
-  };
+    setEmail('')
+    setPassword('')
+    setError(null)
+  }
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-  
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
+
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
-  
+        await signInWithEmailAndPassword(auth, email, password)
+
         // Get token and set cookie here
-        const token = await getIdToken(auth.currentUser!, true);
-        await fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const token = await getIdToken(auth.currentUser!, true)
+        await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
-        });        
-  
-        alert("Logged in successfully!");
+        })
+
+        alert('Logged in successfully!')
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
-  
+        await createUserWithEmailAndPassword(auth, email, password)
+
         // Also set cookie on signup
-        const token = await getIdToken(auth.currentUser!, true);
-        await fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const token = await getIdToken(auth.currentUser!, true)
+        await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
-        });
-          
-        alert("Account created successfully!");
+        })
+
+        alert('Account created successfully!')
       }
-      resetForm();
+      resetForm()
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
+        setError(err.message)
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };  
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-purple-600 to-indigo-600 flex justify-center items-center font-sans">
       <div className="bg-white p-8 rounded-xl shadow-lg w-80">
         <h2 className="text-2xl font-bold mb-6 text-center">
-          {isLogin ? "Login" : "Create Account"}
+          {isLogin ? 'Login' : 'Create Account'}
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <input
@@ -92,25 +92,25 @@ export default function AuthPage() {
             disabled={loading}
             className="bg-indigo-600 text-white font-semibold py-2 rounded-md hover:bg-indigo-700 transition disabled:opacity-50"
           >
-            {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
+            {loading ? 'Please wait...' : isLogin ? 'Login' : 'Sign Up'}
           </button>
           {error && (
             <p className="text-red-600 text-sm text-center mt-2">{error}</p>
           )}
         </form>
         <p className="mt-6 text-center text-gray-700">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
           <button
             onClick={() => {
-              setIsLogin(!isLogin);
-              resetForm();
+              setIsLogin(!isLogin)
+              resetForm()
             }}
             className="text-indigo-600 hover:underline focus:outline-none"
           >
-            {isLogin ? "Create one" : "Login"}
+            {isLogin ? 'Create one' : 'Login'}
           </button>
         </p>
       </div>
     </div>
-  );
+  )
 }
