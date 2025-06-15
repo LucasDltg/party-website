@@ -70,7 +70,11 @@ export default function AuthPage() {
         <h2 className="text-2xl text-gray-800 font-bold mb-6 text-center">
           {isLogin ? 'Login' : 'Create Account'}
         </h2>
-        <form onSubmit={handleSubmit} autoComplete="on" className="flex flex-col space-y-5">
+        <form
+          onSubmit={handleSubmit}
+          autoComplete="on"
+          className="flex flex-col space-y-5"
+        >
           <input
             name="email"
             type="email"
@@ -88,7 +92,7 @@ export default function AuthPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            autoComplete={isLogin ? "current-password" : "new-password"}
+            autoComplete={isLogin ? 'current-password' : 'new-password'}
             className="px-4 py-3 bg-gray-100 text-gray-900 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <button
