@@ -67,30 +67,34 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen bg-gradient-to-tr from-purple-600 to-indigo-600 flex justify-center items-center font-sans">
       <div className="bg-white p-8 rounded-xl shadow-lg w-80">
-        <h2 className="text-2xl font-bold mb-6 text-center">
+        <h2 className="text-2xl text-gray-800 font-bold mb-6 text-center">
           {isLogin ? 'Login' : 'Create Account'}
         </h2>
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+        <form onSubmit={handleSubmit} autoComplete="on" className="flex flex-col space-y-5">
           <input
+            name="email"
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            autoComplete="email"
+            className="px-4 py-3 bg-gray-100 text-gray-900 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
+            name="password"
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            autoComplete={isLogin ? "current-password" : "new-password"}
+            className="px-4 py-3 bg-gray-100 text-gray-900 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <button
             type="submit"
             disabled={loading}
-            className="bg-indigo-600 text-white font-semibold py-2 rounded-md hover:bg-indigo-700 transition disabled:opacity-50"
+            className="bg-indigo-600 text-white font-semibold py-3 rounded-md hover:bg-indigo-700 transition disabled:opacity-50"
           >
             {loading ? 'Please wait...' : isLogin ? 'Login' : 'Sign Up'}
           </button>
@@ -98,7 +102,7 @@ export default function AuthPage() {
             <p className="text-red-600 text-sm text-center mt-2">{error}</p>
           )}
         </form>
-        <p className="mt-6 text-center text-gray-700">
+        <p className="mt-6 text-center text-gray-600">
           {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
           <button
             onClick={() => {
