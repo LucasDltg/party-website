@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fetch entire history and tags
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -46,9 +48,14 @@ jobs:
       - name: Get version from latest tag + commits since tag
         id: version
         run: |
-          VERSION=$(git describe --tags --long --always)
-          VERSION=${VERSION//+/}
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          git fetch --tags   # ensure tags are fetched, optional if fetch-depth=0 in checkout
+          DESCRIPTION=$(git describe --tags --long --always)
+          TAG=${DESCRIPTION%-*}
+          COMMITS_SINCE_TAG=${DESCRIPTION#*-}
+          COMMITS_SINCE_TAG=${COMMITS_SINCE_TAG%%-*}
+          TAG_NO_V=${TAG#v}
+          VERSION="v${TAG_NO_V}.${COMMITS_SINCE_TAG}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION is $VERSION"
 
       - name: Build Docker image with tags
