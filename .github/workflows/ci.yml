@@ -76,7 +76,7 @@ jobs:
           docker save lucas-website:${{ env.VERSION }} -o lucas-website_${{ env.VERSION }}.tar
 
       - name: Upload Docker image tarball as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docker-images
           path: |
