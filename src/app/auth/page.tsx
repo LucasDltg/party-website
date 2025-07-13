@@ -65,7 +65,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-purple-600 to-indigo-600 flex justify-center items-center font-sans">
+    <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center bg-gradient-to-tr from-purple-600 to-indigo-600 font-sans px-4">
       <div className="bg-white p-8 rounded-xl shadow-lg w-80">
         <h2 className="text-2xl text-gray-800 font-bold mb-6 text-center">
           {isLogin ? 'Login' : 'Create Account'}
@@ -119,6 +119,6 @@ export default function AuthPage() {
           </button>
         </p>
       </div>
-    </div>
+    </main>
   )
 }

@@ -81,7 +81,6 @@ jobs:
           name: docker-images
           path: |
             lucas-website_latest.tar
-            lucas-website_${{ env.VERSION }}.tar
 
       # Uncomment and configure below to upload tarballs to your server via SFTP
       # - name: Setup SSH key

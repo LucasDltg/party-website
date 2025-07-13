@@ -21,7 +21,10 @@ export default function Header() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-indigo-600 text-white flex justify-between items-center px-5 py-3 z-50">
+    <header
+      className="fixed top-0 left-0 right-0 bg-indigo-600 text-white flex justify-between items-center px-5 py-3 z-50"
+      style={{ height: 'var(--header-height)' }}
+    >
       <h1 className="text-xl font-bold m-0">
         <Link href="/">MyApp</Link>
       </h1>

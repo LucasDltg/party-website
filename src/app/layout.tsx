@@ -26,10 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >
+        {/* Fixed Header */}
         <Header />
-        {children}
+
+        {/* Main content wrapper with top padding matching header height */}
+        <main className="pt-16 min-h-screen">{children}</main>
       </body>
     </html>
   )

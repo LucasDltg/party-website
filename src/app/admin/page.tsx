@@ -27,14 +27,19 @@ export default function AdminPage() {
     return () => unsubscribe()
   }, [router])
 
-  if (!userEmail) return <p>Loading...</p>
+  if (!userEmail)
+    return (
+      <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center font-sans">
+        <p>Loading...</p>
+      </main>
+    )
 
   return (
-    <div className="p-8">
+    <main className="h-[calc(100vh-var(--header-height))] overflow-auto p-8 font-sans">
       <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
       <p>
         Welcome, <strong>{userEmail}</strong>! You have admin access.
       </p>
-    </div>
+    </main>
   )
 }
