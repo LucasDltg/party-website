@@ -41,7 +41,7 @@ jobs:
         run: npm run format
 
       - name: Build project
-        run: npm run build          
+        run: npm run build
 
       - name: Get version from latest tag + commits since tag
         id: version
