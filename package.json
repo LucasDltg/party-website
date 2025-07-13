@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier --check .",
     "wformat": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "command -v husky >/dev/null 2>&1 && husky install || echo 'Skipping husky install'"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
