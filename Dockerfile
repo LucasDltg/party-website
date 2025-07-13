@@ -1,23 +1,25 @@
-# Use official Node.js 18 LTS image as base
+# Use Node base image
 FROM node:18-alpine
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first to install dependencies
+# Copy package manifests
 COPY package*.json ./
 
-# Install dependencies (using npm ci for clean install)
-RUN npm ci --only=production
+# Set production environment and disable husky
+ENV NODE_ENV=production
+ENV HUSKY=0
 
-# Copy the rest of your app's source code
+# Install only production dependencies
+RUN npm ci --omit=dev
+
+# Copy the rest of the code
 COPY . .
 
-# Build your project (assuming your build script outputs to 'dist' or similar)
+# Build the Next.js app
 RUN npm run build
 
-# Expose the port your app listens on (adjust if needed)
+# Expose port and set default command
 EXPOSE 3000
-
-# Start the app (adjust this command to your start script)
 CMD ["npm", "start"]
