@@ -75,6 +75,14 @@ jobs:
           docker save lucas-website:latest -o lucas-website_latest.tar
           docker save lucas-website:${{ env.VERSION }} -o lucas-website_${{ env.VERSION }}.tar
 
+      - name: Upload Docker image tarball as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-images
+          path: |
+            lucas-website_latest.tar
+            lucas-website_${{ env.VERSION }}.tar
+
       # Uncomment and configure below to upload tarballs to your server via SFTP
       # - name: Setup SSH key
       #   run: |
