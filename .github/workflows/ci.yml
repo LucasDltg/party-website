@@ -50,22 +50,18 @@ jobs:
         run: |
           git fetch --tags   # ensure tags are fetched, optional if fetch-depth=0 in checkout
           DESCRIPTION=$(git describe --tags --long --always)
-          # example: v1.0.0-25-g5ab9abd
+          # example: v1.0-25-g5ab9abd
 
           # Extract the full tag part (before commit count and hash)
           TAG=$(echo $DESCRIPTION | sed -E 's/^([^-]+)-[0-9]+-g[0-9a-f]+$/\1/')
-          # TAG = v1.0.0
+          # TAG = v1.0
 
           # Extract commits since tag
           COMMITS_SINCE_TAG=$(echo $DESCRIPTION | sed -E 's/^[^-]+-([0-9]+)-g[0-9a-f]+$/\1/')
           # COMMITS_SINCE_TAG = 25
 
-          # Remove the patch part (.0) from the tag to get 'v1.0'
-          TAG_NO_PATCH=$(echo $TAG | sed -E 's/(\.[0-9]+)$//')
-          # TAG_NO_PATCH = v1.0
-
           # Compose final version
-          VERSION="${TAG_NO_PATCH}.${COMMITS_SINCE_TAG}"
+          VERSION="${TAG}.${COMMITS_SINCE_TAG}"
 
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION is $VERSION"
