@@ -47,10 +47,9 @@ jobs:
         id: version
         run: |
           VERSION=$(git describe --tags --long --always)
-          # Optional cleanup for Docker tag compatibility:
-          VERSION=${VERSION#v}
           VERSION=${VERSION//+/}
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "VERSION is $VERSION"
 
       - name: Build Docker image with tags
         run: |
