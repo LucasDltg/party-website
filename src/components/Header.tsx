@@ -101,7 +101,7 @@ export default function Header() {
               <span
                 className="text-sm"
                 style={{
-                  color: 'var(--color-muted)',
+                  color: 'var(--foreground)',
                   fontSize: 'var(--font-size-sm)',
                 }}
               >
