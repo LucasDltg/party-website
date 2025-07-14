@@ -5,10 +5,9 @@ import { auth } from '../../lib/firebaseConfig'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  getIdToken,
 } from 'firebase/auth'
-import { getIdToken } from 'firebase/auth'
-
-import '../../styles/globals.css'
+import CenteredPageLayout from '../../components/CenteredPageLayout'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -31,27 +30,21 @@ export default function AuthPage() {
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password)
-
-        // Get token and set cookie here
         const token = await getIdToken(auth.currentUser!, true)
         await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
         })
-
         alert('Logged in successfully!')
       } else {
         await createUserWithEmailAndPassword(auth, email, password)
-
-        // Also set cookie on signup
         const token = await getIdToken(auth.currentUser!, true)
         await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
         })
-
         alert('Account created successfully!')
       }
       resetForm()
@@ -65,60 +58,104 @@ export default function AuthPage() {
   }
 
   return (
-    <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center bg-gradient-to-tr from-purple-600 to-indigo-600 font-sans px-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-80">
-        <h2 className="text-2xl text-gray-800 font-bold mb-6 text-center">
-          {isLogin ? 'Login' : 'Create Account'}
-        </h2>
-        <form
-          onSubmit={handleSubmit}
-          autoComplete="on"
-          className="flex flex-col space-y-5"
+    <CenteredPageLayout>
+      <h2
+        className="font-bold mb-6 text-center"
+        style={{
+          fontSize: 'var(--font-size-lg)',
+          color: 'var(--color-primary)',
+        }}
+      >
+        {isLogin ? 'Login' : 'Create Account'}
+      </h2>
+
+      <form
+        onSubmit={handleSubmit}
+        autoComplete="on"
+        className="flex flex-col space-y-5"
+      >
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+          className="px-4 py-3 border rounded-md focus:outline-none focus:ring-2"
+          style={{
+            backgroundColor: '#f9fafb',
+            color: '#0a0a0a',
+            fontSize: 'var(--font-size-md)',
+            borderColor: '#cbd5e1',
+            fontFamily: 'var(--font-sans)',
+          }}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete={isLogin ? 'current-password' : 'new-password'}
+          className="px-4 py-3 border rounded-md focus:outline-none focus:ring-2"
+          style={{
+            backgroundColor: '#f9fafb',
+            color: '#0a0a0a',
+            fontSize: 'var(--font-size-md)',
+            borderColor: '#cbd5e1',
+            fontFamily: 'var(--font-sans)',
+          }}
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="py-3 rounded-md font-semibold transition disabled:opacity-50"
+          style={{
+            backgroundColor: 'var(--color-primary)',
+            color: 'white',
+            fontSize: 'var(--font-size-md)',
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              'var(--color-primary-hover)')
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = 'var(--color-primary)')
+          }
         >
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="email"
-            className="px-4 py-3 bg-gray-100 text-gray-900 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete={isLogin ? 'current-password' : 'new-password'}
-            className="px-4 py-3 bg-gray-100 text-gray-900 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-indigo-600 text-white font-semibold py-3 rounded-md hover:bg-indigo-700 transition disabled:opacity-50"
-          >
-            {loading ? 'Please wait...' : isLogin ? 'Login' : 'Sign Up'}
-          </button>
-          {error && (
-            <p className="text-red-600 text-sm text-center mt-2">{error}</p>
-          )}
-        </form>
-        <p className="mt-6 text-center text-gray-600">
-          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-          <button
-            onClick={() => {
-              setIsLogin(!isLogin)
-              resetForm()
+          {loading ? 'Please wait...' : isLogin ? 'Login' : 'Sign Up'}
+        </button>
+        {error && (
+          <p
+            className="text-center"
+            style={{
+              color: 'var(--color-error)',
+              fontSize: 'var(--font-size-sm)',
             }}
-            className="text-indigo-600 hover:underline focus:outline-none"
           >
-            {isLogin ? 'Create one' : 'Login'}
-          </button>
-        </p>
-      </div>
-    </main>
+            {error}
+          </p>
+        )}
+      </form>
+
+      <p
+        className="mt-6 text-center"
+        style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}
+      >
+        {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+        <button
+          onClick={() => {
+            setIsLogin(!isLogin)
+            resetForm()
+          }}
+          className="hover:underline"
+          style={{ color: 'var(--color-primary)' }}
+        >
+          {isLogin ? 'Create one' : 'Login'}
+        </button>
+      </p>
+    </CenteredPageLayout>
   )
 }
