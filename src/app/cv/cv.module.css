@@ -1,0 +1,186 @@
+.cvContainer {
+  padding: 1rem; /* Reduced padding */
+  font-size: 0.95rem; /* Slightly reduced base font size */
+  background-color: var(--background);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.cvContent {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 1.5rem; /* Reduced padding */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+  position: relative;
+}
+
+.languageSelector {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.languageButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid black;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  padding: 0;
+  overflow: hidden;
+}
+
+.languageButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.languageButton img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cvTitle {
+  font-size: 1.6rem; /* Slightly reduced font size */
+  margin-top: -20px; /* Increased negative margin to move the title up more */
+  margin-bottom: 0.2rem; /* Further reduced bottom margin */
+  text-align: center;
+  font-weight: 700;
+}
+
+.cvLocation,
+.cvPhone,
+.cvEmail,
+.cvLinks {
+  text-align: center;
+  margin-bottom: 0; /* Removed bottom margin */
+  line-height: 1; /* Reduced line height to minimum */
+}
+
+.cvSection {
+  margin-bottom: 1.2rem; /* Further reduced margin between sections */
+}
+
+.cvSectionTitle {
+  font-size: 1.3rem; /* Reduced font size for section titles */
+  margin-bottom: 0.2rem; /* Further reduced margin */
+  font-weight: 500;
+}
+
+.cvList {
+  list-style-type: disc;
+  margin-left: 1.5rem; /* Reduced left margin for lists */
+  margin-top: 0.2rem; /* Added small top margin */
+  margin-bottom: 0.2rem; /* Added small bottom margin */
+}
+
+.cvContent p {
+  margin-bottom: 0.3rem; /* Reduced margin between paragraphs */
+  line-height: 1.4; /* Slightly reduced line height */
+}
+
+.tab {
+  float: right;
+  margin-left: 0.5rem;
+}
+
+.sectionDivider {
+  border: none;
+  border-top: 1px solid #000;
+  margin: 6px 0; /* Further reduced margin around dividers */
+}
+
+.contactInfo {
+  margin-bottom: 0.2rem;
+}
+
+@media print {
+  .cvContainer {
+    padding: 0;
+    margin: 0;
+  }
+
+  .cvContent {
+    box-shadow: none;
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .sectionDivider {
+    margin: 5px 0; /* Further reduced for print */
+    border-top: 1px solid #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .languageSelector {
+    display: none !important;
+  }
+
+  .cvTitle {
+    margin-top: 0; /* Reset the negative margin for print */
+    font-size: 24pt;
+    color: #000 !important;
+  }
+
+  .cvSectionTitle {
+    font-size: 18pt;
+    color: #000 !important;
+  }
+
+  .cvContent p,
+  .cvContent ul,
+  .cvContent li,
+  .cvLocation,
+  .cvPhone,
+  .cvEmail {
+    color: #000 !important;
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .cvContainer {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .cvTitle {
+    font-size: 1.4rem;
+  }
+
+  .cvSectionTitle {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cvContainer {
+    padding: 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .cvTitle {
+    font-size: 1.2rem;
+  }
+
+  .cvSectionTitle {
+    font-size: 0.9rem;
+  }
+}
