@@ -25,6 +25,5 @@ Push tags on github for major and minor versions changes. Patch are automaticall
 ## TODO
 
 - Multilanguage
-- CV page
 - Login improve (send email for verification, reset pswd, etc)
-- Fix CV printing
+- Home page
