@@ -6,7 +6,7 @@
 
 /* === CSS Variables === */
 :root {
-  --background: #ffffff;
+  --background: #f0f0f0;
   --foreground: #171717;
   --header-height: 4rem;
 
@@ -45,22 +45,14 @@
   --font-mono: var(--font-mono);
 }
 
-/* === Dark Mode Variables === */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-
-    --color-primary: #ea437a;
-    --color-primary-hover: #ff5c91;
-    --color-secondary: #0f4f8c;
-    --color-secondary-hover: #1261a8;
-  }
-}
-
 /* === Base Styles === */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f9fafb;
 }

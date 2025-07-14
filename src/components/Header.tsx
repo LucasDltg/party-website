@@ -9,9 +9,17 @@ import { onAuthStateChanged, signOut, User } from 'firebase/auth'
 export default function Header() {
   const [user, setUser] = useState<User | null>(null)
   const [hoveredButton, setHoveredButton] = useState<
-    'connect' | 'logout' | null
+    'connect' | 'logout' | 'theme' | null
   >(null)
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const [mounted, setMounted] = useState(false)
 
+  const handleLogout = async () => {
+    await fetch('/api/logout', { method: 'POST' })
+    await signOut(auth)
+  }
+
+  // Auth state tracking
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
@@ -19,25 +27,59 @@ export default function Header() {
     return unsubscribe
   }, [])
 
-  const handleLogout = async () => {
-    await fetch('/api/logout', { method: 'POST' })
-    await signOut(auth)
+  // Initialize theme on mount
+  useEffect(() => {
+    setMounted(true)
+    const saved = localStorage.getItem('theme')
+    if (saved === 'light' || saved === 'dark') {
+      setTheme(saved)
+      document.documentElement.classList.toggle('dark', saved === 'dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark')
+      document.documentElement.classList.add('dark')
+    } else {
+      setTheme('light')
+      document.documentElement.classList.remove('dark')
+    }
+  }, [])
+
+  // Smooth transition on body for theme changes
+  useEffect(() => {
+    if (!mounted) return
+    const body = document.body
+    body.style.transition = 'background-color 0.5s ease, color 0.5s ease'
+  }, [mounted])
+
+  if (!mounted) {
+    return null // or a loading spinner
+  }
+
+  // Toggle theme handler
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+      setTheme('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+      setTheme('light')
+    }
   }
 
   const baseButtonStyle: React.CSSProperties = {
-    padding: '0.5rem 1rem',
-    borderRadius: '0.375rem', // 6px
-    fontWeight: 500,
+    padding: '0.25rem 0.5rem',
+    borderRadius: '0.25rem',
+    fontWeight: 600,
     cursor: 'pointer',
-    border: `1px solid var(--color-primary)`,
-    backgroundColor: 'var(--background)',
+    backgroundColor: 'transparent',
     color: 'var(--color-primary)',
-    transition: 'background-color 0.2s ease, color 0.2s ease',
+    border: 'none',
+    transition: 'color 0.3s ease',
   }
 
   const hoveredStyle: React.CSSProperties = {
-    backgroundColor: 'var(--color-primary-hover)',
-    color: 'white',
+    color: 'var(--color-primary-hover)',
   }
 
   return (
@@ -48,6 +90,7 @@ export default function Header() {
         backgroundColor: 'var(--background)',
         color: 'var(--foreground)',
         boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+        transition: 'background-color 0.5s ease, color 0.5s ease',
       }}
     >
       <div className="flex justify-between items-center h-full px-5 py-3">
@@ -55,9 +98,9 @@ export default function Header() {
           <Image src="/logo.png" alt="Logo" width={32} height={32} />
         </Link>
 
-        <nav>
+        <nav className="flex items-center space-x-4">
           {user ? (
-            <div className="flex items-center space-x-4">
+            <>
               <span className="text-sm">Hello, {user.email}</span>
               <button
                 onClick={handleLogout}
@@ -71,7 +114,7 @@ export default function Header() {
               >
                 Logout
               </button>
-            </div>
+            </>
           ) : (
             <Link href="/auth">
               <button
@@ -87,6 +130,33 @@ export default function Header() {
               </button>
             </Link>
           )}
+
+          {/* Theme toggle button */}
+          <button
+            onClick={toggleTheme}
+            style={{
+              ...baseButtonStyle,
+              padding: '0.5rem',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1.25rem',
+              color:
+                hoveredButton === 'theme'
+                  ? 'var(--color-primary-hover)'
+                  : 'var(--color-primary)',
+              backgroundColor: 'transparent',
+              border: 'none',
+              transition: 'color 0.3s ease',
+            }}
+            onMouseEnter={() => setHoveredButton('theme')}
+            onMouseLeave={() => setHoveredButton(null)}
+            aria-label="Toggle light/dark mode"
+            title="Toggle light/dark mode"
+          >
+            {theme === 'dark' ? '🌞' : '🌙'}
+          </button>
         </nav>
       </div>
 
@@ -95,6 +165,7 @@ export default function Header() {
           height: '4px',
           background:
             'linear-gradient(to right, var(--color-primary), var(--color-secondary))',
+          transition: 'background 0.5s ease',
         }}
       />
     </header>
