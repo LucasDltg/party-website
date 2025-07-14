@@ -168,6 +168,15 @@ export default function Header() {
           transition: 'background 0.5s ease',
         }}
       />
+
+      {/* Second solid color bar, thinner */}
+      <div
+        style={{
+          height: '2px',
+          backgroundColor: 'var(--background)',
+          transition: 'background-color 0.5s ease, color 0.5s ease',
+        }}
+      />
     </header>
   )
 }
