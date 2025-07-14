@@ -19,7 +19,6 @@ export default function Header() {
     await signOut(auth)
   }
 
-  // Auth state tracking
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
@@ -27,7 +26,6 @@ export default function Header() {
     return unsubscribe
   }, [])
 
-  // Initialize theme on mount
   useEffect(() => {
     setMounted(true)
     const saved = localStorage.getItem('theme')
@@ -43,7 +41,6 @@ export default function Header() {
     }
   }, [])
 
-  // Smooth transition on body for theme changes
   useEffect(() => {
     if (!mounted) return
     const body = document.body
@@ -51,10 +48,9 @@ export default function Header() {
   }, [mounted])
 
   if (!mounted) {
-    return null // or a loading spinner
+    return null
   }
 
-  // Toggle theme handler
   const toggleTheme = () => {
     if (theme === 'light') {
       document.documentElement.classList.add('dark')
@@ -76,6 +72,7 @@ export default function Header() {
     color: 'var(--color-primary)',
     border: 'none',
     transition: 'color 0.3s ease',
+    fontSize: 'var(--font-size-md)',
   }
 
   const hoveredStyle: React.CSSProperties = {
@@ -101,7 +98,15 @@ export default function Header() {
         <nav className="flex items-center space-x-4">
           {user ? (
             <>
-              <span className="text-sm">Hello, {user.email}</span>
+              <span
+                className="text-sm"
+                style={{
+                  color: 'var(--color-muted)',
+                  fontSize: 'var(--font-size-sm)',
+                }}
+              >
+                Hello, {user.email}
+              </span>
               <button
                 onClick={handleLogout}
                 style={
@@ -141,7 +146,7 @@ export default function Header() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '1.25rem',
+              fontSize: 'var(--font-size-lg)',
               color:
                 hoveredButton === 'theme'
                   ? 'var(--color-primary-hover)'
@@ -169,7 +174,6 @@ export default function Header() {
         }}
       />
 
-      {/* Second solid color bar, thinner */}
       <div
         style={{
           height: '2px',

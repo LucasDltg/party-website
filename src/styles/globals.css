@@ -18,6 +18,10 @@
   --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui);
   --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular);
 
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-md: 1rem; /* 16px - base */
+  --font-size-lg: 2rem; /* 20px */
+
   /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;

@@ -6,32 +6,51 @@ import Link from 'next/link'
 export default function NotFound() {
   return (
     <main
-      className="h-[calc(100vh-var(--header-height))] flex flex-col justify-center items-center font-sans px-6"
+      className="h-[calc(100vh-var(--header-height))] overflow-hidden flex flex-col justify-center items-center font-sans px-4"
       style={{
-        background: `linear-gradient(
-          135deg,
-          var(--color-primary) 0%,
-          var(--color-secondary) 100%
-        )`,
+        background:
+          'linear-gradient(to bottom right, var(--color-primary), var(--color-secondary))',
         color: 'var(--foreground)',
+        transition: 'background 0.5s ease, color 0.5s ease',
       }}
     >
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-12 max-w-md w-full text-center border border-primary dark:border-secondary">
+      <div
+        className="rounded-xl shadow-lg p-10 max-w-md w-full text-center"
+        style={{
+          backgroundColor: 'var(--background)',
+          color: 'var(--foreground)',
+          transition:
+            'background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease',
+        }}
+      >
         <h1
-          className="text-5xl font-extrabold mb-6"
-          style={{ color: 'var(--color-primary)' }}
+          className="font-extrabold mb-4"
+          style={{
+            color: 'var(--color-primary)',
+            fontSize: 'var(--font-size-lg)',
+            transition: 'color 0.5s ease',
+          }}
         >
           Page Not Found
         </h1>
-        <p className="mb-10 text-lg" style={{ color: 'var(--color-muted)' }}>
+        <p
+          className="mb-8"
+          style={{
+            color: 'var(--color-muted)',
+            fontSize: 'var(--font-size-md)',
+            transition: 'color 0.5s ease',
+          }}
+        >
           Sorry, we couldn&apos;t find the page you&apos;re looking for.
         </p>
         <Link
           href="/"
-          className="inline-block font-semibold px-8 py-3 rounded-lg transition-shadow shadow-md hover:shadow-lg"
+          className="inline-block font-semibold px-6 py-3 rounded-md transition"
           style={{
             backgroundColor: 'var(--color-primary)',
             color: 'white',
+            fontSize: 'var(--font-size-md)',
+            transition: 'background-color 0.3s ease, color 0.3s ease',
           }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.backgroundColor =

@@ -1,34 +1,67 @@
 'use client'
 
 import '../../styles/globals.css'
+import Link from 'next/link'
 
-export default function UnauthorizedPage() {
+export default function Unauthorized() {
   return (
     <main
-      className="h-[calc(100vh-var(--header-height))] flex flex-col justify-center items-center font-sans px-6"
+      className="h-[calc(100vh-var(--header-height))] overflow-hidden flex flex-col justify-center items-center font-sans px-4"
       style={{
-        background: `linear-gradient(
-          135deg, 
-          var(--color-primary) 0%, 
-          var(--color-secondary) 100%
-        )`,
+        background:
+          'linear-gradient(to bottom right, var(--color-primary), var(--color-secondary))',
         color: 'var(--foreground)',
+        transition: 'background 0.5s ease, color 0.5s ease',
       }}
     >
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-12 max-w-md w-full text-center border border-red-400 dark:border-red-600">
-        <h1 className="text-5xl font-extrabold text-red-600 dark:text-red-400 mb-6">
+      <div
+        className="rounded-xl shadow-lg p-10 max-w-md w-full text-center"
+        style={{
+          backgroundColor: 'var(--background)',
+          color: 'var(--foreground)',
+          transition:
+            'background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease',
+        }}
+      >
+        <h1
+          className="font-extrabold mb-4"
+          style={{
+            color: 'var(--color-primary)',
+            fontSize: 'var(--font-size-lg)',
+            transition: 'color 0.5s ease',
+          }}
+        >
           Access Denied
         </h1>
-        <p className="text-gray-800 dark:text-gray-300 mb-10 text-lg">
-          Sorry, you don&apos;t have permission to view this page.
-        </p>
-        <a
-          href="/auth"
-          className="inline-block bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white font-semibold px-8 py-3 rounded-lg transition-shadow shadow-md hover:shadow-lg"
-          aria-label="Go to Login"
+        <p
+          className="mb-8"
+          style={{
+            color: 'var(--color-muted)',
+            fontSize: 'var(--font-size-md)',
+            transition: 'color 0.5s ease',
+          }}
         >
-          Go to Login
-        </a>
+          You do not have permission to view this page.
+        </p>
+        <Link
+          href="/"
+          className="inline-block font-semibold px-6 py-3 rounded-md transition"
+          style={{
+            backgroundColor: 'var(--color-primary)',
+            color: 'white',
+            fontSize: 'var(--font-size-md)',
+            transition: 'background-color 0.3s ease, color 0.3s ease',
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor =
+              'var(--color-primary-hover)')
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = 'var(--color-primary)')
+          }
+        >
+          Go Home
+        </Link>
       </div>
     </main>
   )
