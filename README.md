@@ -21,3 +21,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 # Tags
 
 Push tags on github for major and minor versions changes. Patch are automatically changed according to number of commits. For convenience, tags should have format vX.x
+
+## TODO
+
+- Multilanguage
+- CV page
+- Login improve (send email for verification, reset pswd, etc)
