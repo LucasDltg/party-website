@@ -11,7 +11,6 @@ export default function Unauthorized() {
         style={{
           color: 'var(--color-primary)',
           fontSize: 'var(--font-size-lg)',
-          transition: 'color 0.5s ease',
         }}
       >
         Access Denied
@@ -19,21 +18,19 @@ export default function Unauthorized() {
       <p
         className="mb-8"
         style={{
-          color: 'var(--color-muted)',
+          color: 'var(--foreground-color)',
           fontSize: 'var(--font-size-md)',
-          transition: 'color 0.5s ease',
         }}
       >
         You do not have permission to view this page.
       </p>
       <Link
         href="/"
-        className="inline-block font-semibold px-6 py-3 rounded-md transition"
+        className="inline-block font-semibold px-6 py-3 rounded-md"
         style={{
           backgroundColor: 'var(--color-primary)',
           color: 'white',
           fontSize: 'var(--font-size-md)',
-          transition: 'background-color 0.5s ease, color 0.5s ease',
         }}
         onMouseEnter={(e) =>
           (e.currentTarget.style.backgroundColor = 'var(--color-primary-hover)')

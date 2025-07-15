@@ -16,7 +16,7 @@ export default function CenteredPageLayout({
         background:
           'linear-gradient(to bottom right, var(--color-primary), var(--color-secondary))',
         color: 'var(--foreground)',
-        transition: 'background 0.5s ease, color 0.5s ease',
+        transition: 'var(--transition)',
       }}
     >
       <div
@@ -24,8 +24,7 @@ export default function CenteredPageLayout({
         style={{
           backgroundColor: 'var(--background)',
           color: 'var(--foreground)',
-          transition:
-            'background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease',
+          transition: 'var(--transition)',
         }}
       >
         {children}

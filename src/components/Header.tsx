@@ -44,7 +44,7 @@ export default function Header() {
   useEffect(() => {
     if (!mounted) return
     const body = document.body
-    body.style.transition = 'background-color 0.5s ease, color 0.5s ease'
+    body.style.transition = 'var(--transition)'
   }, [mounted])
 
   if (!mounted) {
@@ -71,7 +71,7 @@ export default function Header() {
     backgroundColor: 'transparent',
     color: 'var(--color-primary)',
     border: 'none',
-    transition: 'color 0.3s ease',
+    transition: 'var(--transition)',
     fontSize: 'var(--font-size-md)',
   }
 
@@ -87,7 +87,7 @@ export default function Header() {
         backgroundColor: 'var(--background)',
         color: 'var(--foreground)',
         boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
-        transition: 'background-color 0.5s ease, color 0.5s ease',
+        transition: 'var(--transition)',
       }}
     >
       <div className="flex justify-between items-center h-full px-5 py-3">
@@ -153,7 +153,6 @@ export default function Header() {
                   : 'var(--color-primary)',
               backgroundColor: 'transparent',
               border: 'none',
-              transition: 'color 0.3s ease',
             }}
             onMouseEnter={() => setHoveredButton('theme')}
             onMouseLeave={() => setHoveredButton(null)}
@@ -170,7 +169,6 @@ export default function Header() {
           height: '4px',
           background:
             'linear-gradient(to right, var(--color-primary), var(--color-secondary))',
-          transition: 'background 0.5s ease',
         }}
       />
 
@@ -178,7 +176,6 @@ export default function Header() {
         style={{
           height: '2px',
           backgroundColor: 'var(--background)',
-          transition: 'background-color 0.5s ease, color 0.5s ease',
         }}
       />
     </header>

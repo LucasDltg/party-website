@@ -111,7 +111,7 @@ export default function AuthPage() {
         <button
           type="submit"
           disabled={loading}
-          className="py-3 rounded-md font-semibold transition disabled:opacity-50"
+          className="py-3 rounded-md font-semibold disabled:opacity-50"
           style={{
             backgroundColor: 'var(--color-primary)',
             color: 'white',
