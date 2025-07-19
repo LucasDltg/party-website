@@ -1,13 +1,13 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
-import { auth } from '../../lib/firebaseConfig'
+import { auth } from '../../../lib/firebase/firebaseConfig'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   getIdToken,
 } from 'firebase/auth'
-import CenteredPageLayout from '../../components/CenteredPageLayout'
+import CenteredPageLayout from '../../../components/CenteredPageLayout'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)

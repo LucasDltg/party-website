@@ -1,29 +1,63 @@
 // middleware.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { adminAuth } from './src/lib/firebaseAdmin'
+import { match } from '@formatjs/intl-localematcher'
+import Negotiator from 'negotiator'
+import { adminAuth } from './src/lib/firebase/firebaseAdmin'
 
-export async function middleware(req: NextRequest) {
-  const token = req.cookies.get('token')?.value
+const locales = ['en', 'fr']
+const defaultLocale = 'en'
 
-  if (!token) {
-    return NextResponse.redirect(new URL('/auth', req.url))
+// Detect user-preferred locale from request headers
+function getLocale(request: NextRequest) {
+  const negotiatorHeaders: Record<string, string> = {}
+  request.headers.forEach((value, key) => {
+    negotiatorHeaders[key] = value
+  })
+
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
+  return match(languages, locales, defaultLocale)
+}
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // --- 1. Locale Detection and Redirection ---
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+  )
+
+  if (!pathnameHasLocale) {
+    const locale = getLocale(request)
+    request.nextUrl.pathname = `/${locale}${pathname}`
+    return NextResponse.redirect(request.nextUrl)
   }
 
-  try {
-    const decodedToken = await adminAuth.verifyIdToken(token)
-    const role = decodedToken.role
+  // --- 2. Auth + Role Middleware for /admin routes ---
+  if (pathname.includes('/admin')) {
+    const token = request.cookies.get('token')?.value
 
-    // Example: Only allow admins to access /admin routes
-    if (req.nextUrl.pathname.startsWith('/admin') && role !== 'admin') {
-      return NextResponse.redirect(new URL('/unauthorized', req.url))
+    if (!token) {
+      return NextResponse.redirect(new URL('/auth', request.url))
     }
 
-    return NextResponse.next()
-  } catch {
-    return NextResponse.redirect(new URL('/auth', req.url))
+    try {
+      const decodedToken = await adminAuth.verifyIdToken(token)
+      const role = decodedToken.role
+
+      if (pathname.includes('/admin') && role !== 'admin') {
+        return NextResponse.redirect(new URL('/unauthorized', request.url))
+      }
+    } catch {
+      return NextResponse.redirect(new URL('/auth', request.url))
+    }
   }
+
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/admin/:path*'], // add more paths as needed
+  matcher: [
+    '/((?!_next|favicon.ico).*)', // Apply locale redirection to all except internal paths
+    '/admin/:path*', // Apply auth logic to admin pages
+  ],
 }

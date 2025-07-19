@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import Header from '../components/Header'
-import '../styles/globals.css'
+import Header from '../../components/Header'
+import '../../styles/globals.css'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -12,6 +12,11 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
+
+// 👇 Locales you want to statically generate
+export async function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'fr' }]
+}
 
 export const metadata: Metadata = {
   title: {
@@ -34,13 +39,15 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://lucas.deletang.dev'),
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode
+  params: Promise<{ lang: 'en' | 'fr' }>
 }>) {
   return (
-    <html lang="en">
+    <html lang={(await params).lang}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >

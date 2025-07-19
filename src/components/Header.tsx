@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { auth } from '../lib/firebaseConfig'
+import { auth } from '../lib/firebase/firebaseConfig'
 import { onAuthStateChanged, signOut, User } from 'firebase/auth'
 
 export default function Header() {

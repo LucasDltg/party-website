@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { auth } from '../../lib/firebaseConfig' // your Firebase client SDK config
+import { auth } from '../../../lib/firebase/firebaseConfig' // your Firebase client SDK config
 import { useRouter } from 'next/navigation'
 
 export default function AdminPage() {

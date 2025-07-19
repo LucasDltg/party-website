@@ -1,9 +1,9 @@
 'use client'
 
+import CenteredPageLayout from '../../components/CenteredPageLayout'
 import Link from 'next/link'
-import CenteredPageLayout from '../../components/CenteredPageLayout' // adjust path as needed
 
-export default function Unauthorized() {
+export default function NotFound() {
   return (
     <CenteredPageLayout>
       <h1
@@ -13,16 +13,16 @@ export default function Unauthorized() {
           fontSize: 'var(--font-size-lg)',
         }}
       >
-        Access Denied
+        Page Not Found
       </h1>
       <p
         className="mb-8"
         style={{
-          color: 'var(--foreground-color)',
+          color: 'var(--foregroung-color)',
           fontSize: 'var(--font-size-md)',
         }}
       >
-        You do not have permission to view this page.
+        Sorry, we couldn&apos;t find the page you&apos;re looking for.
       </p>
       <Link
         href="/"
