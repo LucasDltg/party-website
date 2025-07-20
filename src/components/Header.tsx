@@ -5,13 +5,14 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { auth } from '../lib/firebase/firebaseConfig'
 import { onAuthStateChanged, signOut, User } from 'firebase/auth'
+import { LanguageSwitcher } from './LanguageSwitcher'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null)
   const [hoveredButton, setHoveredButton] = useState<
-    'connect' | 'logout' | 'theme' | null
+    'connect' | 'logout' | null
   >(null)
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [mounted, setMounted] = useState(false)
 
   const handleLogout = async () => {
@@ -28,39 +29,38 @@ export default function Header() {
 
   useEffect(() => {
     setMounted(true)
-    const saved = localStorage.getItem('theme')
-    if (saved === 'light' || saved === 'dark') {
-      setTheme(saved)
-      document.documentElement.classList.toggle('dark', saved === 'dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark')
-      document.documentElement.classList.add('dark')
-    } else {
-      setTheme('light')
-      document.documentElement.classList.remove('dark')
-    }
   }, [])
 
-  useEffect(() => {
-    if (!mounted) return
-    const body = document.body
-    body.style.transition = 'var(--transition)'
-  }, [mounted])
-
   if (!mounted) {
-    return null
-  }
-
-  const toggleTheme = () => {
-    if (theme === 'light') {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-      setTheme('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-      setTheme('light')
-    }
+    return (
+      <header
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{
+          height: 'var(--header-height)',
+          backgroundColor: 'var(--background)',
+          color: 'var(--foreground)',
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+        }}
+      >
+        <div className="flex justify-between items-center h-full px-5 py-3">
+          <Link href="/" className="flex items-center space-x-2">
+            <Image src="/logo.png" alt="Logo" width={32} height={32} />
+          </Link>
+          <nav className="flex items-center space-x-4">
+            {/* Placeholder space to prevent layout shift */}
+            <div style={{ width: '200px' }} />
+          </nav>
+        </div>
+        <div
+          style={{
+            height: '4px',
+            background:
+              'linear-gradient(to right, var(--color-primary), var(--color-secondary))',
+          }}
+        />
+        <div style={{ height: '2px', backgroundColor: 'var(--background)' }} />
+      </header>
+    )
   }
 
   const baseButtonStyle: React.CSSProperties = {
@@ -136,31 +136,11 @@ export default function Header() {
             </Link>
           )}
 
-          {/* Theme toggle button */}
-          <button
-            onClick={toggleTheme}
-            style={{
-              ...baseButtonStyle,
-              padding: '0.5rem',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 'var(--font-size-lg)',
-              color:
-                hoveredButton === 'theme'
-                  ? 'var(--color-primary-hover)'
-                  : 'var(--color-primary)',
-              backgroundColor: 'transparent',
-              border: 'none',
-            }}
-            onMouseEnter={() => setHoveredButton('theme')}
-            onMouseLeave={() => setHoveredButton(null)}
-            aria-label="Toggle light/dark mode"
-            title="Toggle light/dark mode"
-          >
-            {theme === 'dark' ? '🌞' : '🌙'}
-          </button>
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
+          {/* Theme Switcher */}
+          <ThemeSwitcher />
         </nav>
       </div>
 

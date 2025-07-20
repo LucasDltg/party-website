@@ -1,5 +1,5 @@
-import { getDictionary } from '../../../lib/locale/locale'
-import { LanguageSwitcher } from '../../../components/LanguageSwitcher'
+import { getDictionary } from '@/lib/locale/locale'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
 export default async function Page({
   params,

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import Header from '../../components/Header'
+
 import '../../styles/globals.css'
 import { i18nConfig, isValidLocale } from '@/config/i18n'
 
@@ -43,6 +44,37 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://lucas.deletang.dev'),
 }
 
+const themeScript = `
+  (function() {
+    function getInitialTheme() {
+      const persistedTheme = localStorage.getItem('theme');
+      const hasPersistedTheme = typeof persistedTheme === 'string';
+      
+      if (hasPersistedTheme) {
+        return persistedTheme;
+      }
+      
+      const mql = window.matchMedia('(prefers-color-scheme: dark)');
+      const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+      
+      if (hasMediaQueryPreference) {
+        return mql.matches ? 'dark' : 'light';
+      }
+      
+      return 'light';
+    }
+    
+    const theme = getInitialTheme();
+    const root = document.documentElement;
+    
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  })();
+`
+
 export default async function RootLayout({
   children,
   params,
@@ -57,9 +89,12 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={aparams.lang}>
+    <html lang={aparams.lang} suppressHydrationWarning={true}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-black dark:text-white`}
       >
         {/* Fixed Header */}
         <Header />
