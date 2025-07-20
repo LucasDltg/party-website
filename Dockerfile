@@ -17,8 +17,6 @@ RUN npm ci --omit=dev
 # Copy the rest of the code
 COPY . .
 
-RUN cat tsconfig.tsbuildinfo
-
 # Build the Next.js app
 RUN npm run build
 
