@@ -2,7 +2,14 @@
 export const i18nConfig = {
   locales: ['en', 'fr'] as const,
   defaultLocale: 'en' as const,
-  existingPages: ['auth', 'admin', 'cv', 'lang', 'unauthorized'] as const,
+  existingPages: [
+    'auth',
+    'admin',
+    'cv',
+    'lang',
+    'unauthorized',
+    'contact',
+  ] as const,
 } as const
 
 export type Locale = (typeof i18nConfig.locales)[number]
