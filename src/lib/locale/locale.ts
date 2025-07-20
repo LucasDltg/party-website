@@ -1,8 +1,19 @@
 // src/lib/locale.ts
+import 'server-only'
 import { NextRequest } from 'next/server'
 import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 import { i18nConfig, type Locale } from '@/config/i18n'
+
+// Dictionary imports
+const dictionaries = {
+  en: () => import('./locales/en.json').then((module) => module.default),
+  fr: () => import('./locales/fr.json').then((module) => module.default),
+}
+
+// Get dictionary for locale
+export const getDictionary = async (locale: 'en' | 'fr') =>
+  dictionaries[locale]()
 
 // Detect user-preferred locale from request headers
 export function getLocale(request: NextRequest): Locale {
