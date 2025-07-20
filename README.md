@@ -16,6 +16,11 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Launch docker:
+
+- docker load -i path/to/file
+- docker run -it -p 3001:3000 lucas-website:latest
+
 ## Reminders
 
 # Tags
