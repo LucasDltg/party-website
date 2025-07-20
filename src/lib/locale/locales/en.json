@@ -1,5 +1,20 @@
 {
-  "products": {
-    "cart": "Add to Cart"
+  "metadata": {
+    "title": {
+      "default": "Lucas Deletang Portfolio",
+      "template": "%s | Lucas Deletang"
+    },
+    "description": "Personal portfolio of Lucas Deletang",
+    "keywords": [
+      "Lucas Deletang",
+      "Frontend Developer",
+      "Next.js",
+      "Tailwind CSS",
+      "Firebase",
+      "Web Development",
+      "Dark Mode",
+      "React",
+      "Portfolio"
+    ]
   }
 }

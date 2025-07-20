@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
-import Header from '../../components/Header'
+import Header from '@/components/Header'
+import { getDictionary } from '@/lib/locale/locale'
 
 import '../../styles/globals.css'
-import { i18nConfig, isValidLocale } from '@/config/i18n'
+import { i18nConfig, isValidLocale, Locale } from '@/config/i18n'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -23,25 +24,40 @@ export async function generateStaticParams() {
   }))
 }
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Lucas Deletang Portfolio',
-    template: '%s | Lucas Deletang',
-  },
-  description: 'Personal portfolio of Lucas Deletang',
-  keywords: [
-    'Lucas Deletang',
-    'Frontend Developer',
-    'Next.js',
-    'Tailwind CSS',
-    'Firebase',
-    'Web Development',
-    'Dark Mode',
-    'React',
-    'Portfolio',
-  ],
-  creator: 'Lucas Deletang',
-  metadataBase: new URL('https://lucas.deletang.dev'),
+// Generate metadata based on language
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>
+}): Promise<Metadata> {
+  const p = await params
+  const dict = await getDictionary(p.lang)
+
+  const metadata = dict.metadata
+
+  return {
+    title: metadata.title,
+    description: metadata.description,
+    keywords: metadata.keywords,
+    creator: 'Lucas Deletang',
+    metadataBase: new URL('https://lucas.deletang.dev'),
+    alternates: {
+      canonical: `https://lucas.deletang.dev/${p.lang}`,
+      languages: {
+        en: 'https://lucas.deletang.dev/en',
+        fr: 'https://lucas.deletang.dev/fr',
+      },
+    },
+    // Open Graph metadata with language support
+    openGraph: {
+      title: metadata.title.default || metadata.title,
+      description: metadata.description,
+      url: `https://lucas.deletang.dev/${p.lang}`,
+      siteName: 'Lucas Deletang Portfolio',
+      locale: p.lang,
+      type: 'website',
+    },
+  }
 }
 
 const themeScript = `
@@ -74,13 +90,12 @@ const themeScript = `
     }
   })();
 `
-
 export default async function RootLayout({
   children,
   params,
 }: Readonly<{
   children: React.ReactNode
-  params: Promise<{ lang: 'en' | 'fr' }>
+  params: Promise<{ lang: Locale }>
 }>) {
   const aparams = await params
   // Validate the language parameter

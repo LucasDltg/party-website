@@ -12,8 +12,7 @@ const dictionaries = {
 }
 
 // Get dictionary for locale
-export const getDictionary = async (locale: 'en' | 'fr') =>
-  dictionaries[locale]()
+export const getDictionary = async (locale: Locale) => dictionaries[locale]()
 
 // Detect user-preferred locale from request headers
 export function getLocale(request: NextRequest): Locale {

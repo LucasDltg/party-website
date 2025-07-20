@@ -1,5 +1,20 @@
 {
-  "products": {
-    "cart": "Toevoegen aan Winkelwagen"
+  "metadata": {
+    "title": {
+      "default": "Portfolio Lucas Deletang",
+      "template": "%s | Lucas Deletang"
+    },
+    "description": "Portfolio personnel de Lucas Deletang",
+    "keywords": [
+      "Lucas Deletang",
+      "Développeur Frontend",
+      "Next.js",
+      "Tailwind CSS",
+      "Firebase",
+      "Développement Web",
+      "Mode Sombre",
+      "React",
+      "Portfolio"
+    ]
   }
 }
