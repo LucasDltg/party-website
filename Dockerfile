@@ -17,8 +17,7 @@ RUN npm ci --omit=dev
 # Copy the rest of the code
 COPY . .
 
-CMD ["ls"]
-CMD ["pwd"]
+RUN ls -l /app
 
 # Build the Next.js app
 RUN npm run build
