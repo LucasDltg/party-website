@@ -1,4 +1,5 @@
-import { getDictionary } from '../../../lib/lang/dictionaries'
+import { getDictionary } from '../../../lib/locale/dictionaries'
+import { LanguageSwitcher } from '../../../components/LanguageSwitcher'
 
 export default async function Page({
   params,
@@ -8,5 +9,10 @@ export default async function Page({
   const p = await params
   const dict = await getDictionary(p.lang)
 
-  return <button>{dict.products.cart}</button>
+  return (
+    <>
+      <h1>{dict.products.cart}</h1>
+      <LanguageSwitcher />
+    </>
+  )
 }

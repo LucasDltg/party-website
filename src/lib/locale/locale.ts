@@ -1,0 +1,44 @@
+// src/lib/locale.ts
+import { NextRequest } from 'next/server'
+import { match } from '@formatjs/intl-localematcher'
+import Negotiator from 'negotiator'
+import { i18nConfig, type Locale } from '@/config/i18n'
+
+// Detect user-preferred locale from request headers
+export function getLocale(request: NextRequest): Locale {
+  const negotiatorHeaders: Record<string, string> = {}
+  request.headers.forEach((value, key) => {
+    negotiatorHeaders[key] = value
+  })
+
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
+  return match(
+    languages,
+    [...i18nConfig.locales],
+    i18nConfig.defaultLocale,
+  ) as Locale
+}
+
+// Get locale from pathname
+export function getLocaleFromPathname(pathname: string): Locale | null {
+  const segments = pathname.split('/')
+  const firstSegment = segments[1]
+
+  if (firstSegment && i18nConfig.locales.includes(firstSegment as Locale)) {
+    return firstSegment as Locale
+  }
+
+  return null
+}
+
+// Remove locale from pathname
+export function removeLocaleFromPathname(pathname: string): string {
+  const segments = pathname.split('/')
+  const firstSegment = segments[1]
+
+  if (firstSegment && i18nConfig.locales.includes(firstSegment as Locale)) {
+    return '/' + segments.slice(2).join('/')
+  }
+
+  return pathname
+}

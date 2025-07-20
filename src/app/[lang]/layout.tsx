@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { notFound } from 'next/navigation'
 import Header from '../../components/Header'
 import '../../styles/globals.css'
+import { i18nConfig, isValidLocale } from '@/config/i18n'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -13,9 +15,11 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-// 👇 Locales you want to statically generate
+// Generate static params for all supported locales
 export async function generateStaticParams() {
-  return [{ lang: 'en' }, { lang: 'fr' }]
+  return i18nConfig.locales.map((locale) => ({
+    lang: locale,
+  }))
 }
 
 export const metadata: Metadata = {
@@ -46,8 +50,14 @@ export default async function RootLayout({
   children: React.ReactNode
   params: Promise<{ lang: 'en' | 'fr' }>
 }>) {
+  const aparams = await params
+  // Validate the language parameter
+  if (!isValidLocale(aparams.lang)) {
+    notFound()
+  }
+
   return (
-    <html lang={(await params).lang}>
+    <html lang={aparams.lang}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >
