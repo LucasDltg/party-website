@@ -3,9 +3,9 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import Header from '@/components/Header'
 import { getDictionary } from '@/lib/locale/locale'
+import { i18nConfig, isValidLocale, Locale } from '@/config/i18n'
 
 import '../../styles/globals.css'
-import { i18nConfig, isValidLocale, Locale } from '@/config/i18n'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
