@@ -34,8 +34,11 @@
   /* Shadows */
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-  /* Transition */
-  --transition: background-color 0.5s ease, color 0.5s ease;
+  /* Background transitions - slower, matches your button style */
+  --transition: background-color 0.5s ease;
+
+  /* Transform-only transitions */
+  --transition-transform: transform 0.5s ease;
 }
 
 /* === Base Styles === */
