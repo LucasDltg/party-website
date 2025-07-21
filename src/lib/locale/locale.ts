@@ -5,6 +5,10 @@ import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 import { i18nConfig, type Locale } from '@/config/i18n'
 
+// Shared dictionary import
+const getCommonDictionary = async () =>
+  import('./common.json').then((module) => module.default)
+
 // Dictionary imports
 const dictionaries = {
   en: () => import('./locales/en.json').then((module) => module.default),
@@ -12,7 +16,17 @@ const dictionaries = {
 }
 
 // Get dictionary for locale
-export const getDictionary = async (locale: Locale) => dictionaries[locale]()
+export const getDictionary = async (locale: Locale) => {
+  const [common, localeDict] = await Promise.all([
+    getCommonDictionary(),
+    dictionaries[locale](),
+  ])
+
+  return {
+    common,
+    ...localeDict,
+  }
+}
 
 // Detect user-preferred locale from request headers
 export function getLocale(request: NextRequest): Locale {

@@ -13,6 +13,7 @@ export default async function Page({
   return (
     <>
       <h1>{dict.metadata.title.default}</h1>
+      <h1>{dict.common.yes}</h1>
       <LanguageSwitcher />
     </>
   )
