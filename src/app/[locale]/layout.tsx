@@ -2,8 +2,9 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import Header from '@/components/Header'
-import { getDictionary } from '@/lib/locale/locale'
-import { i18nConfig, isValidLocale, Locale } from '@/config/i18n'
+import { NextIntlClientProvider, hasLocale } from 'next-intl'
+import { routing } from '@/lib/i18n/routing'
+import { getTranslations } from 'next-intl/server'
 
 import '../../styles/globals.css'
 
@@ -18,44 +19,58 @@ const geistMono = Geist_Mono({
 })
 
 // Generate static params for all supported locales
-export async function generateStaticParams() {
-  return i18nConfig.locales.map((locale) => ({
-    lang: locale,
-  }))
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
 }
 
-// Generate metadata based on language
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: Locale }>
+  params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const p = await params
-  const dict = await getDictionary(p.lang)
-
-  const metadata = dict.metadata
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
 
   return {
-    title: metadata.title,
-    description: metadata.description,
-    keywords: metadata.keywords,
+    title: t('title'),
+    description: t('description'),
+    keywords: t('keywords'),
+
     creator: 'Lucas Deletang',
     metadataBase: new URL('https://lucas.deletang.dev'),
     alternates: {
-      canonical: `https://lucas.deletang.dev/${p.lang}`,
-      languages: {
-        en: 'https://lucas.deletang.dev/en',
-        fr: 'https://lucas.deletang.dev/fr',
-      },
+      canonical: `https://lucas.deletang.dev/${locale}`,
+      languages: Object.fromEntries(
+        routing.locales.map((loc) => [
+          loc,
+          `https://lucas.deletang.dev/${loc}`,
+        ]),
+      ),
     },
     // Open Graph metadata with language support
     openGraph: {
-      title: metadata.title.default || metadata.title,
-      description: metadata.description,
-      url: `https://lucas.deletang.dev/${p.lang}`,
+      title: t('title'),
+      description: t('description'),
+      url: `https://lucas.deletang.dev/${locale}`,
       siteName: 'Lucas Deletang Portfolio',
-      locale: p.lang,
+      locale: locale,
       type: 'website',
+    },
+    // Additional SEO metadata
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    // Language alternates for better SEO
+    other: {
+      'Content-Language': locale,
     },
   }
 }
@@ -90,36 +105,38 @@ const themeScript = `
     }
   })();
 `
-export default async function RootLayout({
+
+export default async function LocaleLayout({
   children,
   params,
-}: Readonly<{
+}: {
   children: React.ReactNode
-  params: Promise<{ lang: Locale }>
-}>) {
-  const aparams = await params
-  // Validate the language parameter
-  if (!isValidLocale(aparams.lang)) {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
 
   return (
-    <html lang={aparams.lang} suppressHydrationWarning={true}>
+    <html lang={locale} suppressHydrationWarning={true}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-black dark:text-white`}
       >
-        {/* Fixed Header */}
-        <Header />
+        <NextIntlClientProvider>
+          {/* Fixed Header */}
+          <Header />
 
-        {/* Main content wrapper with top padding using CSS var */}
-        <main
-          style={{ paddingTop: 'var(--header-height)', minHeight: '100vh' }}
-        >
-          {children}
-        </main>
+          {/* Main content wrapper with top padding using CSS var */}
+          <main
+            style={{ paddingTop: 'var(--header-height)', minHeight: '100vh' }}
+          >
+            {children}
+          </main>
+        </NextIntlClientProvider>
       </body>
     </html>
   )

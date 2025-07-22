@@ -28,40 +28,12 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    setMounted(true)
+    // Use a slight delay to ensure CSS variables are loaded
+    const timer = setTimeout(() => {
+      setMounted(true)
+    }, 50)
+    return () => clearTimeout(timer)
   }, [])
-
-  if (!mounted) {
-    return (
-      <header
-        className="fixed top-0 left-0 right-0 z-50"
-        style={{
-          height: 'var(--header-height)',
-          backgroundColor: 'var(--background)',
-          color: 'var(--foreground)',
-          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
-        }}
-      >
-        <div className="flex justify-between items-center h-full px-5 py-3">
-          <Link href="/" className="flex items-center space-x-2">
-            <Image src="/logo.png" alt="Logo" width={32} height={32} />
-          </Link>
-          <nav className="flex items-center space-x-4">
-            {/* Placeholder space to prevent layout shift */}
-            <div style={{ width: '200px' }} />
-          </nav>
-        </div>
-        <div
-          style={{
-            height: '4px',
-            background:
-              'linear-gradient(to right, var(--color-primary), var(--color-secondary))',
-          }}
-        />
-        <div style={{ height: '2px', backgroundColor: 'var(--background)' }} />
-      </header>
-    )
-  }
 
   const baseButtonStyle: React.CSSProperties = {
     padding: '0.25rem 0.5rem',
@@ -79,6 +51,60 @@ export default function Header() {
     color: 'var(--color-primary-hover)',
   }
 
+  // Render navigation content based on mounted state
+  const renderNavigation = () => {
+    return (
+      <>
+        {mounted && user ? (
+          <>
+            <span
+              className="text-sm"
+              style={{
+                color: 'var(--foreground)',
+                fontSize: 'var(--font-size-sm)',
+              }}
+            >
+              Hello, {user.email}
+            </span>
+            <button
+              onClick={handleLogout}
+              style={
+                hoveredButton === 'logout'
+                  ? { ...baseButtonStyle, ...hoveredStyle }
+                  : baseButtonStyle
+              }
+              onMouseEnter={() => setHoveredButton('logout')}
+              onMouseLeave={() => setHoveredButton(null)}
+            >
+              Logout
+            </button>
+          </>
+        ) : mounted && !user ? (
+          <Link href="/auth">
+            <button
+              style={
+                hoveredButton === 'connect'
+                  ? { ...baseButtonStyle, ...hoveredStyle }
+                  : baseButtonStyle
+              }
+              onMouseEnter={() => setHoveredButton('connect')}
+              onMouseLeave={() => setHoveredButton(null)}
+            >
+              Connect
+            </button>
+          </Link>
+        ) : (
+          // Placeholder space to prevent layout shift
+          <div style={{ width: '80px' }} />
+        )}
+
+        <LanguageSwitcher />
+
+        <ThemeSwitcher />
+      </>
+    )
+  }
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50"
@@ -86,7 +112,6 @@ export default function Header() {
         height: 'var(--header-height)',
         backgroundColor: 'var(--background)',
         color: 'var(--foreground)',
-        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
         transition: 'var(--transition)',
       }}
     >
@@ -95,53 +120,7 @@ export default function Header() {
           <Image src="/logo.png" alt="Logo" width={32} height={32} />
         </Link>
 
-        <nav className="flex items-center space-x-4">
-          {user ? (
-            <>
-              <span
-                className="text-sm"
-                style={{
-                  color: 'var(--foreground)',
-                  fontSize: 'var(--font-size-sm)',
-                }}
-              >
-                Hello, {user.email}
-              </span>
-              <button
-                onClick={handleLogout}
-                style={
-                  hoveredButton === 'logout'
-                    ? { ...baseButtonStyle, ...hoveredStyle }
-                    : baseButtonStyle
-                }
-                onMouseEnter={() => setHoveredButton('logout')}
-                onMouseLeave={() => setHoveredButton(null)}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <Link href="/auth">
-              <button
-                style={
-                  hoveredButton === 'connect'
-                    ? { ...baseButtonStyle, ...hoveredStyle }
-                    : baseButtonStyle
-                }
-                onMouseEnter={() => setHoveredButton('connect')}
-                onMouseLeave={() => setHoveredButton(null)}
-              >
-                Connect
-              </button>
-            </Link>
-          )}
-
-          {/* Language Switcher */}
-          <LanguageSwitcher />
-
-          {/* Theme Switcher */}
-          <ThemeSwitcher />
-        </nav>
+        <nav className="flex items-center space-x-4">{renderNavigation()}</nav>
       </div>
 
       <div
@@ -156,6 +135,7 @@ export default function Header() {
         style={{
           height: '2px',
           backgroundColor: 'var(--background)',
+          transition: 'var(--transition)',
         }}
       />
     </header>

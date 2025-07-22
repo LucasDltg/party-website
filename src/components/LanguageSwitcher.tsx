@@ -1,22 +1,31 @@
 'use client'
 
 import { useState } from 'react'
-import { useI18n } from '@/hooks/useI18n'
-import { type Locale } from '@/config/i18n'
+import { useLocale } from 'next-intl'
+import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 
+type Locale = 'en' | 'fr'
+
 export function LanguageSwitcher() {
-  const { locale, locales, switchLocale } = useI18n()
+  const locale = useLocale() as Locale
+  const router = useRouter()
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+
+  const locales: Locale[] = ['en', 'fr']
 
   const languageNames: Record<Locale, string> = {
     en: 'English',
     fr: 'Français',
   }
 
-  const handleLanguageSelect = (lang: Locale) => {
-    switchLocale(lang)
+  const handleLanguageSelect = (newLocale: Locale) => {
+    // Remove the current locale from the pathname
+    const pathnameWithoutLocale = pathname.replace(`/${locale}`, '') || '/'
+    // Navigate to the new locale path
+    router.push(`/${newLocale}${pathnameWithoutLocale}`)
     setIsOpen(false)
   }
 
