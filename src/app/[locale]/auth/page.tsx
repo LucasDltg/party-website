@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
+import { useTranslations } from 'next-intl'
 import { auth } from '../../../lib/firebase/firebaseConfig'
 import {
   createUserWithEmailAndPassword,
@@ -10,6 +11,7 @@ import {
 import CenteredPageLayout from '../../../components/CenteredPageLayout'
 
 export default function AuthPage() {
+  const t = useTranslations('Auth')
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -36,7 +38,7 @@ export default function AuthPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
         })
-        alert('Logged in successfully!')
+        alert(t('loginSuccess'))
       } else {
         await createUserWithEmailAndPassword(auth, email, password)
         const token = await getIdToken(auth.currentUser!, true)
@@ -45,7 +47,7 @@ export default function AuthPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
         })
-        alert('Account created successfully!')
+        alert(t('signupSuccess'))
       }
       resetForm()
     } catch (err) {
@@ -66,7 +68,7 @@ export default function AuthPage() {
           color: 'var(--color-primary)',
         }}
       >
-        {isLogin ? 'Login' : 'Create Account'}
+        {isLogin ? t('loginTitle') : t('signupTitle')}
       </h2>
 
       <form
@@ -77,7 +79,7 @@ export default function AuthPage() {
         <input
           name="email"
           type="email"
-          placeholder="Email"
+          placeholder={t('emailPlaceholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -94,7 +96,7 @@ export default function AuthPage() {
         <input
           name="password"
           type="password"
-          placeholder="Password"
+          placeholder={t('passwordPlaceholder')}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -125,7 +127,11 @@ export default function AuthPage() {
             (e.currentTarget.style.backgroundColor = 'var(--color-primary)')
           }
         >
-          {loading ? 'Please wait...' : isLogin ? 'Login' : 'Sign Up'}
+          {loading
+            ? t('loadingText')
+            : isLogin
+              ? t('loginButton')
+              : t('signupButton')}
         </button>
         {error && (
           <p
@@ -144,7 +150,7 @@ export default function AuthPage() {
         className="mt-6 text-center"
         style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}
       >
-        {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+        {isLogin ? t('noAccountText') : t('hasAccountText')}{' '}
         <button
           onClick={() => {
             setIsLogin(!isLogin)
@@ -153,7 +159,7 @@ export default function AuthPage() {
           className="hover:underline"
           style={{ color: 'var(--color-primary)' }}
         >
-          {isLogin ? 'Create one' : 'Login'}
+          {isLogin ? t('createAccountLink') : t('loginLink')}
         </button>
       </p>
     </CenteredPageLayout>

@@ -1,7 +1,6 @@
 // commonWords.js
 export const COMMON_WORDS = {
-  brandName: 'MyBrand',
-  submitButton: 'Submit',
-  cancelButton: 'Cancel',
-  // add all your words that don’t change here
+  linkedin: 'https://www.linkedin.com/in/lucas-deletang/',
+  url: 'https://lucas.deletang.dev',
+  github: 'https://github.com/LucasDltg',
 }

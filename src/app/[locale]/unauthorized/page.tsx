@@ -1,9 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import CenteredPageLayout from '../../../components/CenteredPageLayout' // adjust path as needed
 
 export default function Unauthorized() {
+  const t = useTranslations('Unauthorized')
+
   return (
     <CenteredPageLayout>
       <h1
@@ -13,7 +16,7 @@ export default function Unauthorized() {
           fontSize: 'var(--font-size-lg)',
         }}
       >
-        Access Denied
+        {t('title')}
       </h1>
       <p
         className="mb-8"
@@ -22,7 +25,7 @@ export default function Unauthorized() {
           fontSize: 'var(--font-size-md)',
         }}
       >
-        You do not have permission to view this page.
+        {t('message')}
       </p>
       <Link
         href="/"
@@ -39,7 +42,7 @@ export default function Unauthorized() {
           (e.currentTarget.style.backgroundColor = 'var(--color-primary)')
         }
       >
-        Go Home
+        {t('goHomeButton')}
       </Link>
     </CenteredPageLayout>
   )

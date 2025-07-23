@@ -1,9 +1,12 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import CenteredPageLayout from '../../components/CenteredPageLayout'
 import Link from 'next/link'
 
 export default function NotFound() {
+  const t = useTranslations('NotFound')
+
   return (
     <CenteredPageLayout>
       <h1
@@ -13,16 +16,16 @@ export default function NotFound() {
           fontSize: 'var(--font-size-lg)',
         }}
       >
-        Page Not Found
+        {t('title')}
       </h1>
       <p
         className="mb-8"
         style={{
-          color: 'var(--foregroung-color)',
+          color: 'var(--foreground-color)', // Fixed typo from 'foregroung-color'
           fontSize: 'var(--font-size-md)',
         }}
       >
-        Sorry, we couldn&apos;t find the page you&apos;re looking for.
+        {t('message')}
       </p>
       <Link
         href="/"
@@ -39,7 +42,7 @@ export default function NotFound() {
           (e.currentTarget.style.backgroundColor = 'var(--color-primary)')
         }
       >
-        Go Home
+        {t('goHomeButton')}
       </Link>
     </CenteredPageLayout>
   )

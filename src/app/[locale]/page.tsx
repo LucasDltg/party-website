@@ -1,7 +1,11 @@
 'use client'
+
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export default function Home() {
+  const t = useTranslations('Home')
+
   return (
     <div
       className="flex flex-col"
@@ -33,7 +37,7 @@ export default function Home() {
                   transition: 'var(--transition-transform)',
                 }}
               >
-                Lucas Deletang
+                {t('hero.name')}
               </h1>
               <div
                 className="w-24 h-1 mx-auto rounded-full"
@@ -52,7 +56,7 @@ export default function Home() {
                 transition: 'var(--transition)',
               }}
             >
-              Full-stack developer specialized in A.I.
+              {t('hero.tagline')}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
@@ -66,7 +70,7 @@ export default function Home() {
                   transition: 'var(--transition-scale)',
                 }}
               >
-                View My CV
+                {t('hero.viewCvButton')}
               </Link>
 
               <Link
@@ -79,7 +83,7 @@ export default function Home() {
                   transition: 'var(--transition-scale)',
                 }}
               >
-                Get In Touch
+                {t('hero.contactButton')}
               </Link>
             </div>
           </div>
@@ -92,7 +96,7 @@ export default function Home() {
               className="text-3xl sm:text-4xl font-bold mb-4"
               style={{ transition: 'var(--transition)' }}
             >
-              Site Features
+              {t('features.title')}
             </h2>
             <p
               className="text-lg max-w-2xl mx-auto"
@@ -101,8 +105,7 @@ export default function Home() {
                 transition: 'var(--transition)',
               }}
             >
-              Built with modern technologies and best practices for optimal
-              performance and user experience
+              {t('features.subtitle')}
             </p>
           </div>
 
@@ -131,7 +134,7 @@ export default function Home() {
                   className="text-xl font-semibold"
                   style={{ transition: 'var(--transition)' }}
                 >
-                  Secure Authentication
+                  {t('features.authentication.title')}
                 </h3>
                 <p
                   style={{
@@ -139,8 +142,7 @@ export default function Home() {
                     transition: 'var(--transition)',
                   }}
                 >
-                  Firebase-powered authentication system with secure login,
-                  registration, and user management capabilities.
+                  {t('features.authentication.description')}
                 </p>
               </div>
             </div>
@@ -169,7 +171,7 @@ export default function Home() {
                   className="text-xl font-semibold"
                   style={{ transition: 'var(--transition)' }}
                 >
-                  Internationalization
+                  {t('features.internationalization.title')}
                 </h3>
                 <p
                   style={{
@@ -177,8 +179,7 @@ export default function Home() {
                     transition: 'var(--transition)',
                   }}
                 >
-                  Multi-language support with seamless localization, making the
-                  site accessible to a global audience.
+                  {t('features.internationalization.description')}
                 </p>
               </div>
             </div>
@@ -207,7 +208,7 @@ export default function Home() {
                   className="text-xl font-semibold"
                   style={{ transition: 'var(--transition)' }}
                 >
-                  Interactive CV
+                  {t('features.interactiveCv.title')}
                 </h3>
                 <p
                   style={{
@@ -215,8 +216,7 @@ export default function Home() {
                     transition: 'var(--transition)',
                   }}
                 >
-                  Dynamic curriculum vitae with detailed professional
-                  experience, skills, and achievements presentation.
+                  {t('features.interactiveCv.description')}
                 </p>
               </div>
             </div>
@@ -231,7 +231,7 @@ export default function Home() {
           transition: 'var(--transition)',
         }}
       >
-        <p>© {new Date().getFullYear()} Lucas Deletang.</p>
+        <p>{t('footer.copyright', { year: new Date().getFullYear() })}</p>
       </footer>
     </div>
   )

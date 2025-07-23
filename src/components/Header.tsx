@@ -3,12 +3,14 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { auth } from '../lib/firebase/firebaseConfig'
 import { onAuthStateChanged, signOut, User } from 'firebase/auth'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 export default function Header() {
+  const t = useTranslations('Header')
   const [user, setUser] = useState<User | null>(null)
   const [hoveredButton, setHoveredButton] = useState<
     'connect' | 'logout' | null
@@ -28,11 +30,7 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    // Use a slight delay to ensure CSS variables are loaded
-    const timer = setTimeout(() => {
-      setMounted(true)
-    }, 50)
-    return () => clearTimeout(timer)
+    setMounted(true)
   }, [])
 
   const baseButtonStyle: React.CSSProperties = {
@@ -64,7 +62,7 @@ export default function Header() {
                 fontSize: 'var(--font-size-sm)',
               }}
             >
-              Hello, {user.email}
+              {t('greeting', { email: user.email ?? '' })}
             </span>
             <button
               onClick={handleLogout}
@@ -76,7 +74,7 @@ export default function Header() {
               onMouseEnter={() => setHoveredButton('logout')}
               onMouseLeave={() => setHoveredButton(null)}
             >
-              Logout
+              {t('logout')}
             </button>
           </>
         ) : mounted && !user ? (
@@ -90,7 +88,7 @@ export default function Header() {
               onMouseEnter={() => setHoveredButton('connect')}
               onMouseLeave={() => setHoveredButton(null)}
             >
-              Connect
+              {t('connect')}
             </button>
           </Link>
         ) : (
@@ -117,7 +115,7 @@ export default function Header() {
     >
       <div className="flex justify-between items-center h-full px-5 py-3">
         <Link href="/" className="flex items-center space-x-2">
-          <Image src="/logo.png" alt="Logo" width={32} height={32} />
+          <Image src="/logo.png" alt={t('logoAlt')} width={32} height={32} />
         </Link>
 
         <nav className="flex items-center space-x-4">{renderNavigation()}</nav>

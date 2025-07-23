@@ -4,5 +4,164 @@
     "title_template": "%s | Lucas Deletang",
     "description": "Personal portfolio of Lucas Deletang",
     "keywords": "Lucas Deletang, Frontend Developer, Next.js, Tailwind CSS, Firebase, Web Development, Dark Mode, React, Portfolio"
+  },
+  "Admin": {
+    "loading": "Loading..."
+  },
+  "Cv": {
+    "title": "Lucas Deletang",
+    "location": "Location: Angers, France",
+    "phone": "Phone: +33788698608",
+    "email": "Email: lucas.deletang.legravier@gmail.com",
+    "linkedin": "Linkedin: lucas-deletang",
+    "portfolio": "Portfolio: lucas.deletang.dev",
+    "github": "Github: LucasDLTG",
+    "objective": "OBJECTIVE",
+    "objectiveText": "Recent graduate in <strong>Data Science</strong> and <strong>Artificial Intelligence</strong> engineering, seeking a <strong>first job</strong> in the field of <strong>Computer Science</strong>, <strong>Data Science</strong>, or <strong>Artificial Intelligence</strong>.",
+    "education": "Education",
+    "educationList": {
+      "0": {
+        "institution": "Institut Mines Télécom, Strasbourg",
+        "period": "2022 - 2025",
+        "degree": "Engineering degree in Computer Science and Networks, Data Science and Artificial Intelligence"
+      },
+      "1": {
+        "institution": "University of Strasbourg",
+        "period": "2023 - 2025",
+        "degree": "Master's in Data Science and Complex Systems"
+      },
+      "2": {
+        "institution": "CPGE Prytanée National Militaire",
+        "period": "2020 - 2022",
+        "degree": "Preparatory Classes for Grandes Écoles (CPGE) - Mathematics and Physics"
+      }
+    },
+    "skills": "Skills and Languages",
+    "languages": "Languages: <strong>French</strong> (Native), <strong>English</strong> (Fluent, C1 (TOEIC)), Spanish (Beginner)",
+    "programmingLanguages": "Programming Languages: <strong>C</strong>, <strong>C++</strong>, <strong>Python</strong>, R, Matlab, <strong>Next.js</strong>, <strong>JavaScript</strong>, HTML, CSS, <strong>React</strong>, Tailwind, <strong>MongoDB</strong>, SQL, Java, C#, .NET, <strong>PyTorch</strong>, Docker, OpenGL, OpenGL ES, git (CI/CD), Kafka, Opensearch, Kubernetes (basic), AI tools",
+    "skillsList": "Skills: <strong>Machine Learning</strong>, <strong>Natural Language Processing</strong>, <strong>Deep Learning</strong>, <strong>RAG</strong>, <strong>AI Agent</strong>, <strong>LLM</strong>, Mathematics",
+    "softskills": "Soft Skills: <strong>Teamwork</strong>, <strong>Leadership</strong>, <strong>Adaptability</strong>, <strong>Intellectual Curiosity</strong>",
+    "experience": "Experience",
+    "experienceList": {
+      "0": {
+        "title": "<strong>Engineering Intern</strong>",
+        "period": "March 2025 - August 2025",
+        "company": "<strong>Thales Alenia Space</strong>, Cannes, France",
+        "responsibilities": [
+          "Created an AI agent using the <strong>Smolagents</strong> framework, enabling agentic RAG and querying a database to answer user questions.",
+          "Developed an AI assistant that live-corrects requirements written by engineers based on a predefined rule set."
+        ]
+      },
+      "1": {
+        "title": "<strong>Data Science Intern</strong>",
+        "period": "May 2024 - August 2024",
+        "company": "<strong>VTEC Lasers & Sensors Ltd</strong>, Eindhoven, Netherlands",
+        "responsibilities": [
+          "Created a <strong>Python application</strong> to visualize CSV files and analyze them using <strong>AI</strong>.",
+          "Applied <strong>computer vision techniques</strong> to improve wafer production yield.",
+          "Processed and analyzed <strong>time series data</strong> using <strong>Pandas</strong>, <strong>Numpy</strong>, and <strong>Matplotlib</strong>."
+        ]
+      },
+      "2": {
+        "title": "<strong>Engineering Project</strong> (LLM Analysis)",
+        "period": "Jan 2024 - Feb 2025",
+        "company": "<strong>Euro Information</strong>, Strasbourg, France",
+        "responsibilities": [
+          "Analyzed <strong>Large Language Models (LLMs)</strong> for instances of sexism.",
+          "Developed and implemented <strong>algorithms</strong> to detect biased language in LLM outputs.",
+          "Proposed solutions to mitigate <strong>gender bias</strong> in LLMs."
+        ]
+      }
+    },
+    "projects": "Some Projects",
+    "projectsList": {
+      "0": {
+        "title": "<strong>Natural Language Processing Project</strong>",
+        "description": "Used <strong>TF-IDF</strong> for feature extraction combined with a <strong>SVM classifier</strong> to achieve over <strong>87%</strong> classification accuracy in topic prediction from sentence data."
+      },
+      "1": {
+        "title": "<strong>YOLOv8 Fine-tuning</strong> for License Plate Detection",
+        "description": "Fine-tuned the <strong>YOLOv8 model</strong> to detect car license plates in security camera footage. Achieved <strong>95% accuracy</strong> on a custom dataset, enabling <strong>real-time plate recognition</strong> in varied lighting conditions."
+      },
+      "2": {
+        "title": "<strong>RC Car Control System with Raspberry Pi</strong>",
+        "description": "Developed a system using <strong>Raspberry Pi</strong> to capture input from a car simulator on a computer and send commands to an RC car. Implemented <strong>real-time video feedback</strong> from the RC car to the simulator, creating an immersive remote control experience."
+      },
+      "3": {
+        "title": "<strong>Distributed and Sharded MongoDB Cluster</strong>",
+        "description": "Built a <strong>MongoDB</strong> cluster using <strong>replicaSet</strong> and <strong>sharding</strong> to ensure fault tolerance and efficient data distribution. The project includes a 5-node replicaSet (1 primary, 3 secondaries, 1 arbiter) and partitioned data across multiple shards to simulate a distributed environment capable of handling large volumes and ensuring service continuity in case of failure."
+      },
+      "4": {
+        "title": "<strong>Website Development (in progress)</strong>",
+        "description": "Website with <strong>Firebase authentication</strong>, purchasing functionality via <strong>Stripe</strong>, user data storage in a database, and more."
+      }
+    }
+  },
+  "Auth": {
+    "loginTitle": "Login",
+    "signupTitle": "Create Account",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "loginButton": "Login",
+    "signupButton": "Sign Up",
+    "loadingText": "Please wait...",
+    "loginSuccess": "Logged in successfully!",
+    "signupSuccess": "Account created successfully!",
+    "noAccountText": "Don't have an account?",
+    "hasAccountText": "Already have an account?",
+    "createAccountLink": "Create one",
+    "loginLink": "Login"
+  },
+  "Contact": {
+    "title": "Get In Touch",
+    "subtitle": "Have a question or want to work together? I'd love to hear from you.",
+    "directContact": {
+      "title": "Reach out directly",
+      "email": "lucas.deletang2@gmail.com",
+      "linkedinText": "LinkedIn Profile"
+    }
+  },
+  "Unauthorized": {
+    "title": "Access Denied",
+    "message": "You do not have permission to view this page.",
+    "goHomeButton": "Go Home"
+  },
+  "Header": {
+    "greeting": "Hello, {email}",
+    "logout": "Logout",
+    "connect": "Connect",
+    "logoAlt": "Logo"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "message": "Sorry, we couldn't find the page you're looking for.",
+    "goHomeButton": "Go Home"
+  },
+  "Home": {
+    "hero": {
+      "name": "Lucas Deletang",
+      "tagline": "Full-stack developer specialized in A.I.",
+      "viewCvButton": "View My CV",
+      "contactButton": "Get In Touch"
+    },
+    "features": {
+      "title": "Site Features",
+      "subtitle": "Built with modern technologies and best practices for optimal performance and user experience",
+      "authentication": {
+        "title": "Secure Authentication",
+        "description": "Firebase-powered authentication system with secure login, registration, and user management capabilities."
+      },
+      "internationalization": {
+        "title": "Internationalization",
+        "description": "Multi-language support with seamless localization, making the site accessible to a global audience."
+      },
+      "interactiveCv": {
+        "title": "Interactive CV",
+        "description": "Dynamic curriculum vitae with detailed professional experience, skills, and achievements presentation."
+      }
+    },
+    "footer": {
+      "copyright": "© {year} Lucas Deletang."
+    }
   }
 }

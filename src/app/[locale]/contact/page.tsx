@@ -1,48 +1,39 @@
 'use client'
 
 // import { useState, FormEvent } from 'react'
+import { useTranslations } from 'next-intl'
 
 export default function ContactPage() {
-  //   const [name, setName] = useState('')
-  //   const [email, setEmail] = useState('')
-  //   const [subject, setSubject] = useState('')
-  //   const [message, setMessage] = useState('')
-  //   const [error, setError] = useState<string | null>(null)
-  //   const [success, setSuccess] = useState<string | null>(null)
-  //   const [loading, setLoading] = useState(false)
+  const t = useTranslations('Contact')
+  // const [name, setName] = useState('')
+  // const [email, setEmail] = useState('')
+  // const [subject, setSubject] = useState('')
+  // const [message, setMessage] = useState('')
+  // const [loading, setLoading] = useState(false)
+  // const [error, setError] = useState<string | null>(null)
+  // const [success, setSuccess] = useState<string | null>(null)
 
-  //   const resetForm = () => {
+  // const handleSubmit = async (e: FormEvent) => {
+  //   e.preventDefault()
+  //   setLoading(true)
+  //   setError(null)
+  //   setSuccess(null)
+
+  //   try {
+  //     // Your form submission logic here
+  //     // Simulate API call
+  //     await new Promise(resolve => setTimeout(resolve, 1000))
+  //     setSuccess(t('form.successMessage'))
   //     setName('')
   //     setEmail('')
   //     setSubject('')
   //     setMessage('')
-  //     setError(null)
-  //     setSuccess(null)
+  //   } catch (err) {
+  //     setError(t('form.errorMessage'))
+  //   } finally {
+  //     setLoading(false)
   //   }
-
-  //   const handleSubmit = async (e: FormEvent) => {
-  //     e.preventDefault()
-  //     setError(null)
-  //     setSuccess(null)
-  //     setLoading(true)
-
-  //     try {
-  //       // Here you would typically send the form data to your API
-  //       // For now, we'll simulate a successful submission
-  //       await new Promise(resolve => setTimeout(resolve, 1000))
-
-  //       setSuccess('Message sent successfully! I\'ll get back to you soon.')
-  //       resetForm()
-  //     } catch (err) {
-  //       if (err instanceof Error) {
-  //         setError(err.message)
-  //       } else {
-  //         setError('Failed to send message. Please try again.')
-  //       }
-  //     } finally {
-  //       setLoading(false)
-  //     }
-  //   }
+  // }
 
   return (
     <div
@@ -67,7 +58,7 @@ export default function ContactPage() {
               backgroundClip: 'text',
             }}
           >
-            Get In Touch
+            {t('title')}
           </h1>
           <div
             className="w-20 h-1 mx-auto rounded-full mb-6 transition-all duration-200 ease-in-out"
@@ -77,8 +68,7 @@ export default function ContactPage() {
             className="text-lg sm:text-xl leading-relaxed transition-colors duration-200 ease-in-out"
             style={{ color: 'var(--muted-foreground)' }}
           >
-            Have a question or want to work together? I&#39;d love to hear from
-            you.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -98,7 +88,7 @@ export default function ContactPage() {
                   className="block text-sm font-medium mb-2 transition-colors duration-200 ease-in-out"
                   style={{ color: 'var(--foreground)' }}
                 >
-                  Name *
+                  {t('form.nameLabel')}
                 </label>
                 <input
                   id="name"
@@ -132,7 +122,7 @@ export default function ContactPage() {
                   className="block text-sm font-medium mb-2 transition-colors duration-200 ease-in-out"
                   style={{ color: 'var(--foreground)' }}
                 >
-                  Email *
+                  {t('form.emailLabel')}
                 </label>
                 <input
                   id="email"
@@ -167,7 +157,7 @@ export default function ContactPage() {
                 className="block text-sm font-medium mb-2 transition-colors duration-200 ease-in-out"
                 style={{ color: 'var(--foreground)' }}
               >
-                Subject *
+                {t('form.subjectLabel')}
               </label>
               <input
                 id="subject"
@@ -200,7 +190,7 @@ export default function ContactPage() {
                 className="block text-sm font-medium mb-2 transition-colors duration-200 ease-in-out"
                 style={{ color: 'var(--foreground)' }}
               >
-                Message *
+                {t('form.messageLabel')}
               </label>
               <textarea
                 id="message"
@@ -236,7 +226,7 @@ export default function ContactPage() {
                 color: 'var(--button-foreground, white)',
               }}
             >
-              {loading ? 'Sending...' : 'Send Message'}
+              {loading ? t('form.sending') : t('form.submitButton')}
             </button>
 
             {error && (
@@ -280,11 +270,11 @@ export default function ContactPage() {
             className="text-lg font-semibold mb-4 transition-colors duration-200 ease-in-out"
             style={{ color: 'var(--foreground)' }}
           >
-            Reach out directly
+            {t('directContact.title')}
           </h3>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href="mailto:lucas@example.com"
+              href={`mailto:${t('directContact.email')}`}
               className="flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105"
               style={{
                 color: 'var(--color-primary)',
@@ -293,8 +283,9 @@ export default function ContactPage() {
               }}
             >
               <span className="text-xl">📧</span>
-              <span>lucas.deletang2@gmail.com</span>
+              <span>{t('directContact.email')}</span>
             </a>
+
             <a
               href="https://linkedin.com/in/lucas-deletang"
               target="_blank"
@@ -307,7 +298,7 @@ export default function ContactPage() {
               }}
             >
               <span className="text-xl">💼</span>
-              <span>LinkedIn Profile</span>
+              <span>{t('directContact.linkedinText')}</span>
             </a>
           </div>
         </div>

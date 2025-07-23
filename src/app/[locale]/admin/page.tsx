@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import { auth } from '../../../lib/firebase/firebaseConfig' // your Firebase client SDK config
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 export default function AdminPage() {
+  const t = useTranslations('Admin')
   const router = useRouter()
   const [userEmail, setUserEmail] = useState<string | null>(null)
 
@@ -30,7 +32,7 @@ export default function AdminPage() {
   if (!userEmail)
     return (
       <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center font-sans">
-        <p>Loading...</p>
+        <p>{t('loading')}</p>
       </main>
     )
 
