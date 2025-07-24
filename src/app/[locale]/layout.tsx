@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { routing } from '@/lib/i18n/routing'
 import { getTranslations } from 'next-intl/server'
+import { ThemeProvider } from 'next-themes'
 
 import '../../styles/globals.css'
 
@@ -75,37 +76,6 @@ export async function generateMetadata({
   }
 }
 
-const themeScript = `
-  (function() {
-    function getInitialTheme() {
-      const persistedTheme = localStorage.getItem('theme');
-      const hasPersistedTheme = typeof persistedTheme === 'string';
-      
-      if (hasPersistedTheme) {
-        return persistedTheme;
-      }
-      
-      const mql = window.matchMedia('(prefers-color-scheme: dark)');
-      const hasMediaQueryPreference = typeof mql.matches === 'boolean';
-      
-      if (hasMediaQueryPreference) {
-        return mql.matches ? 'dark' : 'light';
-      }
-      
-      return 'light';
-    }
-    
-    const theme = getInitialTheme();
-    const root = document.documentElement;
-    
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  })();
-`
-
 export default async function LocaleLayout({
   children,
   params,
@@ -120,23 +90,29 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning={true}>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+      <head>{/* Remove the themeScript - next-themes handles this */}</head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-black dark:text-white`}
       >
-        <NextIntlClientProvider>
-          {/* Fixed Header */}
-          <Header />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          storageKey="theme"
+          enableSystem={true}
+          disableTransitionOnChange={false}
+        >
+          <NextIntlClientProvider>
+            {/* Fixed Header */}
+            <Header />
 
-          {/* Main content wrapper with top padding using CSS var */}
-          <main
-            style={{ paddingTop: 'var(--header-height)', minHeight: '100vh' }}
-          >
-            {children}
-          </main>
-        </NextIntlClientProvider>
+            {/* Main content wrapper with top padding using CSS var */}
+            <main
+              style={{ paddingTop: 'var(--header-height)', minHeight: '100vh' }}
+            >
+              {children}
+            </main>
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

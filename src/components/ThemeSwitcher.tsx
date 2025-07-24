@@ -1,65 +1,19 @@
 'use client'
 
+import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
 export function ThemeSwitcher() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
-    // Initialize theme on mount
-    const initializeTheme = () => {
-      const saved = localStorage.getItem('theme')
-      const prefersDark = window.matchMedia(
-        '(prefers-color-scheme: dark)',
-      ).matches
-
-      let newTheme: 'light' | 'dark'
-
-      if (saved === 'light' || saved === 'dark') {
-        newTheme = saved
-      } else if (prefersDark) {
-        newTheme = 'dark'
-      } else {
-        newTheme = 'light'
-      }
-
-      setTheme(newTheme)
-      document.documentElement.classList.toggle('dark', newTheme === 'dark')
-      setMounted(true)
-    }
-
-    initializeTheme()
+    setMounted(true)
   }, [])
 
-  useEffect(() => {
-    if (!mounted) return
-
-    // Add smooth transition after component mounts
-    const body = document.body
-    body.style.transition = 'var(--transition)'
-
-    // Listen for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    const handleChange = (e: MediaQueryListEvent) => {
-      // Only update if no theme is explicitly saved
-      if (!localStorage.getItem('theme')) {
-        const newTheme = e.matches ? 'dark' : 'light'
-        setTheme(newTheme)
-        document.documentElement.classList.toggle('dark', newTheme === 'dark')
-      }
-    }
-
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [mounted])
-
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-    document.documentElement.classList.toggle('dark', newTheme === 'dark')
-    localStorage.setItem('theme', newTheme)
+    setTheme(theme === 'dark' ? 'light' : 'dark')
   }
 
   // Don't render anything until mounted to prevent hydration mismatch

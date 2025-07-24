@@ -10,7 +10,6 @@ export default function Home() {
     <div
       className="flex flex-col"
       style={{
-        paddingTop: 'var(--header-height)',
         minHeight: 'calc(100vh - var(--header-height))',
       }}
     >
