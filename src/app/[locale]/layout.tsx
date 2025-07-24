@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { routing } from '@/lib/i18n/routing'
 import { getTranslations } from 'next-intl/server'
-import { ThemeProvider } from 'next-themes'
+import { getTheme } from '@/lib/theme'
 
 import '../../styles/globals.css'
 
@@ -84,35 +84,37 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+
   if (!hasLocale(routing.locales, locale)) {
     notFound()
   }
 
-  return (
-    <html lang={locale} suppressHydrationWarning={true}>
-      <head>{/* Remove the themeScript - next-themes handles this */}</head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-black dark:text-white`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          storageKey="theme"
-          enableSystem={true}
-          disableTransitionOnChange={false}
-        >
-          <NextIntlClientProvider>
-            {/* Fixed Header */}
-            <Header />
+  const theme = await getTheme()
 
-            {/* Main content wrapper with top padding using CSS var */}
-            <main
-              style={{ paddingTop: 'var(--header-height)', minHeight: '100vh' }}
-            >
-              {children}
-            </main>
-          </NextIntlClientProvider>
-        </ThemeProvider>
+  const getThemeClass = () => {
+    if (theme === 'dark') return 'dark'
+    if (theme === 'light') return ''
+    // For system theme, we'll let client-side handle it
+    return ''
+  }
+
+  return (
+    <html
+      lang={locale}
+      suppressHydrationWarning={true}
+      className={`${getThemeClass()} ${geistSans.variable} ${geistMono.variable}`}
+    >
+      <head></head>
+      <body className="antialiased bg-white text-black dark:bg-black dark:text-white">
+        <NextIntlClientProvider>
+          <Header />
+
+          <main
+            style={{ paddingTop: 'var(--header-height)', minHeight: '100vh' }}
+          >
+            {children}
+          </main>
+        </NextIntlClientProvider>
       </body>
     </html>
   )

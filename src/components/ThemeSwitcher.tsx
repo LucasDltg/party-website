@@ -1,22 +1,16 @@
 'use client'
-
-import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useThemeWithCookie } from '@/hooks/useThemeWithCookie'
 
 export function ThemeSwitcher() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const { setTheme, resolvedTheme, mounted } = useThemeWithCookie()
   const [isHovered, setIsHovered] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
+    const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
+    setTheme(newTheme)
   }
 
-  // Don't render anything until mounted to prevent hydration mismatch
   if (!mounted) {
     return (
       <div
@@ -54,7 +48,7 @@ export function ThemeSwitcher() {
       aria-label="Toggle light/dark mode"
       title="Toggle light/dark mode"
     >
-      {theme === 'dark' ? '🌞' : '🌙'}
+      {resolvedTheme === 'dark' ? '🌞' : '🌙'}
     </button>
   )
 }
