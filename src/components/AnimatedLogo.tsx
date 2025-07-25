@@ -85,11 +85,6 @@ const AnimatedLogo = ({ size = 45, className = '' }) => {
               animation-duration: 3s;
             }
             
-            /* Smooth entrance animation */
-            .animated-logo {
-              animation: logo-entrance 1s ease-out;
-            }
-            
             @keyframes logo-entrance {
               0% {
                 opacity: 0;
