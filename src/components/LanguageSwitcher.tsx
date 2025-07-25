@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocale } from 'next-intl'
 import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
@@ -29,12 +29,30 @@ export function LanguageSwitcher() {
     setIsOpen(false)
   }
 
+  useEffect(() => {
+    if (!isOpen) return // only listen when open
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur()
+        }
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [isOpen])
+
   const dropdownButtonStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    gap: '0.5rem',
-    padding: '0.25rem 0.5rem',
-    borderRadius: '0.25rem',
+    gap: 'var(--spacing-sm)',
+    padding: 'var(--spacing-xs) var(--spacing-sm)',
+    borderRadius: 'var(--radius-md)',
     fontWeight: 600,
     cursor: 'pointer',
     backgroundColor: 'transparent',
@@ -42,6 +60,7 @@ export function LanguageSwitcher() {
     border: 'none',
     transition: 'var(--transition)',
     fontSize: 'var(--font-size-md)',
+    fontFamily: 'var(--font-sans)',
     position: 'relative',
   }
 
@@ -61,7 +80,7 @@ export function LanguageSwitcher() {
           alt={`${languageNames[locale]} flag`}
           width={16}
           height={12}
-          style={{ borderRadius: '0.125rem' }}
+          // style={{ borderRadius: 'var(--spacing-xs)' }}
         />
         <span>{languageNames[locale]}</span>
         <svg
@@ -75,7 +94,7 @@ export function LanguageSwitcher() {
           strokeLinejoin="round"
           style={{
             transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'var(--transition)',
+            transition: 'var(--transition-transform)',
           }}
         >
           <path d="M19 9l-7 7-7-7" />
@@ -89,17 +108,22 @@ export function LanguageSwitcher() {
             position: 'absolute',
             left: '0',
             top: '100%',
-            marginTop: '0.5rem',
+            marginTop: 'var(--spacing-sm)',
             backgroundColor: 'var(--background)',
-            border: '1px solid var(--border)',
-            borderRadius: '0.375rem',
-            boxShadow:
-              '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            border: `1px solid var(--color-muted)`,
+            borderRadius: 'var(--radius-md)',
+            boxShadow: 'var(--shadow-md)',
             zIndex: 50,
             minWidth: '160px',
           }}
         >
-          <ul style={{ padding: '0.25rem 0', margin: 0, listStyle: 'none' }}>
+          <ul
+            style={{
+              padding: 'var(--spacing-xs) 0',
+              margin: 0,
+              listStyle: 'none',
+            }}
+          >
             {locales.map((lang) => (
               <li key={lang} style={{ margin: 0 }}>
                 <button
@@ -108,11 +132,10 @@ export function LanguageSwitcher() {
                     width: '100%',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.75rem',
-                    padding: '0.5rem 1rem',
+                    gap: 'var(--spacing-sm)',
+                    padding: 'var(--spacing-sm) var(--spacing-md)',
                     fontSize: 'var(--font-size-sm)',
-                    backgroundColor:
-                      locale === lang ? 'var(--muted)' : 'transparent',
+                    fontFamily: 'var(--font-sans)',
                     color:
                       locale === lang
                         ? 'var(--color-primary)'
@@ -121,10 +144,12 @@ export function LanguageSwitcher() {
                     cursor: 'pointer',
                     transition: 'var(--transition)',
                     textAlign: 'left',
+                    opacity: locale === lang ? 0.8 : 1,
                   }}
                   onMouseEnter={(e) => {
                     if (locale !== lang) {
-                      e.currentTarget.style.backgroundColor = 'var(--muted)'
+                      e.currentTarget.style.backgroundColor =
+                        'rgba(75, 85, 99, 0.1)'
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -138,7 +163,6 @@ export function LanguageSwitcher() {
                     alt={`${languageNames[lang]} flag`}
                     width={16}
                     height={12}
-                    style={{ borderRadius: '0.125rem' }}
                   />
                   <span>{languageNames[lang]}</span>
                 </button>

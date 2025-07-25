@@ -11,7 +11,7 @@ export default function CenteredPageLayout({
 }: CenteredPageLayoutProps) {
   return (
     <main
-      className="h-[calc(100vh-var(--header-height))] overflow-hidden flex flex-col justify-center items-center font-sans px-4"
+      className="h-[calc(100vh-var(--header-height))] overflow-hidden flex flex-col justify-center items-center font-sans"
       style={{
         background:
           'linear-gradient(to bottom right, var(--color-primary), var(--color-secondary))',
@@ -20,7 +20,7 @@ export default function CenteredPageLayout({
       }}
     >
       <div
-        className="rounded-xl shadow-lg p-10 max-w-md w-full text-center"
+        className="rounded-xl p-10 max-w-md w-full text-center"
         style={{
           backgroundColor: 'var(--background)',
           color: 'var(--foreground)',

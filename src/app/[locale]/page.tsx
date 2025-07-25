@@ -29,7 +29,7 @@ export default function Home() {
                 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight pb-4"
                 style={{
                   background:
-                    'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+                    'linear-gradient(135deg, var(--color-secondary), var(--color-primary))',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -226,7 +226,8 @@ export default function Home() {
       <footer
         className="flex justify-center text-sm pb-6 px-6"
         style={{
-          color: 'var(--muted-foreground)',
+          background: 'var(--background)',
+          color: 'var(--foreground)',
           transition: 'var(--transition)',
         }}
       >

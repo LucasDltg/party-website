@@ -32,6 +32,8 @@ Push tags on github for major and minor versions changes. Patch are automaticall
 - Login improve (send email for verification, reset pswd, etc)
 - Login not successful when api 404
 - Tailwind vars everywhere
+- transition cv
+- svg logo animated
 
 ⚠ i18n configuration in next.config.ts is unsupported in App Router.
 Learn more about internationalization in App Router: https://nextjs.org/docs/app/building-your-application/routing/internationalization

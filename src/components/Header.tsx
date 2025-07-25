@@ -34,8 +34,8 @@ export default function Header() {
   }, [])
 
   const baseButtonStyle: React.CSSProperties = {
-    padding: '0.25rem 0.5rem',
-    borderRadius: '0.25rem',
+    padding: 'var(--spacing-xs) var(--spacing-sm)',
+    borderRadius: 'var(--radius-md)',
     fontWeight: 600,
     cursor: 'pointer',
     backgroundColor: 'transparent',
@@ -43,11 +43,14 @@ export default function Header() {
     border: 'none',
     transition: 'var(--transition)',
     fontSize: 'var(--font-size-md)',
+    fontFamily: 'var(--font-sans)',
   }
 
   const hoveredStyle: React.CSSProperties = {
     color: 'var(--color-primary-hover)',
   }
+
+  const logoSize = 32 // Could be made into a CSS variable if needed
 
   // Render navigation content based on mounted state
   const renderNavigation = () => {
@@ -56,10 +59,10 @@ export default function Header() {
         {mounted && user ? (
           <>
             <span
-              className="text-sm"
               style={{
-                color: 'var(--foreground)',
+                color: 'var(--color-muted)',
                 fontSize: 'var(--font-size-sm)',
+                fontFamily: 'var(--font-sans)',
               }}
             >
               {t('greeting', { email: user.email ?? '' })}
@@ -105,30 +108,67 @@ export default function Header() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50"
       style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
         height: 'var(--header-height)',
         backgroundColor: 'var(--background)',
         color: 'var(--foreground)',
         transition: 'var(--transition)',
+        boxShadow: 'var(--shadow-md)',
       }}
     >
-      <div className="flex justify-between items-center h-full px-5 py-3">
-        <Link href="/" className="flex items-center space-x-2">
-          <Image src="/logo.png" alt={t('logoAlt')} width={32} height={32} />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: '100%',
+          padding: `var(--spacing-md) var(--spacing-lg)`,
+        }}
+      >
+        <Link
+          href="/"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--spacing-sm)',
+            textDecoration: 'none',
+          }}
+        >
+          <Image
+            src="/logo.png"
+            alt={t('logoAlt')}
+            width={logoSize}
+            height={logoSize}
+          />
         </Link>
 
-        <nav className="flex items-center space-x-4">{renderNavigation()}</nav>
+        <nav
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--spacing-md)',
+          }}
+        >
+          {renderNavigation()}
+        </nav>
       </div>
 
+      {/* Primary/Secondary gradient bar */}
       <div
         style={{
           height: '4px',
           background:
-            'linear-gradient(to right, var(--color-primary), var(--color-secondary))',
+            'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+          transition: 'var(--transition-transform)',
         }}
       />
 
+      {/* Bottom separator */}
       <div
         style={{
           height: '2px',

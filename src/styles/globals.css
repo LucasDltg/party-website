@@ -1,20 +1,18 @@
 @import 'tailwindcss';
 
-/* === CSS Variables === */
 :root {
   --background: #f0f0f0;
   --foreground: #171717;
   --header-height: 4rem;
 
-  /* Primary Theme Colors */
-  --color-primary: #ea437a; /* Main pink */
-  --color-primary-hover: #d32f67; /* Darker pink on hover */
-  --color-secondary: #073c6c; /* Deep navy */
-  --color-secondary-hover: #062f54; /* Slightly lighter navy for hover */
+  --color-primary: #1e3a8a;
+  --color-primary-hover: #062f54;
+  --color-secondary: #ea437a;
+  --color-secondary-hover: #d32f67;
+
   --color-error: #dc2626;
   --color-muted: #4b5563;
 
-  /* Typography */
   --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui);
   --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular);
 
@@ -22,35 +20,30 @@
   --font-size-md: 1rem; /* 16px - base */
   --font-size-lg: 2rem; /* 20px */
 
-  /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
 
-  /* Border radius */
   --radius-md: 8px;
 
-  /* Shadows */
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-  /* Background transitions - slower, matches your button style */
-  --transition: background-color 0.5s ease;
+  --transition: background-color 0.7s ease-in-out;
 
-  /* Transform-only transitions */
-  --transition-transform: transform 0.5s ease;
-}
+  --transition-transform: transform 0.7s ease-in-out;
 
-/* === Base Styles === */
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  --button-size: 40px;
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #f9fafb;
+
+  --color-primary: #ea437a;
+  --color-primary-hover: #d32f67;
+  --color-secondary: #1e3a8a;
+  --color-secondary-hover: #062f54;
 }
 
 @media print {

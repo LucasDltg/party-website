@@ -13,19 +13,26 @@ export function ThemeSwitcher() {
 
   if (!mounted) {
     return (
-      <div
+      <button
+        aria-hidden="true"
         style={{
-          padding: '0.5rem',
+          padding: 'var(--spacing-sm)',
           borderRadius: '50%',
-          width: '40px',
-          height: '40px',
+          fontSize: 'var(--font-size-lg)',
+          width: 'var(--button-size)',
+          height: 'var(--button-size)',
+          backgroundColor: 'transparent',
+          border: 'none',
+          visibility: 'hidden',
         }}
-      />
+      >
+        🌞
+      </button>
     )
   }
 
   const buttonStyle: React.CSSProperties = {
-    padding: '0.5rem',
+    padding: 'var(--spacing-sm)',
     borderRadius: '50%',
     fontWeight: 600,
     cursor: 'pointer',
@@ -37,6 +44,8 @@ export function ThemeSwitcher() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    width: 'var(--button-size)',
+    height: 'var(--button-size)',
   }
 
   return (
