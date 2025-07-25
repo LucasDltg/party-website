@@ -1,13 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { auth } from '../lib/firebase/firebaseConfig'
 import { onAuthStateChanged, signOut, User } from 'firebase/auth'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import AnimatedLogo from './AnimatedLogo'
 
 export default function Header() {
   const t = useTranslations('Header')
@@ -50,7 +50,7 @@ export default function Header() {
     color: 'var(--color-primary-hover)',
   }
 
-  const logoSize = 32 // Could be made into a CSS variable if needed
+  const logoSize = 45 // Could be made into a CSS variable if needed
 
   // Render navigation content based on mounted state
   const renderNavigation = () => {
@@ -127,7 +127,7 @@ export default function Header() {
           justifyContent: 'space-between',
           alignItems: 'center',
           height: '100%',
-          padding: `var(--spacing-md) var(--spacing-lg)`,
+          padding: `var(--spacing-md) var(--spacing-md)`,
         }}
       >
         <Link
@@ -139,12 +139,7 @@ export default function Header() {
             textDecoration: 'none',
           }}
         >
-          <Image
-            src="/logo.png"
-            alt={t('logoAlt')}
-            width={logoSize}
-            height={logoSize}
-          />
+          <AnimatedLogo size={logoSize} />
         </Link>
 
         <nav
