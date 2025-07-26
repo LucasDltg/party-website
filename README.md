@@ -30,7 +30,6 @@ Push tags on github for major and minor versions changes. Patch are automaticall
 ## TODO
 
 - Login improve (send email for verification, reset pswd, etc)
-- Login not successful when api 404
 - Tailwind vars everywhere
 - transition cv
 - svg logo animated
