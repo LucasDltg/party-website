@@ -61,8 +61,11 @@ export default function ContactPage() {
             {t('title')}
           </h1>
           <div
-            className="w-20 h-1 mx-auto rounded-full mb-6 transition-all duration-200 ease-in-out"
-            style={{ backgroundColor: 'var(--color-primary)' }}
+            className="w-20 h-1 mx-auto rounded-full mb-6"
+            style={{
+              backgroundColor: 'var(--color-primary)',
+              transition: 'var(--transition)',
+            }}
           ></div>
           <p
             className="text-lg sm:text-xl leading-relaxed transition-colors duration-200 ease-in-out"
