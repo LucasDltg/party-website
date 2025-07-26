@@ -6,7 +6,18 @@
     "keywords": "Lucas Deletang, Développeur Frontend, Next.js, Tailwind CSS, Firebase, Développement Web, Mode Sombre, React, Portfolio"
   },
   "Admin": {
-    "loading": "Chargement..."
+    "title": "Tableau de bord Admin",
+    "welcome": "Bienvenue,",
+    "adminAccess": "Vous avez un accès administrateur.",
+    "userManagement": "Gestion des utilisateurs",
+    "userManagementDesc": "Gérer les comptes utilisateurs et les permissions",
+    "systemSettings": "Paramètres système",
+    "systemSettingsDesc": "Configurer les paramètres du système",
+    "analytics": "Analytiques",
+    "analyticsDesc": "Voir les analyses et rapports du système"
+  },
+  "AuthGuard": {
+    "loading": "Vérification des permissions..."
   },
   "Cv": {
     "title": "Lucas Deletang",
@@ -95,7 +106,10 @@
         "title": "<strong>Création d'un site web (en développement)</strong>",
         "description": "Site web permettant de s'autentifier avec <strong>Firebase</strong>, effectuer des achats avec <strong>Stripes</strong>, stocker les informations utilisateurs dans une base de données, etc"
       }
-    }
+    },
+    "loadingContactInfo": "Chargement des informations de contact...",
+    "contactInfoMessage": "Connectez-vous pour voir mes informations de contact et me contacter.",
+    "loginToViewContact": "Se connecter pour voir les infos de contact"
   },
   "Auth": {
     "loginTitle": "Connexion",

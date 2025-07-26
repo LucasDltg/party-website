@@ -1,47 +1,28 @@
+// pages/admin/AdminPage.tsx - Protected admin page
 'use client'
 
-import { useEffect, useState } from 'react'
-import { auth } from '../../../lib/firebase/firebaseConfig' // your Firebase client SDK config
-import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useAuth } from '@/hooks/useAuth'
+import AuthGuard from '@/components/AuthGuard'
 
-export default function AdminPage() {
+function AdminContent() {
   const t = useTranslations('Admin')
-  const router = useRouter()
-  const [userEmail, setUserEmail] = useState<string | null>(null)
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        router.push('/auth') // redirect if not logged in
-        return
-      }
-
-      const tokenResult = await user.getIdTokenResult()
-      if (tokenResult.claims.role !== 'admin') {
-        router.push('/unauthorized') // redirect if no admin rights
-        return
-      }
-
-      setUserEmail(user.email)
-    })
-
-    return () => unsubscribe()
-  }, [router])
-
-  if (!userEmail)
-    return (
-      <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center font-sans">
-        <p>{t('loading')}</p>
-      </main>
-    )
+  const { user } = useAuth()
 
   return (
     <main className="h-[calc(100vh-var(--header-height))] overflow-auto p-8 font-sans">
-      <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-4">{t('title')}</h1>
       <p>
-        Welcome, <strong>{userEmail}</strong>! You have admin access.
+        {t('welcome')} <strong>{user?.email}</strong>! {t('adminAccess')}
       </p>
     </main>
+  )
+}
+
+export default function AdminPage() {
+  return (
+    <AuthGuard requiredRole="admin">
+      <AdminContent />
+    </AuthGuard>
   )
 }
