@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center;
   font-family: 'Roboto', sans-serif;
+  transition: var(--transition);
 }
 
 .cvContent {
@@ -76,6 +77,10 @@
   .cvContainer {
     padding: 0;
     margin: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
   }
 
   .cvContent {
@@ -85,7 +90,7 @@
   }
 
   .sectionDivider {
-    margin: 5px 0; /* Further reduced for print */
+    margin: 5px 0;
     border-top: 1px solid #000 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -96,7 +101,6 @@
   }
 
   .cvTitle {
-    margin-top: 0; /* Reset the negative margin for print */
     font-size: 24pt;
     color: #000 !important;
   }
@@ -108,7 +112,10 @@
 
   .cvContent p,
   .cvContent ul,
-  .cvContent li,
+  .cvContent li {
+    color: #000 !important;
+  }
+
   .cvLocation,
   .cvPhone,
   .cvEmail {

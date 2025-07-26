@@ -50,7 +50,7 @@ export default function Header() {
     color: 'var(--color-primary-hover)',
   }
 
-  const logoSize = 45 // Could be made into a CSS variable if needed
+  const logoSize = 50
 
   // Render navigation content based on mounted state
   const renderNavigation = () => {
