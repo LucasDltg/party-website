@@ -1,0 +1,98 @@
+name: Release on Tag
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  wait-for-ci:
+    name: Wait for CI to pass
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for CI workflow to complete
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.sha }}
+          check-name: CI
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+          timeout: 600 # 10 min timeout
+
+  release:
+    name: Release Docker Artifacts
+    needs: wait-for-ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: Inject secrets into .env
+        run: |
+          echo "FIREBASE_SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" >> .env
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "VERSION=$TAG" >> $GITHUB_ENV
+          echo "Release version is $TAG"
+
+      - name: Build Docker image
+        run: |
+          docker build -t lucas-website:latest -t lucas-website:${{ env.VERSION }} .
+
+      - name: Save Docker images as tarballs
+        run: |
+          docker save lucas-website:latest -o lucas-website_latest.tar
+          docker save lucas-website:${{ env.VERSION }} -o lucas-website_${{ env.VERSION }}.tar
+
+      - name: Upload Docker tarballs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-images
+          path: |
+            lucas-website_latest.tar
+            lucas-website_${{ env.VERSION }}.tar
+
+      - name: Create GitHub Release and upload Docker tarballs
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            lucas-website_latest.tar
+            lucas-website_${{ env.VERSION }}.tar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Uncomment and configure below to upload to a remote server via SFTP
+
+      # - name: Setup SSH key
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      #     chmod 600 ~/.ssh/id_rsa
+      #     ssh-keyscan -H your.server.com >> ~/.ssh/known_hosts
+
+      # - name: Upload latest image tarball via SCP
+      #   run: scp lucas-website_latest.tar username@your.server.com:/path/on/server/
+
+      # - name: Upload versioned image tarball via SCP
+      #   run: scp lucas-website_${{ env.VERSION }}.tar username@your.server.com:/path/on/server/
