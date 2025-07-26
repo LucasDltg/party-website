@@ -71,7 +71,7 @@ export default function Header() {
           <>
             <span
               style={{
-                color: 'var(--color-muted)',
+                color: 'var(--color-foreground)',
                 fontSize: 'var(--font-size-sm)',
                 fontFamily: 'var(--font-sans)',
               }}
