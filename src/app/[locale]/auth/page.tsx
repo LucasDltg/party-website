@@ -52,23 +52,17 @@ export default function AuthPage() {
   const getErrorMessage = (error: AuthError): string => {
     switch (error.code) {
       case 'auth/email-already-in-use':
-        return t('errors.emailInUse') || 'Email already in use'
+        return t('errors.emailInUse')
       case 'auth/weak-password':
-        return t('errors.weakPassword') || 'Password is too weak'
+        return t('errors.weakPassword')
       case 'auth/password-does-not-meet-requirements':
-        return (
-          t('errors.passwordRequirements') ||
-          'Password must contain at least 8 characters and include a numeric character'
-        )
+        return t('errors.passwordRequirements')
       case 'auth/user-not-found':
       case 'auth/wrong-password':
       case 'auth/invalid-credential':
-        return t('errors.invalidCredentials') || 'Invalid email or password'
+        return t('errors.invalidCredentials')
       case 'auth/too-many-requests':
-        return (
-          t('errors.tooManyRequests') ||
-          'Too many failed attempts. Please try again later'
-        )
+        return t('errors.tooManyRequests')
       default:
         return error.message
     }
@@ -96,7 +90,6 @@ export default function AuthPage() {
         }
 
         setSuccess(t('loginSuccess'))
-        // Redirect immediately after successful authentication
         router.push(getRedirectUrl())
       } else {
         await createUserWithEmailAndPassword(auth, email, password)
@@ -117,7 +110,6 @@ export default function AuthPage() {
       }
     } catch (err) {
       if (err instanceof Error && 'code' in err) {
-        // This is likely an AuthError
         setError(getErrorMessage(err as AuthError))
       } else if (err instanceof Error) {
         setError(err.message)
@@ -157,9 +149,9 @@ export default function AuthPage() {
           className="px-4 py-3 border rounded-md focus:outline-none focus:ring-2"
           style={{
             backgroundColor: '#f9fafb',
-            color: '#0a0a0a',
+            color: 'var(--color-placeholder)',
             fontSize: 'var(--font-size-md)',
-            borderColor: '#cbd5e1',
+            borderColor: 'var(--color-muted)',
             fontFamily: 'var(--font-sans)',
           }}
         />
@@ -174,9 +166,9 @@ export default function AuthPage() {
           className="px-4 py-3 border rounded-md focus:outline-none focus:ring-2"
           style={{
             backgroundColor: '#f9fafb',
-            color: '#0a0a0a',
+            color: 'var(--color-placeholder)',
             fontSize: 'var(--font-size-md)',
-            borderColor: '#cbd5e1',
+            borderColor: 'var(--color-muted)',
             fontFamily: 'var(--font-sans)',
           }}
         />
@@ -233,7 +225,10 @@ export default function AuthPage() {
 
       <p
         className="mt-6 text-center"
-        style={{ color: 'var(--color-muted)', fontSize: 'var(--font-size-sm)' }}
+        style={{
+          color: 'var(--color-foreground)',
+          fontSize: 'var(--font-size-sm)',
+        }}
       >
         {isLogin ? t('noAccountText') : t('hasAccountText')}{' '}
         <button

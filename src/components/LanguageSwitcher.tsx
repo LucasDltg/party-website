@@ -142,7 +142,6 @@ export function LanguageSwitcher() {
                         : 'var(--foreground)',
                     border: 'none',
                     cursor: 'pointer',
-                    transition: 'var(--transition)',
                     textAlign: 'left',
                     opacity: locale === lang ? 0.8 : 1,
                   }}
