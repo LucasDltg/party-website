@@ -25,9 +25,15 @@ Launch docker:
 
 ## Reminders
 
-# Tags
+# Release
 
-Push tags on github for major and minor versions changes. Patch are automatically changed according to number of commits. For convenience, tags should have format vX.x
+Push tags on github for major and minor versions changes. For convenience, tags should have format vX.X.X
+
+Delete tag locally: git tag -d vX.X.X
+Delete tag on remote: git push origin :refs/tags/vX.X.X
+
+Create tag: git tag -a vX.X.X -m "Release vX.X.X"
+Push tag: git push origin vX.X.X
 
 ## TODO
 
