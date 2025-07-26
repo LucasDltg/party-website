@@ -2,57 +2,127 @@
 
 import { useState, FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { auth } from '../../../lib/firebase/firebaseConfig'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   getIdToken,
+  AuthError,
 } from 'firebase/auth'
 import CenteredPageLayout from '../../../components/CenteredPageLayout'
 
 export default function AuthPage() {
   const t = useTranslations('Auth')
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  const getRedirectUrl = (): string => {
+    const redirectTo = searchParams.get('redirect')
+
+    // Validate the redirect URL to prevent open redirect attacks
+    if (redirectTo) {
+      // Only allow relative URLs (starting with /) or same-origin URLs
+      try {
+        const url = new URL(redirectTo, window.location.origin)
+        if (url.origin === window.location.origin) {
+          return redirectTo
+        }
+      } catch {
+        // Invalid URL, fall through to default
+      }
+    }
+
+    return '/' // Default to main page
+  }
 
   const resetForm = () => {
     setEmail('')
     setPassword('')
     setError(null)
+    setSuccess(null)
+  }
+
+  const getErrorMessage = (error: AuthError): string => {
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        return t('errors.emailInUse') || 'Email already in use'
+      case 'auth/weak-password':
+        return t('errors.weakPassword') || 'Password is too weak'
+      case 'auth/password-does-not-meet-requirements':
+        return (
+          t('errors.passwordRequirements') ||
+          'Password must contain at least 8 characters and include a numeric character'
+        )
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        return t('errors.invalidCredentials') || 'Invalid email or password'
+      case 'auth/too-many-requests':
+        return (
+          t('errors.tooManyRequests') ||
+          'Too many failed attempts. Please try again later'
+        )
+      default:
+        return error.message
+    }
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError(null)
+    setSuccess(null)
     setLoading(true)
 
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password)
         const token = await getIdToken(auth.currentUser!, true)
-        await fetch('/api/login', {
+
+        const response = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
         })
-        alert(t('loginSuccess'))
+
+        if (!response.ok) {
+          throw new Error('Failed to authenticate with server')
+        }
+
+        setSuccess(t('loginSuccess'))
+        // Redirect immediately after successful authentication
+        router.push(getRedirectUrl())
       } else {
         await createUserWithEmailAndPassword(auth, email, password)
         const token = await getIdToken(auth.currentUser!, true)
-        await fetch('/api/login', {
+
+        const response = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
         })
-        alert(t('signupSuccess'))
+
+        if (!response.ok) {
+          throw new Error('Failed to authenticate with server')
+        }
+
+        setSuccess(t('signupSuccess'))
+        router.push(getRedirectUrl())
       }
-      resetForm()
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof Error && 'code' in err) {
+        // This is likely an AuthError
+        setError(getErrorMessage(err as AuthError))
+      } else if (err instanceof Error) {
         setError(err.message)
+      } else {
+        setError('An unexpected error occurred')
       }
     } finally {
       setLoading(false)
@@ -113,7 +183,7 @@ export default function AuthPage() {
         <button
           type="submit"
           disabled={loading}
-          className="py-3 rounded-md font-semibold disabled:opacity-50"
+          className="py-3 rounded-md font-semibold disabled:opacity-50 transition-colors"
           style={{
             backgroundColor: 'var(--color-primary)',
             color: 'white',
@@ -133,15 +203,30 @@ export default function AuthPage() {
               ? t('loginButton')
               : t('signupButton')}
         </button>
+
         {error && (
           <p
-            className="text-center"
+            className="text-center p-3 rounded-md"
             style={{
               color: 'var(--color-error)',
+              backgroundColor: 'var(--color-error-bg, #fef2f2)',
               fontSize: 'var(--font-size-sm)',
             }}
           >
             {error}
+          </p>
+        )}
+
+        {success && (
+          <p
+            className="text-center p-3 rounded-md"
+            style={{
+              color: 'var(--color-success)',
+              backgroundColor: 'var(--color-success-bg, #f0fdf4)',
+              fontSize: 'var(--font-size-sm)',
+            }}
+          >
+            {success}
           </p>
         )}
       </form>

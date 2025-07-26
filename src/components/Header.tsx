@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 import { auth } from '../lib/firebase/firebaseConfig'
 import { onAuthStateChanged, signOut, User } from 'firebase/auth'
 import { LanguageSwitcher } from './LanguageSwitcher'
@@ -11,6 +12,7 @@ import AnimatedLogo from './AnimatedLogo'
 
 export default function Header() {
   const t = useTranslations('Header')
+  const pathname = usePathname()
   const [user, setUser] = useState<User | null>(null)
   const [hoveredButton, setHoveredButton] = useState<
     'connect' | 'logout' | null
@@ -52,6 +54,15 @@ export default function Header() {
 
   const logoSize = 50
 
+  // Create auth URL with current page as redirect parameter
+  const getAuthUrl = () => {
+    // Don't redirect back to auth page itself
+    if (pathname === '/auth') {
+      return '/auth'
+    }
+    return `/auth?redirect=${encodeURIComponent(pathname)}`
+  }
+
   // Render navigation content based on mounted state
   const renderNavigation = () => {
     return (
@@ -81,7 +92,7 @@ export default function Header() {
             </button>
           </>
         ) : mounted && !user ? (
-          <Link href="/auth">
+          <Link href={getAuthUrl()}>
             <button
               style={
                 hoveredButton === 'connect'

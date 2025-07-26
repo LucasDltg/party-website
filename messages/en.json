@@ -110,7 +110,14 @@
     "noAccountText": "Don't have an account?",
     "hasAccountText": "Already have an account?",
     "createAccountLink": "Create one",
-    "loginLink": "Login"
+    "loginLink": "Login",
+    "errors": {
+      "emailInUse": "This email address is already in use",
+      "weakPassword": "Password should be at least 6 characters",
+      "passwordRequirements": "Password must contain at least 8 characters and include a numeric character",
+      "invalidCredentials": "Invalid email or password",
+      "tooManyRequests": "Too many failed attempts. Please try again later"
+    }
   },
   "Contact": {
     "title": "Get In Touch",

@@ -110,7 +110,14 @@
     "noAccountText": "Vous n'avez pas de compte ?",
     "hasAccountText": "Vous avez déjà un compte ?",
     "createAccountLink": "Créer un compte",
-    "loginLink": "Se connecter"
+    "loginLink": "Se connecter",
+    "errors": {
+      "emailInUse": "Cette adresse e-mail est déjà utilisée",
+      "weakPassword": "Le mot de passe doit contenir au moins 6 caractères",
+      "passwordRequirements": "Le mot de passe doit contenir au moins 8 caractères et inclure un chiffre",
+      "invalidCredentials": "E-mail ou mot de passe invalide",
+      "tooManyRequests": "Trop de tentatives échouées. Veuillez réessayer plus tard"
+    }
   },
   "Contact": {
     "title": "Prendre Contact",
