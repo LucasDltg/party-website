@@ -42,7 +42,7 @@ export default function ContactPage() {
         paddingTop: 'calc(var(--header-height, 80px) + 2rem)',
         backgroundColor: 'var(--background)',
         color: 'var(--foreground)',
-        transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out',
+        transition: 'var(--transition)',
       }}
     >
       <div className="max-w-2xl mx-auto">
