@@ -80,6 +80,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set file permissions
+        run: chmod 644 ./lucas-website-${{ env.VERSION }}.tar
+
       - name: Deploy Docker image via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
@@ -90,13 +93,3 @@ jobs:
           local_path: './lucas-website-${{ env.VERSION }}.tar'
           remote_path: '/github/'
           sftp_only: true
-
-      - name: Fix file permissions
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            chmod 644 /github/lucas-website-${{ env.VERSION }}.tar
