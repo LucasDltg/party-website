@@ -85,17 +85,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Uncomment and configure below to upload to a remote server via SFTP
-
-      # - name: Setup SSH key
-      #   run: |
-      #     mkdir -p ~/.ssh
-      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      #     chmod 600 ~/.ssh/id_rsa
-      #     ssh-keyscan -H your.server.com >> ~/.ssh/known_hosts
-
-      # - name: Upload latest image tarball via SCP
-      #   run: scp lucas-website_latest.tar username@your.server.com:/path/on/server/
-
-      # - name: Upload versioned image tarball via SCP
-      #   run: scp lucas-website_${{ env.VERSION }}.tar username@your.server.com:/path/on/server/
+      - name: Deploy Docker images via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          local_path: './lucas-website_latest.tar'
+          remote_path: '/github/'
+          sftp_only: true

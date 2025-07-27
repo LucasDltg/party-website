@@ -1,5 +1,5 @@
 ![CI](https://github.com/LucasDltg/party-website/actions/workflows/ci.yml/badge.svg)
-![Release](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/release.yml/badge.svg)
+![Release](https://github.com/LucasDltg/party-website/actions/workflows/release.yml/badge.svg)
 ![Version](https://img.shields.io/github/v/tag/LucasDltg/party-website?label=version)
 
 ## Getting Started
