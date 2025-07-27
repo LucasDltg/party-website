@@ -3,7 +3,7 @@
 import { useState, FormEvent } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { auth } from '../../../lib/firebase/firebaseConfig'
+import { auth } from '@/lib/firebase/firebaseConfig'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
