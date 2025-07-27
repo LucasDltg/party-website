@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write # Required for creating releases
+  actions: read
+
 jobs:
   wait-for-ci:
     name: Wait for CI to pass
