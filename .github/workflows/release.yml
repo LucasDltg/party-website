@@ -60,38 +60,33 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t lucas-website:latest -t lucas-website:${{ env.VERSION }} .
+          docker build -t lucas-website:${{ env.VERSION }} .
 
-      - name: Save Docker images as tarballs
+      - name: Save Docker image as tarball
         run: |
-          docker save lucas-website:latest -o lucas-website_latest.tar
-          docker save lucas-website:${{ env.VERSION }} -o lucas-website_${{ env.VERSION }}.tar
+          docker save lucas-website:${{ env.VERSION }} -o lucas-website-${{ env.VERSION }}.tar
 
-      - name: Upload Docker tarballs as artifact
+      - name: Upload Docker tarball as artifact
         uses: actions/upload-artifact@v4
         with:
           name: docker-images
-          path: |
-            lucas-website_latest.tar
-            lucas-website_${{ env.VERSION }}.tar
+          path: lucas-website-${{ env.VERSION }}.tar
 
-      - name: Create GitHub Release and upload Docker tarballs
+      - name: Create GitHub Release and upload Docker tarball
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          files: |
-            lucas-website_latest.tar
-            lucas-website_${{ env.VERSION }}.tar
+          files: lucas-website-${{ env.VERSION }}.tar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy Docker images via SFTP
+      - name: Deploy Docker image via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USERNAME }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          local_path: './lucas-website_latest.tar'
+          local_path: './lucas-website-${{ env.VERSION }}.tar'
           remote_path: '/github/'
           sftp_only: true
