@@ -38,5 +38,6 @@ Push tag: git push origin vX.X.X
 ## TODO
 
 - Login improve (send email for verification, reset pswd, etc)
+- weird login
 - Fix tag ci
 - Fix contact page style

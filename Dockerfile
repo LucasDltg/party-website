@@ -1,25 +1,52 @@
-# Use Node base image
-FROM node:18-alpine
+# Multi-stage build for Next.js production deployment
 
-# Set working directory
+# Build stage
+FROM node:18-alpine AS builder
+
+RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
 
-# Copy package manifests
 COPY package*.json ./
 
-# Set production environment and disable husky
-ENV NODE_ENV=production
-ENV HUSKY=0
+RUN npm ci
 
-# Install only production dependencies
-RUN npm ci --omit=dev
-
-# Copy the rest of the code
 COPY . .
 
-# Build the Next.js app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN npm run build
 
-# Expose port and set default command
+# Production stage
+FROM node:18-alpine AS runner
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
+
+WORKDIR /app
+
+# Create non-root user for security
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+
+COPY --from=builder /app/public ./public
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
 EXPOSE 3000
-CMD ["npm", "start"]
+
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+#   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
+
+ENTRYPOINT ["dumb-init", "--"]
+
+CMD ["node", "server.js"]
