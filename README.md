@@ -42,3 +42,6 @@ Push tag: git push origin vX.X.X
 - Fix tag ci
 - Fix contact page style
 - Phone style
+- Button to see password on /auth
+
+6 4
