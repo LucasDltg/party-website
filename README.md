@@ -35,6 +35,12 @@ Delete tag on remote: git push origin :refs/tags/vX.X.X
 Create tag: git tag -a vX.X.X -m "Release vX.X.X"
 Push tag: git push origin vX.X.X
 
+# Scrips
+
+Run
+
+- npx ts-node .\src\scripts\setAdminClaim.ts: to set role for a user
+
 ## TODO
 
 - Login improve (send email for verification, reset pswd, etc)

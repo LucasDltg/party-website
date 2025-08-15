@@ -43,11 +43,11 @@ jobs:
 
       - name: Inject secrets into .env
         run: |
-          sed -i '/^FIREBASE_SERVICE_ACCOUNT_KEY=/d' .env
+          sed -i '/^FIREBASE_SERVICE_ACCOUNT_KEY_BASE64=/d' .env
           sed -i '/^APP_PHONE_NUMBER=/d' .env
           sed -i '/^APP_MAIL_ADDRESS=/d' .env
           sed -i '/^APP_LOCATION=/d' .env
-          echo "FIREBASE_SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" >> .env
+          echo "FIREBASE_SERVICE_ACCOUNT_KEY_BASE64=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 }}" >> .env
           echo "APP_PHONE_NUMBER=${{ secrets.APP_PHONE_NUMBER }}" >> .env
           echo "APP_MAIL_ADDRESS=${{ secrets.APP_MAIL_ADDRESS }}" >> .env
           echo "APP_LOCATION=${{ secrets.APP_LOCATION }}" >> .env
