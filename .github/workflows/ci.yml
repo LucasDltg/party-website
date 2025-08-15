@@ -26,6 +26,9 @@ jobs:
       - name: Inject secrets into .env
         run: |
           echo "FIREBASE_SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" >> .env
+          echo "APP_PHONE_NUMBER=${{ secrets.APP_PHONE_NUMBER }}" >> .env
+          echo "APP_MAIL_ADDRESS=${{ secrets.APP_MAIL_ADDRESS }}" >> .env
+          echo "APP_LOCATION=${{ secrets.APP_LOCATION }}" >> .env
 
       - name: Install dependencies
         run: npm ci
