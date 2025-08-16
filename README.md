@@ -49,5 +49,6 @@ Run
 - Phone style
 - Button to see password on /auth
 - improve admin dashboard + localistion of ip
+- bug redirection doesnt work if we click twice on connect
 
 - Logging system (check if there is a problem of writing when logrotate change the file)

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { auth } from '../lib/firebase/firebaseConfig'
 import { onAuthStateChanged, signOut, User } from 'firebase/auth'
 import { LanguageSwitcher } from './LanguageSwitcher'
@@ -13,10 +13,12 @@ import AnimatedLogo from './AnimatedLogo'
 export default function Header() {
   const t = useTranslations('Header')
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [user, setUser] = useState<User | null>(null)
   const [hoveredButton, setHoveredButton] = useState<
     'connect' | 'logout' | null
   >(null)
+
   const [mounted, setMounted] = useState(false)
 
   const handleLogout = async () => {
@@ -54,12 +56,13 @@ export default function Header() {
 
   const logoSize = 50
 
-  // Create auth URL with current page as redirect parameter
   const getAuthUrl = () => {
-    // Don't redirect back to auth page itself
-    if (pathname === '/auth') {
-      return '/auth'
+    const search = searchParams.toString() ? `?${searchParams.toString()}` : ''
+
+    if (/^\/([a-z]{2}\/)?auth/.test(pathname)) {
+      return pathname + search
     }
+
     return `/auth?redirect=${encodeURIComponent(pathname)}`
   }
 
