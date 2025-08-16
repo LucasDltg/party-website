@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useThemeWithCookie } from '@/hooks/useThemeWithCookie'
+import { HiOutlineSun, HiOutlineMoon } from 'react-icons/hi'
 
 export function ThemeSwitcher() {
   const { setTheme, resolvedTheme, mounted } = useThemeWithCookie()
@@ -26,7 +27,7 @@ export function ThemeSwitcher() {
           visibility: 'hidden',
         }}
       >
-        🌞
+        <HiOutlineSun />
       </button>
     )
   }
@@ -57,7 +58,11 @@ export function ThemeSwitcher() {
       aria-label="Toggle light/dark mode"
       title="Toggle light/dark mode"
     >
-      {resolvedTheme === 'dark' ? '🌞' : '🌙'}
+      {resolvedTheme === 'dark' ? (
+        <HiOutlineSun size={24} />
+      ) : (
+        <HiOutlineMoon size={24} />
+      )}
     </button>
   )
 }
