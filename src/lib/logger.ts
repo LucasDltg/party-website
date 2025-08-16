@@ -31,15 +31,18 @@ export interface LoggerConfig {
   context?: string
 }
 
+type LogListener = (entry: LogEntry) => void
+
 class CustomLogger {
   private config: LoggerConfig
   private requestId?: string
   private userId?: string
   private maxEntries: number
-  private buffer: LogEntry[] = []
+  private static buffer: LogEntry[] = []
   private logFile: string
+  private static listeners: Set<LogListener> = new Set()
 
-  constructor(config: Partial<LoggerConfig> = {}, maxEntries = 10) {
+  constructor(config: Partial<LoggerConfig> = {}, maxEntries = 100) {
     this.config = {
       level:
         process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
@@ -60,7 +63,6 @@ class CustomLogger {
     newLogger.requestId = this.requestId
     newLogger.userId = this.userId
     newLogger.config.context = context
-    newLogger.buffer = this.buffer
     return newLogger
   }
 
@@ -68,7 +70,6 @@ class CustomLogger {
     const newLogger = new CustomLogger(this.config, this.maxEntries)
     newLogger.requestId = requestId
     newLogger.userId = this.userId
-    newLogger.buffer = this.buffer
     return newLogger
   }
 
@@ -76,8 +77,12 @@ class CustomLogger {
     const newLogger = new CustomLogger(this.config, this.maxEntries)
     newLogger.requestId = this.requestId
     newLogger.userId = userId
-    newLogger.buffer = this.buffer
     return newLogger
+  }
+
+  onLog(listener: LogListener) {
+    CustomLogger.listeners.add(listener)
+    return () => CustomLogger.listeners.delete(listener) // unsubscribe
   }
 
   private shouldLog(level: LogLevel): boolean {
@@ -105,9 +110,9 @@ class CustomLogger {
   }
 
   private addToBuffer(entry: LogEntry) {
-    this.buffer.push(entry)
-    if (this.buffer.length > this.maxEntries) {
-      this.buffer.shift() // remove oldest
+    CustomLogger.buffer.push(entry)
+    if (CustomLogger.buffer.length > this.maxEntries) {
+      CustomLogger.buffer.shift()
     }
   }
 
@@ -120,20 +125,24 @@ class CustomLogger {
     }
   }
 
-  private async writeLog(entry: LogEntry) {
+  private async writeLog(entry: LogEntry): Promise<void> {
     if (!this.shouldLog(entry.level)) return
 
     if (this.config.enableConsole) {
       console.log(JSON.stringify(entry))
     }
 
-    await this.writeToFile(entry)
     this.addToBuffer(entry)
+
+    CustomLogger.listeners.forEach((listener) => listener(entry))
+
+    if (this.config.enableFile) {
+      await this.writeToFile(entry)
+    }
   }
 
-  // SSE helper
   getLastLogs(): LogEntry[] {
-    return [...this.buffer]
+    return [...CustomLogger.buffer]
   }
 
   debug(message: string, data?: Record<string, unknown>) {
