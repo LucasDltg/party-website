@@ -28,7 +28,6 @@ export interface LoggerConfig {
   level: LogLevel
   enableConsole: boolean
   enableFile: boolean
-  format: 'json' | 'pretty'
   context?: string
 }
 
@@ -36,33 +35,48 @@ class CustomLogger {
   private config: LoggerConfig
   private requestId?: string
   private userId?: string
+  private maxEntries: number
+  private buffer: LogEntry[] = []
+  private logFile: string
 
-  constructor(config: Partial<LoggerConfig> = {}) {
+  constructor(config: Partial<LoggerConfig> = {}, maxEntries = 10) {
     this.config = {
       level:
         process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
       enableConsole: process.env.NODE_ENV === 'production' ? false : true,
       enableFile: true,
-      format: 'json',
       ...config,
     }
+
+    this.maxEntries = maxEntries
+    this.logFile = path.join(process.cwd(), 'logs', 'app.log')
+    fs.mkdir(path.dirname(this.logFile), { recursive: true }).catch(
+      console.error,
+    )
   }
 
   setContext(context: string): CustomLogger {
-    return new CustomLogger({ ...this.config, context })
+    const newLogger = new CustomLogger(this.config, this.maxEntries)
+    newLogger.requestId = this.requestId
+    newLogger.userId = this.userId
+    newLogger.config.context = context
+    newLogger.buffer = this.buffer
+    return newLogger
   }
 
   setRequestId(requestId: string): CustomLogger {
-    const newLogger = new CustomLogger(this.config)
+    const newLogger = new CustomLogger(this.config, this.maxEntries)
     newLogger.requestId = requestId
     newLogger.userId = this.userId
+    newLogger.buffer = this.buffer
     return newLogger
   }
 
   setUserId(userId: string): CustomLogger {
-    const newLogger = new CustomLogger(this.config)
+    const newLogger = new CustomLogger(this.config, this.maxEntries)
     newLogger.requestId = this.requestId
     newLogger.userId = userId
+    newLogger.buffer = this.buffer
     return newLogger
   }
 
@@ -85,103 +99,56 @@ class CustomLogger {
       requestId: this.requestId,
       userId: this.userId,
       error: error
-        ? {
-            name: error.name,
-            message: error.message,
-            stack: error.stack,
-          }
+        ? { name: error.name, message: error.message, stack: error.stack }
         : undefined,
     }
   }
 
-  private formatMessage(entry: LogEntry): string {
-    if (this.config.format === 'json') {
-      return JSON.stringify(entry)
+  private addToBuffer(entry: LogEntry) {
+    this.buffer.push(entry)
+    if (this.buffer.length > this.maxEntries) {
+      this.buffer.shift() // remove oldest
     }
-
-    const levelColors = {
-      [LogLevel.DEBUG]: '\x1b[36m',
-      [LogLevel.INFO]: '\x1b[32m',
-      [LogLevel.WARN]: '\x1b[33m',
-      [LogLevel.ERROR]: '\x1b[31m',
-      [LogLevel.FATAL]: '\x1b[35m',
-    }
-
-    const levelNames = {
-      [LogLevel.DEBUG]: 'DEBUG',
-      [LogLevel.INFO]: 'INFO',
-      [LogLevel.WARN]: 'WARN',
-      [LogLevel.ERROR]: 'ERROR',
-      [LogLevel.FATAL]: 'FATAL',
-    }
-
-    const reset = '\x1b[0m'
-    const color = levelColors[entry.level]
-    const levelName = levelNames[entry.level]
-
-    let formatted = `${color}[${levelName}]${reset} ${entry.timestamp}`
-
-    if (entry.context) formatted += ` [${entry.context}]`
-    if (entry.requestId) formatted += ` [req:${entry.requestId.slice(0, 8)}]`
-    if (entry.userId) formatted += ` [user:${entry.userId}]`
-
-    formatted += ` ${entry.message}`
-
-    if (entry.data)
-      formatted += `\n  Data: ${JSON.stringify(entry.data, null, 2)}`
-    if (entry.error?.stack) formatted += `\n  Stack: ${entry.error.stack}`
-
-    return formatted
   }
 
-  private async writeLog(entry: LogEntry): Promise<void> {
+  private async writeToFile(entry: LogEntry) {
+    if (!this.config.enableFile) return
+    try {
+      await fs.appendFile(this.logFile, JSON.stringify(entry) + '\n')
+    } catch (err) {
+      console.error('Failed to write log:', err)
+    }
+  }
+
+  private async writeLog(entry: LogEntry) {
     if (!this.shouldLog(entry.level)) return
 
-    const formatted = this.formatMessage(entry)
-
     if (this.config.enableConsole) {
-      const consoleMethods = {
-        [LogLevel.DEBUG]: console.debug,
-        [LogLevel.INFO]: console.info,
-        [LogLevel.WARN]: console.warn,
-        [LogLevel.ERROR]: console.error,
-        [LogLevel.FATAL]: console.error,
-      }
-      consoleMethods[entry.level](formatted)
+      console.log(JSON.stringify(entry))
     }
 
-    if (this.config.enableFile) {
-      await this.writeToFile(entry)
-    }
+    await this.writeToFile(entry)
+    this.addToBuffer(entry)
   }
 
-  private async writeToFile(entry: LogEntry): Promise<void> {
-    try {
-      const logDir = path.join(process.cwd(), 'logs')
-      await fs.mkdir(logDir, { recursive: true })
-      const logFile = path.join(
-        logDir,
-        `app-${new Date().toISOString().split('T')[0]}.log`,
-      )
-      await fs.appendFile(logFile, JSON.stringify(entry) + '\n')
-    } catch (error) {
-      console.error('Failed to write log to file:', error)
-    }
+  // SSE helper
+  getLastLogs(): LogEntry[] {
+    return [...this.buffer]
   }
 
-  debug(message: string, data?: Record<string, unknown>): void {
+  debug(message: string, data?: Record<string, unknown>) {
     this.writeLog(this.createLogEntry(LogLevel.DEBUG, message, data))
   }
 
-  info(message: string, data?: Record<string, unknown>): void {
+  info(message: string, data?: Record<string, unknown>) {
     this.writeLog(this.createLogEntry(LogLevel.INFO, message, data))
   }
 
-  warn(message: string, data?: Record<string, unknown>): void {
+  warn(message: string, data?: Record<string, unknown>) {
     this.writeLog(this.createLogEntry(LogLevel.WARN, message, data))
   }
 
-  error(message: string, error?: unknown): void {
+  error(message: string, error?: unknown) {
     const err =
       error instanceof Error
         ? error
@@ -191,7 +158,7 @@ class CustomLogger {
     this.writeLog(this.createLogEntry(LogLevel.ERROR, message, undefined, err))
   }
 
-  fatal(message: string, error?: unknown): void {
+  fatal(message: string, error?: unknown) {
     const err =
       error instanceof Error
         ? error
