@@ -3,7 +3,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useAuth, UserRole } from '../hooks/useAuth'
+import { useAuth, UserRole } from '@/hooks/useAuth'
 import { ReactNode, useEffect } from 'react'
 
 interface AuthGuardProps {
@@ -12,7 +12,6 @@ interface AuthGuardProps {
   allowedRoles?: UserRole[]
   requireAuth?: boolean
   redirectTo?: string
-  fallback?: ReactNode
 }
 
 export default function AuthGuard({
@@ -21,7 +20,6 @@ export default function AuthGuard({
   allowedRoles = [],
   requireAuth = true,
   redirectTo,
-  fallback,
 }: AuthGuardProps) {
   const { authState, role, hasRole, hasAnyRole } = useAuth()
   const router = useRouter()
@@ -29,6 +27,12 @@ export default function AuthGuard({
 
   useEffect(() => {
     if (authState === 'loading') return
+
+    // Guest-only pages
+    if (!requireAuth && authState === 'authenticated') {
+      router.replace(redirectTo || '/')
+      return
+    }
 
     // Check if authentication is required
     if (requireAuth && authState === 'unauthenticated') {
@@ -64,6 +68,7 @@ export default function AuthGuard({
   // Show loading state for all non-authorized states
   if (
     authState === 'loading' ||
+    (!requireAuth && authState === 'authenticated') || // block guest-only page for logged-in
     (requireAuth && authState === 'unauthenticated') ||
     (authState === 'authenticated' && requiredRole && !hasRole(requiredRole)) ||
     (authState === 'authenticated' &&
@@ -71,14 +76,12 @@ export default function AuthGuard({
       !hasAnyRole(allowedRoles))
   ) {
     return (
-      fallback || (
-        <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center font-sans">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p>{t('loading')}</p>
-          </div>
-        </main>
-      )
+      <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center font-sans">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p>{t('loading')}</p>
+        </div>
+      </main>
     )
   }
 
