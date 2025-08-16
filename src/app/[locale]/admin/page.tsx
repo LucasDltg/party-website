@@ -4,6 +4,7 @@
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@/hooks/useAuth'
 import AuthGuard from '@/components/AuthGuard'
+import { LogsPanel } from './LogsPanel'
 
 function AdminContent() {
   const t = useTranslations('Admin')
@@ -15,6 +16,7 @@ function AdminContent() {
       <p>
         {t('welcome')} <strong>{user?.email}</strong>! {t('adminAccess')}
       </p>
+      <LogsPanel />
     </main>
   )
 }

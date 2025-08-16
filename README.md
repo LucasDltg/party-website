@@ -50,4 +50,4 @@ Run
 - Phone style
 - Button to see password on /auth
 
-6 4
+- Logging system (check if there is a problem of writing when logrotate change the file)
