@@ -46,7 +46,6 @@ Run
 - Login improve (send email for verification, reset pswd, etc)
 - weird login (no check)
 - Fix contact page style
-- Phone style
 - Button to see password on /auth
 - improve admin dashboard + localistion of ip
 - bug redirection doesnt work if we click twice on connect

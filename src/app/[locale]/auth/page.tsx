@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, FormEvent, useEffect } from 'react'
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { auth } from '@/lib/firebase/firebaseConfig'
@@ -24,6 +25,7 @@ export default function AuthPage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -166,23 +168,37 @@ export default function AuthPage() {
               fontFamily: 'var(--font-sans)',
             }}
           />
-          <input
-            name="password"
-            type="password"
-            placeholder={t('passwordPlaceholder')}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete={isLogin ? 'current-password' : 'new-password'}
-            className="px-4 py-3 border rounded-md focus:outline-none focus:ring-2"
-            style={{
-              backgroundColor: '#f9fafb',
-              color: 'var(--color-placeholder)',
-              fontSize: 'var(--font-size-md)',
-              borderColor: 'var(--color-muted)',
-              fontFamily: 'var(--font-sans)',
-            }}
-          />
+          <div className="relative w-full">
+            <input
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder={t('passwordPlaceholder')}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete={isLogin ? 'current-password' : 'new-password'}
+              className="px-4 py-3 border rounded-md focus:outline-none focus:ring-2 w-full pr-10"
+              style={{
+                backgroundColor: '#f9fafb',
+                color: 'var(--color-placeholder)',
+                fontSize: 'var(--font-size-md)',
+                borderColor: 'var(--color-muted)',
+                fontFamily: 'var(--font-sans)',
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              style={{ cursor: 'pointer' }} // <-- add this line
+            >
+              {showPassword ? (
+                <AiOutlineEyeInvisible size={20} />
+              ) : (
+                <AiOutlineEye size={20} />
+              )}
+            </button>
+          </div>
           <button
             type="submit"
             disabled={loading}
