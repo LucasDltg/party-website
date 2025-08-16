@@ -1,5 +1,5 @@
 // middleware.ts
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import createMiddleware from 'next-intl/middleware'
 import { routing } from '@/lib/i18n/routing'
 
@@ -76,6 +76,19 @@ export default async function middleware(request: NextRequest) {
     const method = request.method
     const path = getSafeURL(request)
 
+    // 1. Skip prefetch requests
+    if (request.headers.get('purpose') === 'prefetch') {
+      return intlMiddleware(request)
+    }
+    // 2. Skip "??" malformed duplicates
+    if (path.includes('??')) {
+      return intlMiddleware(request)
+    }
+    // 3. Optionally: only log GET navigations (ignore POST/PUT/OPTIONS)
+    if (method !== 'GET') {
+      return intlMiddleware(request)
+    }
+
     // Log request information
     await logToAPI(origin, 'INFO', `Request: ${method} ${path}`, {
       ip,
@@ -95,20 +108,7 @@ export default async function middleware(request: NextRequest) {
       method: request.method,
     })
 
-    // Fallback to intl middleware even if logging fails
-    try {
-      return await intlMiddleware(request)
-    } catch (intlError) {
-      await logToAPI(origin, 'ERROR', 'Intl middleware error', {
-        error:
-          intlError instanceof Error ? intlError.message : 'Unknown intl error',
-        stack: intlError instanceof Error ? intlError.stack : undefined,
-        url: request.url,
-        method: request.method,
-      })
-
-      return NextResponse.next()
-    }
+    return await intlMiddleware(request)
   }
 }
 

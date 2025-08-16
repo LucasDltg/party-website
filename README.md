@@ -45,9 +45,9 @@ Run
 
 - Login improve (send email for verification, reset pswd, etc)
 - weird login (no check)
-- Fix tag ci
 - Fix contact page style
 - Phone style
 - Button to see password on /auth
+- improve admin dashboard + localistion of ip
 
 - Logging system (check if there is a problem of writing when logrotate change the file)
