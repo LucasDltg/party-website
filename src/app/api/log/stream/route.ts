@@ -7,7 +7,8 @@ export async function GET(req: NextRequest) {
 
   writer.write(encode(`retry: 1000\n\n`))
 
-  logger.getLastLogs().forEach((log) => writer.write(encodeLog(log)))
+  const logs = await logger.getLastLogs()
+  logs.forEach((log) => writer.write(encodeLog(log)))
 
   const unsubscribe = logger.onLog((log) => {
     writer.write(encodeLog(log))

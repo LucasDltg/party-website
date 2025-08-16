@@ -41,6 +41,7 @@ class CustomLogger {
   private static buffer: LogEntry[] = []
   private logFile: string
   private static listeners: Set<LogListener> = new Set()
+  private static initialized: boolean = false
 
   constructor(config: Partial<LoggerConfig> = {}, maxEntries = 100) {
     this.config = {
@@ -56,6 +57,22 @@ class CustomLogger {
     fs.mkdir(path.dirname(this.logFile), { recursive: true }).catch(
       console.error,
     )
+
+    this.loadLastLogsFromFile()
+  }
+
+  private async loadLastLogsFromFile() {
+    try {
+      const content = await fs.readFile(this.logFile, 'utf-8')
+      const lines = content.trim().split('\n')
+      const lastLines = lines.slice(-this.maxEntries)
+      CustomLogger.buffer = lastLines.map((line) => JSON.parse(line))
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
+        console.error('Failed to load logs from file:', err)
+      }
+      // else file doesn't exist yet, buffer stays empty
+    }
   }
 
   setContext(context: string): CustomLogger {
@@ -141,7 +158,11 @@ class CustomLogger {
     }
   }
 
-  getLastLogs(): LogEntry[] {
+  async getLastLogs(): Promise<LogEntry[]> {
+    if (!CustomLogger.initialized) {
+      await this.loadLastLogsFromFile()
+      CustomLogger.initialized = true
+    }
     return [...CustomLogger.buffer]
   }
 
