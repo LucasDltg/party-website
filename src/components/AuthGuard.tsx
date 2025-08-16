@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useAuth, UserRole } from '@/hooks/useAuth'
 import { ReactNode, useEffect } from 'react'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 interface AuthGuardProps {
   children: ReactNode
@@ -77,10 +78,7 @@ export default function AuthGuard({
   ) {
     return (
       <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center font-sans">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p>{t('loading')}</p>
-        </div>
+        <LoadingSpinner text={t('loading')} containerClassName="text-center" />
       </main>
     )
   }

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { COMMON_WORDS } from '@/../messages/constants'
 import styles from './cv.module.css'
 import { Link } from '@/lib/i18n/navigation'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 interface ContactData {
   location: string
@@ -44,10 +45,11 @@ export default function ContactInfoSection() {
 
   if (isLoading || loadingContact) {
     return (
-      <div className={styles.contactInfo}>
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <p className={styles.cvLocation}>{t('loadingContactInfo')}</p>
-      </div>
+      <LoadingSpinner
+        text={t('loadingContactInfo')}
+        containerClassName={styles.contactInfo}
+        textClassName={styles.cvLocation}
+      />
     )
   }
 
