@@ -75,6 +75,8 @@ const shouldLog = (
   // Only log GET requests
   if (method !== 'GET') return false
 
+  if (request.headers.get('purpose') === 'prefetch') return false
+
   return true
 }
 
