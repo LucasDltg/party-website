@@ -1,12 +1,12 @@
-'use client'
-
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect, useState } from 'react'
 import { COMMON_WORDS } from '@/../messages/constants'
 import styles from './cv.module.css'
-import { Link } from '@/lib/i18n/navigation'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import AuthGuard from '@/components/AuthGuard'
+import { Link } from '@/lib/i18n/navigation'
+import { usePathname } from 'next/navigation'
 
 interface ContactData {
   location: string
@@ -14,15 +14,15 @@ interface ContactData {
   email: string
 }
 
-export default function ContactInfoSection() {
+function ContactInfoContent() {
   const t = useTranslations('Cv')
-  const { isAuthenticated, isLoading, user } = useAuth()
+  const { user } = useAuth()
   const [contact, setContact] = useState<ContactData | null>(null)
   const [loadingContact, setLoadingContact] = useState(false)
 
   useEffect(() => {
     async function fetchContact() {
-      if (isAuthenticated && user) {
+      if (user) {
         setLoadingContact(true)
         try {
           const token = await user.getIdToken()
@@ -41,9 +41,9 @@ export default function ContactInfoSection() {
       }
     }
     fetchContact()
-  }, [isAuthenticated, user])
+  }, [user])
 
-  if (isLoading || loadingContact) {
+  if (loadingContact) {
     return (
       <LoadingSpinner
         text={t('loadingContactInfo')}
@@ -53,7 +53,7 @@ export default function ContactInfoSection() {
     )
   }
 
-  if (isAuthenticated && contact) {
+  if (contact) {
     return (
       <div className={styles.contactInfo}>
         <p className={styles.cvLocation}>
@@ -90,19 +90,32 @@ export default function ContactInfoSection() {
     )
   }
 
-  return (
+  return null
+}
+
+export default function ContactInfoSection() {
+  const t = useTranslations('Cv')
+  const pathname = usePathname()
+
+  const guestView = (
     <div className={styles.contactInfo}>
       <div
         className={`${styles.loginPrompt} bg-blue-50 border border-blue-200 rounded-lg p-4 text-center`}
       >
         <p className="text-blue-800 mb-2">{t('contactInfoMessage')}</p>
         <Link
-          href={`/auth?redirect=${encodeURIComponent(window.location.pathname)}`}
+          href={`/auth?redirect=${encodeURIComponent(pathname)}`}
           className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
         >
           {t('loginToViewContact')}
         </Link>
       </div>
     </div>
+  )
+
+  return (
+    <AuthGuard requireAuth={true} guestView={guestView}>
+      <ContactInfoContent />
+    </AuthGuard>
   )
 }

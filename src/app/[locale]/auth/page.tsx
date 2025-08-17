@@ -134,7 +134,7 @@ export default function AuthPage() {
   }
 
   return (
-    <AuthGuard requireAuth={false} redirectTo="/">
+    <AuthGuard requireAuth={false} redirectTo={getRedirectUrl()}>
       <CenteredPageLayout>
         <h2
           className="font-bold mb-6 text-center"
