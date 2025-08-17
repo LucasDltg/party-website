@@ -24,7 +24,7 @@ function ContactInfoContent() {
       if (user) {
         try {
           const token = await user.getIdToken()
-          const res = await fetch('/api/contact', {
+          const res = await fetch('/api/cv-contact', {
             headers: { Authorization: `Bearer ${token}` },
           })
           if (res.ok) {
