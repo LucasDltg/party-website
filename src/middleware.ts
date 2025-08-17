@@ -73,6 +73,7 @@ const shouldLog = (
   method: string,
 ): boolean => {
   // Only log GET requests
+  console.log(method)
   if (method !== 'GET') return false
 
   // Ignore Next.js prefetch requests
@@ -80,10 +81,6 @@ const shouldLog = (
 
   // Ignore Next.js data requests (client-side navigation)
   if (request.headers.get('x-nextjs-data')) return false
-
-  // Optionally: only log actual navigations by the user
-  const secFetchMode = request.headers.get('sec-fetch-mode')
-  if (secFetchMode && secFetchMode !== 'navigate') return false
 
   // Passed all checks → log user action
   return true
