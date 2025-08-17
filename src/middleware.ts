@@ -75,9 +75,6 @@ const shouldLog = (
   // Only log GET requests
   if (method !== 'GET') return false
 
-  const accept = request.headers.get('accept') || ''
-  if (!accept.includes('text/html')) return false
-
   return true
 }
 
