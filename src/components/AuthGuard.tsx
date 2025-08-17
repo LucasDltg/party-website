@@ -13,7 +13,8 @@ interface AuthGuardProps {
   allowedRoles?: UserRole[]
   requireAuth?: boolean
   redirectTo?: string
-  guestView?: ReactNode // new prop for inline guest view
+  guestView?: ReactNode
+  loadingView?: ReactNode
 }
 
 export default function AuthGuard({
@@ -23,6 +24,7 @@ export default function AuthGuard({
   requireAuth = true,
   redirectTo,
   guestView = null,
+  loadingView = null,
 }: AuthGuardProps) {
   const { authState, role, hasRole, hasAnyRole } = useAuth()
   const router = useRouter()
@@ -70,7 +72,9 @@ export default function AuthGuard({
 
   // Loading / unauthorized / guest-view states
   if (authState === 'loading') {
-    return (
+    return loadingView ? (
+      <>{loadingView}</>
+    ) : (
       <MainLayout
         className="flex justify-center items-center"
         style={{ background: 'var(--background)' }}

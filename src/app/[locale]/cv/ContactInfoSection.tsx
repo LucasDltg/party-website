@@ -18,12 +18,10 @@ function ContactInfoContent() {
   const t = useTranslations('Cv')
   const { user } = useAuth()
   const [contact, setContact] = useState<ContactData | null>(null)
-  const [loadingContact, setLoadingContact] = useState(false)
 
   useEffect(() => {
     async function fetchContact() {
       if (user) {
-        setLoadingContact(true)
         try {
           const token = await user.getIdToken()
           const res = await fetch('/api/contact', {
@@ -35,62 +33,44 @@ function ContactInfoContent() {
           }
         } catch (err) {
           console.error('Failed to fetch contact info', err)
-        } finally {
-          setLoadingContact(false)
         }
       }
     }
     fetchContact()
   }, [user])
 
-  if (loadingContact) {
-    return (
-      <LoadingSpinner
-        text={t('loadingContactInfo')}
-        containerClassName={styles.contactInfo}
-        textClassName={styles.cvLocation}
-      />
-    )
-  }
+  if (!contact) return null
 
-  if (contact) {
-    return (
-      <div className={styles.contactInfo}>
-        <p className={styles.cvLocation}>
-          {t('location')}: {contact.location}
-        </p>
-        <p className={styles.cvPhone}>
-          {t('phone')}: {contact.phone}
-        </p>
-        <p className={styles.cvEmail}>
-          {t('email')}: {contact.email}
-        </p>
-        <p className={styles.cvLinks}>
-          <a
-            href={COMMON_WORDS.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t('linkedin')}
-          </a>
-          {' / '}
-          <a href={COMMON_WORDS.url} target="_blank" rel="noopener noreferrer">
-            {t('portfolio')}
-          </a>
-          {' / '}
-          <a
-            href={COMMON_WORDS.github}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t('github')}
-          </a>
-        </p>
-      </div>
-    )
-  }
-
-  return null
+  return (
+    <div className={styles.contactInfo}>
+      <p className={styles.cvLocation}>
+        {t('location')}: {contact.location}
+      </p>
+      <p className={styles.cvPhone}>
+        {t('phone')}: {contact.phone}
+      </p>
+      <p className={styles.cvEmail}>
+        {t('email')}: {contact.email}
+      </p>
+      <p className={styles.cvLinks}>
+        <a
+          href={COMMON_WORDS.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t('linkedin')}
+        </a>
+        {' / '}
+        <a href={COMMON_WORDS.url} target="_blank" rel="noopener noreferrer">
+          {t('portfolio')}
+        </a>
+        {' / '}
+        <a href={COMMON_WORDS.github} target="_blank" rel="noopener noreferrer">
+          {t('github')}
+        </a>
+      </p>
+    </div>
+  )
 }
 
 export default function ContactInfoSection() {
@@ -98,14 +78,34 @@ export default function ContactInfoSection() {
   const pathname = usePathname()
 
   const guestView = (
-    <div className={styles.contactInfo}>
+    <div
+      className={styles.contactInfo}
+      style={{ padding: 'var(--spacing-md)' }}
+    >
       <div
-        className={`${styles.loginPrompt} bg-blue-50 border border-blue-200 rounded-lg p-4 text-center`}
+        style={{
+          maxWidth: '400px',
+          margin: '0 auto',
+          background: 'var(--color-box)',
+          border: `1px solid var(--color-muted)`,
+          borderRadius: 'var(--radius-md)',
+          padding: 'var(--spacing-md)',
+          textAlign: 'center',
+          boxShadow: 'var(--shadow-md)',
+        }}
       >
-        <p className="text-blue-800 mb-2">{t('contactInfoMessage')}</p>
+        <p
+          style={{
+            color: 'var(--color-font)',
+            fontSize: 'var(--font-size-md)',
+            marginBottom: 'var(--spacing-md)',
+          }}
+        >
+          {t('contactInfoMessage')}
+        </p>
         <Link
           href={`/auth?redirect=${encodeURIComponent(pathname)}`}
-          className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+          className={styles.loginButton}
         >
           {t('loginToViewContact')}
         </Link>
@@ -113,8 +113,22 @@ export default function ContactInfoSection() {
     </div>
   )
 
+  const loadingView = (
+    <div className={styles.contactInfo}>
+      <LoadingSpinner
+        text={t('loadingContactInfo')}
+        containerClassName={styles.contactInfo}
+        textClassName={styles.cvLocation}
+      />
+    </div>
+  )
+
   return (
-    <AuthGuard requireAuth={true} guestView={guestView}>
+    <AuthGuard
+      requireAuth={true}
+      guestView={guestView}
+      loadingView={loadingView}
+    >
       <ContactInfoContent />
     </AuthGuard>
   )

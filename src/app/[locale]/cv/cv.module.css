@@ -123,6 +123,23 @@
   }
 }
 
+.loginButton {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 500;
+  padding: 0 var(--spacing-md);
+  height: var(--button-size);
+  line-height: var(--button-size);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+
+.loginButton:hover {
+  background-color: var(--color-primary-hover);
+}
+
 /* Media queries for responsive design */
 @media (max-width: 768px) {
   .cvContainer {
