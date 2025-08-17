@@ -1,6 +1,6 @@
 'use client'
 
-import '../styles/globals.css'
+import MainLayout from './MainLayout'
 
 type CenteredPageLayoutProps = {
   children: React.ReactNode
@@ -10,15 +10,7 @@ export default function CenteredPageLayout({
   children,
 }: CenteredPageLayoutProps) {
   return (
-    <main
-      className="h-[calc(100vh-var(--header-height))] overflow-hidden flex flex-col justify-center items-center font-sans"
-      style={{
-        background:
-          'linear-gradient(to bottom right, var(--color-primary), var(--color-secondary))',
-        color: 'var(--foreground)',
-        transition: 'var(--transition)',
-      }}
-    >
+    <MainLayout className="flex flex-col justify-center items-center">
       <div
         className="rounded-xl p-10 max-w-md w-full text-center"
         style={{
@@ -29,6 +21,6 @@ export default function CenteredPageLayout({
       >
         {children}
       </div>
-    </main>
+    </MainLayout>
   )
 }

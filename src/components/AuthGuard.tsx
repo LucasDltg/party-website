@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { useAuth, UserRole } from '@/hooks/useAuth'
 import { ReactNode, useEffect } from 'react'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import MainLayout from './MainLayout'
 
 interface AuthGuardProps {
   children: ReactNode
@@ -70,9 +71,12 @@ export default function AuthGuard({
   // Loading / unauthorized / guest-view states
   if (authState === 'loading') {
     return (
-      <main className="h-[calc(100vh-var(--header-height))] flex justify-center items-center font-sans">
+      <MainLayout
+        className="flex justify-center items-center"
+        style={{ background: 'var(--background)' }}
+      >
         <LoadingSpinner text={t('loading')} containerClassName="text-center" />
-      </main>
+      </MainLayout>
     )
   }
 

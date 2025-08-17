@@ -167,7 +167,6 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* Primary/Secondary gradient bar */}
       <div
         style={{
           height: '4px',
