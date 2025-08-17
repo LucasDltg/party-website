@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import Header from '@/components/Header'
+import PageLogger from '@/components/PageLogger'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { routing } from '@/lib/i18n/routing'
 import { getTranslations } from 'next-intl/server'
@@ -107,6 +108,7 @@ export default async function LocaleLayout({
       <head></head>
       <body className="antialiased bg-white text-black dark:bg-black dark:text-white">
         <NextIntlClientProvider>
+          <PageLogger locale={locale} />
           <Header />
 
           <main
