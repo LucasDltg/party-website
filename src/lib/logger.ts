@@ -1,6 +1,3 @@
-import { promises as fs } from 'fs'
-import path from 'path'
-
 enum LogLevel {
   DEBUG = 0,
   INFO = 1,
@@ -27,7 +24,6 @@ export interface LogEntry {
 export interface LoggerConfig {
   level: LogLevel
   enableConsole: boolean
-  enableFile: boolean
   context?: string
 }
 
@@ -39,40 +35,17 @@ class CustomLogger {
   private userId?: string
   private maxEntries: number
   private static buffer: LogEntry[] = []
-  private logFile: string
   private static listeners: Set<LogListener> = new Set()
-  private static initialized: boolean = false
 
   constructor(config: Partial<LoggerConfig> = {}, maxEntries = 100) {
     this.config = {
       level:
         process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
-      enableConsole: process.env.NODE_ENV === 'production' ? false : true,
-      enableFile: true,
+      enableConsole: true,
       ...config,
     }
 
     this.maxEntries = maxEntries
-    this.logFile = path.join(process.cwd(), 'logs', 'app.log')
-    fs.mkdir(path.dirname(this.logFile), { recursive: true }).catch(
-      console.error,
-    )
-
-    this.loadLastLogsFromFile()
-  }
-
-  private async loadLastLogsFromFile() {
-    try {
-      const content = await fs.readFile(this.logFile, 'utf-8')
-      const lines = content.trim().split('\n')
-      const lastLines = lines.slice(-this.maxEntries)
-      CustomLogger.buffer = lastLines.map((line) => JSON.parse(line))
-    } catch (err) {
-      if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
-        console.error('Failed to load logs from file:', err)
-      }
-      // else file doesn't exist yet, buffer stays empty
-    }
   }
 
   setContext(context: string): CustomLogger {
@@ -133,36 +106,24 @@ class CustomLogger {
     }
   }
 
-  private async writeToFile(entry: LogEntry) {
-    if (!this.config.enableFile) return
-    try {
-      await fs.appendFile(this.logFile, JSON.stringify(entry) + '\n')
-    } catch (err) {
-      console.error('Failed to write log:', err)
-    }
-  }
-
   private async writeLog(entry: LogEntry): Promise<void> {
     if (!this.shouldLog(entry.level)) return
 
+    const json = JSON.stringify(entry)
+
     if (this.config.enableConsole) {
-      console.log(JSON.stringify(entry))
+      if (entry.level >= LogLevel.ERROR) {
+        console.error(json) // stderr
+      } else {
+        console.log(json) // stdout
+      }
     }
 
     this.addToBuffer(entry)
-
     CustomLogger.listeners.forEach((listener) => listener(entry))
-
-    if (this.config.enableFile) {
-      await this.writeToFile(entry)
-    }
   }
 
   async getLastLogs(): Promise<LogEntry[]> {
-    if (!CustomLogger.initialized) {
-      await this.loadLastLogsFromFile()
-      CustomLogger.initialized = true
-    }
     return [...CustomLogger.buffer]
   }
 

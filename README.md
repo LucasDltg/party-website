@@ -40,6 +40,13 @@ Push tag: git push origin vX.X.X
 Run
 
 - npx ts-node .\src\scripts\setAdminClaim.ts: to set role for a user
+- npx ts-node .\src\scripts\encodeBase64.ts: to get the base 64 version of a string
+
+# Logs
+
+Logs are written in console (should only be used on server side), so docker can archive them
+
+- Logs are kept in memory using rolling buffer so serve admin page
 
 ## TODO
 

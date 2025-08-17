@@ -1,5 +1,5 @@
 // middleware.ts
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import createMiddleware from 'next-intl/middleware'
 import { routing } from '@/lib/i18n/routing'
 
@@ -33,9 +33,9 @@ const getClientIP = (request: NextRequest): string => {
   return 'unknown'
 }
 
-const getSafeURL = (request: NextRequest): string => {
-  const url = new URL(request.url)
-  return url.pathname + (url.search ? `?${url.search}` : '')
+const getSafeURL = (url: string): string => {
+  const urlObj = new URL(url)
+  return urlObj.pathname + (urlObj.search ? `?${urlObj.search}` : '')
 }
 
 const logToAPI = async (
@@ -67,6 +67,26 @@ const logToAPI = async (
   }
 }
 
+const shouldLog = (
+  request: NextRequest,
+  finalPath: string,
+  method: string,
+): boolean => {
+  // 1. Skip prefetch requests
+  if (request.headers.get('purpose') === 'prefetch') return false
+
+  // 2. Skip "??" malformed duplicates
+  if (finalPath.includes('??')) return false
+
+  // 3. Optionally: only log GET navigations (ignore POST/PUT/OPTIONS)
+  if (method !== 'GET') return false
+
+  // 4. Avoid root logging
+  if (finalPath === '/') return false
+
+  return true
+}
+
 export default async function middleware(request: NextRequest) {
   const origin = request.nextUrl.origin
 
@@ -74,30 +94,28 @@ export default async function middleware(request: NextRequest) {
     const ip = getClientIP(request)
     const userAgent = request.headers.get('user-agent') || 'unknown'
     const method = request.method
-    const path = getSafeURL(request)
+    const originalPath = getSafeURL(request.url)
 
-    // 1. Skip prefetch requests
-    if (request.headers.get('purpose') === 'prefetch') {
-      return intlMiddleware(request)
-    }
-    // 2. Skip "??" malformed duplicates
-    if (path.includes('??')) {
-      return intlMiddleware(request)
-    }
-    // 3. Optionally: only log GET navigations (ignore POST/PUT/OPTIONS)
-    if (method !== 'GET') {
-      return intlMiddleware(request)
-    }
-
-    // Log request information
-    await logToAPI(origin, 'INFO', `Request: ${method} ${path}`, {
-      ip,
-      method,
-      path,
-      userAgent: userAgent.substring(0, 200),
-    })
-
+    // Execute intl middleware first
     const response = await intlMiddleware(request)
+
+    // Only log if this is NOT a redirect response
+    // When intl middleware redirects, it will call middleware again for the new URL
+    const isRedirect =
+      response instanceof NextResponse &&
+      response.status >= 300 &&
+      response.status < 400 &&
+      response.headers.get('location')
+
+    if (!isRedirect && shouldLog(request, originalPath, method)) {
+      // This is the final request (no redirect), so log it
+      await logToAPI(origin, 'INFO', `Request: ${method} ${originalPath}`, {
+        ip,
+        method,
+        path: originalPath,
+        userAgent: userAgent.substring(0, 200),
+      })
+    }
 
     return response
   } catch (error) {
