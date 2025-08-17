@@ -75,28 +75,8 @@ const shouldLog = (
   // Only log GET requests
   if (method !== 'GET') return false
 
-  // Skip root path
-  if (finalPath === '/') return false
-
-  // Skip malformed paths
-  if (finalPath.includes('??')) return false
-
-  // Only log requests that are actual user navigations
-  // Check for HTML accept header (user navigations request HTML)
   const accept = request.headers.get('accept') || ''
   if (!accept.includes('text/html')) return false
-
-  // Skip all forms of prefetch requests
-  if (request.headers.get('purpose') === 'prefetch') return false
-  if (request.headers.get('x-purpose') === 'prefetch') return false
-  if (request.headers.get('sec-purpose') === 'prefetch') return false
-  if (request.headers.get('next-router-prefetch')) return false
-  if (request.headers.get('rsc') === '1') return false
-
-  // Only log if this looks like a real user navigation
-  // User navigations typically have higher priority
-  const fetchPriority = request.headers.get('sec-fetch-dest')
-  if (fetchPriority && fetchPriority !== 'document') return false
 
   return true
 }
@@ -113,8 +93,7 @@ export default async function middleware(request: NextRequest) {
     // Execute intl middleware first
     const response = await intlMiddleware(request)
 
-    // Only log if this is NOT a redirect response
-    // When intl middleware redirects, it will call middleware again for the new URL
+    // Only log if this is NOT a redirect response (final URL)
     const isRedirect =
       response instanceof NextResponse &&
       response.status >= 300 &&
