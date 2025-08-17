@@ -2,7 +2,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { auth } from '../lib/firebase/firebaseConfig'
+import { auth } from '@/lib/firebase/firebaseConfig'
 import { User } from 'firebase/auth'
 
 export type AuthState = 'loading' | 'unauthenticated' | 'authenticated'

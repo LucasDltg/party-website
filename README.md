@@ -48,15 +48,14 @@ Run
 
 Logs are written in console (should only be used on server side), so docker can archive them
 
-- Logs are kept in memory using rolling buffer so serve admin page
+Logs are kept in memory using rolling buffer so serve admin page
 
 ## TODO
 
 - Login improve (send email for verification, reset pswd, etc)
 - weird login (no check)
-- Fix contact page style
-- Button to see password on /auth
-- improve admin dashboard + localistion of ip
-- bug redirection doesnt work if we click twice on connect
+- Verify token for pages with bearer token
 
-- Logging system (check if there is a problem of writing when logrotate change the file)
+- Fix contact page style
+
+- improve admin dashboard + localistion of ip
