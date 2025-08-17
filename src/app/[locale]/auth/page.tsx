@@ -188,9 +188,11 @@ export default function AuthPage() {
             />
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              style={{ cursor: 'pointer' }} // <-- add this line
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 hover:scale-110 transition-transform duration-200"
+              style={{ cursor: 'pointer' }}
+              onMouseDown={() => setShowPassword(true)}
+              onMouseUp={() => setShowPassword(false)}
+              onMouseLeave={() => setShowPassword(false)} // hides password if mouse leaves button
             >
               {showPassword ? (
                 <AiOutlineEyeInvisible size={20} />
