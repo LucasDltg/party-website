@@ -72,17 +72,31 @@ const shouldLog = (
   finalPath: string,
   method: string,
 ): boolean => {
-  // 1. Skip prefetch requests
-  if (request.headers.get('purpose') === 'prefetch') return false
-
-  // 2. Skip "??" malformed duplicates
-  if (finalPath.includes('??')) return false
-
-  // 3. Optionally: only log GET navigations (ignore POST/PUT/OPTIONS)
+  // Only log GET requests
   if (method !== 'GET') return false
 
-  // 4. Avoid root logging
+  // Skip root path
   if (finalPath === '/') return false
+
+  // Skip malformed paths
+  if (finalPath.includes('??')) return false
+
+  // Only log requests that are actual user navigations
+  // Check for HTML accept header (user navigations request HTML)
+  const accept = request.headers.get('accept') || ''
+  if (!accept.includes('text/html')) return false
+
+  // Skip all forms of prefetch requests
+  if (request.headers.get('purpose') === 'prefetch') return false
+  if (request.headers.get('x-purpose') === 'prefetch') return false
+  if (request.headers.get('sec-purpose') === 'prefetch') return false
+  if (request.headers.get('next-router-prefetch')) return false
+  if (request.headers.get('rsc') === '1') return false
+
+  // Only log if this looks like a real user navigation
+  // User navigations typically have higher priority
+  const fetchPriority = request.headers.get('sec-fetch-dest')
+  if (fetchPriority && fetchPriority !== 'document') return false
 
   return true
 }
