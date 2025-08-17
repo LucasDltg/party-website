@@ -18,28 +18,53 @@ function ContactInfoContent() {
   const t = useTranslations('Cv')
   const { user } = useAuth()
   const [contact, setContact] = useState<ContactData | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchContact() {
-      if (user) {
-        try {
-          const token = await user.getIdToken()
-          const res = await fetch('/api/cv-contact', {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          if (res.ok) {
-            const data: ContactData = await res.json()
-            setContact(data)
-          }
-        } catch (err) {
-          console.error('Failed to fetch contact info', err)
+      if (!user) return
+
+      setLoading(true)
+      try {
+        const token = await user.getIdToken()
+        const res = await fetch('/api/cv-contact', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        if (res.ok) {
+          const data: ContactData = await res.json()
+          setContact(data)
+        } else {
+          console.error('Failed to fetch contact info:', res.status)
         }
+      } catch (err) {
+        console.error('Failed to fetch contact info', err)
+      } finally {
+        setLoading(false)
       }
     }
+
     fetchContact()
   }, [user])
 
-  if (!contact) return null
+  if (loading) {
+    return (
+      <div className={styles.contactInfo}>
+        <LoadingSpinner
+          text={t('loadingContactInfo')}
+          containerClassName={styles.contactInfo}
+          textClassName={styles.cvLocation}
+        />
+      </div>
+    )
+  }
+
+  if (!contact) {
+    return (
+      <p className={styles.cvLocation} style={{ textAlign: 'center' }}>
+        {t('noContactInfo')}
+      </p>
+    )
+  }
 
   return (
     <div className={styles.contactInfo}>
