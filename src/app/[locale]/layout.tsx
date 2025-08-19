@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import { notFound } from 'next/navigation'
 import Header from '@/components/Header'
 import PageLogger from '@/components/PageLogger'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
@@ -8,7 +7,7 @@ import { routing } from '@/lib/i18n/routing'
 import { getTranslations } from 'next-intl/server'
 import { getTheme } from '@/lib/theme'
 
-import '../../styles/globals.css'
+import '@/globals.css'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -84,10 +83,10 @@ export default async function LocaleLayout({
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  let { locale } = await params
 
   if (!hasLocale(routing.locales, locale)) {
-    notFound()
+    locale = routing.defaultLocale
   }
 
   const theme = await getTheme()

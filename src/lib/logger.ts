@@ -1,3 +1,4 @@
+// lib/logger.ts
 export enum LogLevel {
   DEBUG = 0,
   INFO = 1,
@@ -13,7 +14,7 @@ export interface LogEntry {
   data?: Record<string, unknown>
   context?: string
   requestId?: string
-  userId?: string
+  sessionId?: string
   error?: {
     name: string
     message: string
@@ -24,15 +25,12 @@ export interface LogEntry {
 export interface LoggerConfig {
   level: LogLevel
   enableConsole: boolean
-  context?: string
 }
 
 type LogListener = (entry: LogEntry) => void
 
 class CustomLogger {
   private config: LoggerConfig
-  private requestId?: string
-  private userId?: string
   private maxEntries: number
   private static buffer: LogEntry[] = []
   private static listeners: Set<LogListener> = new Set()
@@ -46,28 +44,6 @@ class CustomLogger {
     }
 
     this.maxEntries = maxEntries
-  }
-
-  setContext(context: string): CustomLogger {
-    const newLogger = new CustomLogger(this.config, this.maxEntries)
-    newLogger.requestId = this.requestId
-    newLogger.userId = this.userId
-    newLogger.config.context = context
-    return newLogger
-  }
-
-  setRequestId(requestId: string): CustomLogger {
-    const newLogger = new CustomLogger(this.config, this.maxEntries)
-    newLogger.requestId = requestId
-    newLogger.userId = this.userId
-    return newLogger
-  }
-
-  setUserId(userId: string): CustomLogger {
-    const newLogger = new CustomLogger(this.config, this.maxEntries)
-    newLogger.requestId = this.requestId
-    newLogger.userId = userId
-    return newLogger
   }
 
   onLog(listener: LogListener) {
@@ -84,15 +60,18 @@ class CustomLogger {
     message: string,
     data?: Record<string, unknown>,
     error?: Error,
+    context?: string,
+    requestId?: string,
+    sessionId?: string,
   ): LogEntry {
     return {
       timestamp: new Date().toISOString(),
       level,
       message,
       data,
-      context: this.config.context,
-      requestId: this.requestId,
-      userId: this.userId,
+      context: context,
+      requestId: requestId,
+      sessionId: sessionId,
       error: error
         ? { name: error.name, message: error.message, stack: error.stack }
         : undefined,
@@ -127,36 +106,131 @@ class CustomLogger {
     return [...CustomLogger.buffer]
   }
 
-  debug(message: string, data?: Record<string, unknown>) {
-    this.writeLog(this.createLogEntry(LogLevel.DEBUG, message, data))
+  private debug(
+    message: string,
+    data?: Record<string, unknown>,
+    requestId?: string,
+    sessionId?: string,
+    context?: string,
+  ) {
+    this.writeLog(
+      this.createLogEntry(
+        LogLevel.DEBUG,
+        message,
+        data,
+        undefined,
+        context,
+        requestId,
+        sessionId,
+      ),
+    )
   }
 
-  info(message: string, data?: Record<string, unknown>) {
-    this.writeLog(this.createLogEntry(LogLevel.INFO, message, data))
+  private info(
+    message: string,
+    data?: Record<string, unknown>,
+    requestId?: string,
+    sessionId?: string,
+    context?: string,
+  ) {
+    this.writeLog(
+      this.createLogEntry(
+        LogLevel.INFO,
+        message,
+        data,
+        undefined,
+        context,
+        requestId,
+        sessionId,
+      ),
+    )
   }
 
-  warn(message: string, data?: Record<string, unknown>) {
-    this.writeLog(this.createLogEntry(LogLevel.WARN, message, data))
+  private warn(
+    message: string,
+    data?: Record<string, unknown>,
+    requestId?: string,
+    sessionId?: string,
+    context?: string,
+  ) {
+    this.writeLog(
+      this.createLogEntry(
+        LogLevel.WARN,
+        message,
+        data,
+        undefined,
+        context,
+        requestId,
+        sessionId,
+      ),
+    )
   }
 
-  error(message: string, error?: unknown) {
+  private error(
+    message: string,
+    error?: unknown,
+    requestId?: string,
+    sessionId?: string,
+    context?: string,
+  ) {
     const err =
       error instanceof Error
         ? error
         : error
           ? new Error(JSON.stringify(error))
           : undefined
-    this.writeLog(this.createLogEntry(LogLevel.ERROR, message, undefined, err))
+    this.writeLog(
+      this.createLogEntry(
+        LogLevel.ERROR,
+        message,
+        undefined,
+        err,
+        context,
+        requestId,
+        sessionId,
+      ),
+    )
   }
 
-  fatal(message: string, error?: unknown) {
+  private fatal(
+    message: string,
+    error?: unknown,
+    requestId?: string,
+    sessionId?: string,
+    context?: string,
+  ) {
     const err =
       error instanceof Error
         ? error
         : error
           ? new Error(JSON.stringify(error))
           : undefined
-    this.writeLog(this.createLogEntry(LogLevel.FATAL, message, undefined, err))
+    this.writeLog(
+      this.createLogEntry(
+        LogLevel.FATAL,
+        message,
+        undefined,
+        err,
+        context,
+        requestId,
+        sessionId,
+      ),
+    )
+  }
+
+  createRequestLogger(requestId: string, sessionId: string, context?: string) {
+    return {
+      debug: (msg: string, data?: Record<string, unknown>) =>
+        this.debug(msg, data, requestId, sessionId, context),
+      info: (msg: string, data?: Record<string, unknown>) =>
+        this.info(msg, data, requestId, sessionId, context),
+      warn: (msg: string, data?: Record<string, unknown>) =>
+        this.warn(msg, data, requestId, sessionId, context),
+      error: (msg: string, err?: unknown) =>
+        this.error(msg, err, requestId, sessionId, context),
+      fatal: (msg: string, err?: unknown) =>
+        this.fatal(msg, err, requestId, sessionId, context),
+    }
   }
 }
 

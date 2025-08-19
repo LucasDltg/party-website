@@ -3,6 +3,7 @@
 
 import { useEffect, useRef } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { v4 as uuidv4 } from 'uuid'
 
 interface PageLoggerProps {
   locale: string
@@ -66,17 +67,9 @@ const PageLogger = ({ locale }: PageLoggerProps) => {
           return
         }
 
-        // Get or create session ID
-        let sessionId = sessionStorage.getItem('session-id')
-        if (!sessionId) {
-          sessionId = crypto.randomUUID()
-          sessionStorage.setItem('session-id', sessionId)
-        }
-
         // Get client info
         const userAgent = navigator.userAgent
         const referrer = document.referrer || 'direct'
-        const timestamp = new Date().toISOString()
 
         // Get screen info
         const screenInfo = {
@@ -128,7 +121,6 @@ const PageLogger = ({ locale }: PageLoggerProps) => {
           locale,
           userAgent: userAgent.substring(0, 200),
           referrer,
-          timestamp,
           screen: screenInfo,
           viewport: viewportInfo,
           language: navigator.language,
@@ -136,7 +128,6 @@ const PageLogger = ({ locale }: PageLoggerProps) => {
           cookieEnabled: navigator.cookieEnabled,
           onLine: navigator.onLine,
           platform: navigator.platform,
-          sessionId,
           performance: performanceData,
           connection: connectionInfo,
           additionalData: {
@@ -148,13 +139,20 @@ const PageLogger = ({ locale }: PageLoggerProps) => {
         }
 
         // Send to the specialized logging endpoint
-        const response = await fetch('/api/log/visit', {
+        const response = await fetch('/api/logs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Cache-Control': 'no-cache',
           },
-          body: JSON.stringify(visitData),
+          body: JSON.stringify({
+            level: 'INFO',
+            message: `Page visit: ${visitData.path}`,
+            data: visitData,
+            requestId: uuidv4(),
+            context: 'PageVisit',
+            includeServerData: true,
+          }),
         })
 
         if (!response.ok) {

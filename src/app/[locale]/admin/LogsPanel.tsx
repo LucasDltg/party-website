@@ -22,7 +22,7 @@ export function LogsPanel() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const es = new EventSource('/api/log/stream')
+    const es = new EventSource('/api/logs/stream')
 
     es.onmessage = (event) => {
       const log: LogEntry = JSON.parse(event.data)
@@ -55,7 +55,7 @@ export function LogsPanel() {
         log.message.toLowerCase().includes(searchText) ||
         log.context?.toLowerCase().includes(searchText) ||
         log.requestId?.toLowerCase().includes(searchText) ||
-        log.userId?.toLowerCase().includes(searchText) ||
+        log.sessionId?.toLowerCase().includes(searchText) ||
         LogLevelName(log.level).toLowerCase().includes(searchText)
       )
     })
@@ -84,8 +84,8 @@ export function LogsPanel() {
           bValue = b.requestId || ''
           break
         case 'userId':
-          aValue = a.userId || ''
-          bValue = b.userId || ''
+          aValue = a.sessionId || ''
+          bValue = b.sessionId || ''
           break
         default:
           return 0
@@ -326,10 +326,10 @@ function LogCard({ log }: { log: LogEntry }) {
                 fontWeight: '600',
               }}
             >
-              🔗 {log.requestId.slice(0, 8)}
+              🔗 {log.requestId}
             </span>
           )}
-          {log.userId && (
+          {log.sessionId && (
             <span
               style={{
                 padding: '2px 8px',
@@ -340,7 +340,7 @@ function LogCard({ log }: { log: LogEntry }) {
                 fontWeight: '600',
               }}
             >
-              👤 {log.userId}
+              👤 {log.sessionId}
             </span>
           )}
         </div>
