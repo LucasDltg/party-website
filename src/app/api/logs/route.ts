@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import logger, { LogLevel } from '@/lib/logger'
+import logger, { LogLevel, getSessionIdFromCookies } from '@/lib/logger'
 
 export type LogInput = {
   level: LogLevel
   message: string
   data?: Record<string, unknown>
   error?: unknown
-  requestId: string
-  sessionId: string
   context?: string
   includeServerData?: boolean
 }
@@ -17,10 +15,7 @@ export async function POST(request: NextRequest) {
     const body: LogInput = await request.json()
 
     // Use cookie value as sessionId if not provided
-    if (!body.sessionId) {
-      body.sessionId =
-        request.cookies.get('sessionId')?.value || 'unknown-session'
-    }
+    const sessionId = await getSessionIdFromCookies(request)
 
     // Add server data if requested
     if (body.includeServerData) {
@@ -49,11 +44,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const log = logger.createRequestLogger(
-      body.requestId,
-      body.sessionId,
-      body.context,
-    )
+    const log = logger.createRequestLogger(sessionId, body.context)
 
     switch (body.level) {
       case LogLevel.DEBUG:

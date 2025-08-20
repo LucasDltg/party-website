@@ -3,7 +3,6 @@
 
 import { useEffect, useRef } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { v4 as uuidv4 } from 'uuid'
 
 interface PageLoggerProps {
   locale: string
@@ -149,7 +148,6 @@ const PageLogger = ({ locale }: PageLoggerProps) => {
             level: 'INFO',
             message: `Page visit: ${visitData.path}`,
             data: visitData,
-            requestId: uuidv4(),
             context: 'PageVisit',
             includeServerData: true,
           }),

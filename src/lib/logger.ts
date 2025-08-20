@@ -1,4 +1,7 @@
 // lib/logger.ts
+import { v4 as uuidv4 } from 'uuid'
+import { NextRequest } from 'next/server'
+
 export enum LogLevel {
   DEBUG = 0,
   INFO = 1,
@@ -218,7 +221,8 @@ class CustomLogger {
     )
   }
 
-  createRequestLogger(requestId: string, sessionId: string, context?: string) {
+  createRequestLogger(sessionId: string, context?: string) {
+    const requestId = uuidv4()
     return {
       debug: (msg: string, data?: Record<string, unknown>) =>
         this.debug(msg, data, requestId, sessionId, context),
@@ -232,6 +236,12 @@ class CustomLogger {
         this.fatal(msg, err, requestId, sessionId, context),
     }
   }
+}
+
+export async function getSessionIdFromCookies(
+  request: NextRequest,
+): Promise<string> {
+  return request.cookies.get('sessionId')?.value || 'unknown-session'
 }
 
 const logger = new CustomLogger()
