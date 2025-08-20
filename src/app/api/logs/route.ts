@@ -75,3 +75,35 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+import { pool } from '@/lib/db'
+import { LogEntry } from '@/lib/logger'
+
+interface LogRow extends Omit<LogEntry, 'timestamp'> {
+  timestamp: Date
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const limitParam = request.nextUrl.searchParams.get('limit')
+    const safeLimit = Math.min(
+      Math.max(parseInt(limitParam as string) || 10, 1),
+      1000,
+    ) // 1–1000
+
+    const res = await pool.query(
+      'SELECT * FROM logs ORDER BY timestamp DESC LIMIT ?',
+      [safeLimit],
+    )
+
+    const logs = (res as LogRow[]).map((row) => ({
+      ...row,
+      timestamp: row.timestamp.toISOString(),
+    }))
+
+    return NextResponse.json(logs)
+  } catch (err) {
+    console.error('Failed to fetch logs:', err)
+    return NextResponse.json({ error: 'Failed to fetch logs' }, { status: 500 })
+  }
+}

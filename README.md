@@ -59,7 +59,7 @@ Logs are kept in memory using rolling buffer so serve admin page
 - Fix contact page style
 
 - improve admin dashboard + localistion of ip
-- Log ip in database
 - Log people connected in RT
+- Fix Streaming Logs
 
 - Profile for people, allow adding image, change name, see profile through /profile/{name}

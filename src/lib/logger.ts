@@ -1,6 +1,7 @@
 // lib/logger.ts
 import { v4 as uuidv4 } from 'uuid'
 import { NextRequest } from 'next/server'
+import { pool } from './db'
 
 export enum LogLevel {
   DEBUG = 0,
@@ -34,19 +35,15 @@ type LogListener = (entry: LogEntry) => void
 
 class CustomLogger {
   private config: LoggerConfig
-  private maxEntries: number
-  private static buffer: LogEntry[] = []
   private static listeners: Set<LogListener> = new Set()
 
-  constructor(config: Partial<LoggerConfig> = {}, maxEntries = 100) {
+  constructor(config: Partial<LoggerConfig> = {}) {
     this.config = {
       level:
         process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
       enableConsole: true,
       ...config,
     }
-
-    this.maxEntries = maxEntries
   }
 
   onLog(listener: LogListener) {
@@ -67,8 +64,11 @@ class CustomLogger {
     requestId?: string,
     sessionId?: string,
   ): LogEntry {
+    // Generate timestamp directly in "YYYY-MM-DD HH:MM:SS" format
+    const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ')
+
     return {
-      timestamp: new Date().toISOString(),
+      timestamp,
       level,
       message,
       data,
@@ -81,32 +81,40 @@ class CustomLogger {
     }
   }
 
-  private addToBuffer(entry: LogEntry) {
-    CustomLogger.buffer.push(entry)
-    if (CustomLogger.buffer.length > this.maxEntries) {
-      CustomLogger.buffer.shift()
-    }
-  }
-
   private async writeLog(entry: LogEntry): Promise<void> {
     if (!this.shouldLog(entry.level)) return
 
     const json = JSON.stringify(entry)
-
-    if (this.config.enableConsole) {
-      if (entry.level >= LogLevel.ERROR) {
-        console.error(json) // stderr
-      } else {
-        console.log(json) // stdout
-      }
+    if (entry.level >= LogLevel.ERROR) {
+      console.error(json)
+    } else {
+      console.log(json)
     }
 
-    this.addToBuffer(entry)
+    // Notify sse listeners
     CustomLogger.listeners.forEach((listener) => listener(entry))
-  }
 
-  async getLastLogs(): Promise<LogEntry[]> {
-    return [...CustomLogger.buffer]
+    // Write to DB
+
+    try {
+      await pool.query(
+        `INSERT INTO logs 
+          (timestamp, level, message, data, context, requestId, sessionId, error)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          entry.timestamp,
+          entry.level,
+          entry.message,
+          entry.data ? JSON.stringify(entry.data) : null,
+          entry.context || null,
+          entry.requestId || null,
+          entry.sessionId || null,
+          entry.error ? JSON.stringify(entry.error) : null,
+        ],
+      )
+    } catch (err) {
+      console.error('Failed to write log to DB:', err)
+    }
   }
 
   private debug(

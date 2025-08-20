@@ -29,3 +29,8 @@ export default function AdminPage() {
     </AuthGuard>
   )
 }
+
+// -- Get all unique server IPs in MariaDB
+// SELECT DISTINCT JSON_UNQUOTE(JSON_EXTRACT(data, '$.server.ip')) AS ip
+// FROM logs
+// WHERE JSON_EXTRACT(data, '$.server.ip') IS NOT NULL;

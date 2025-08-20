@@ -22,14 +22,25 @@ export function LogsPanel() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const es = new EventSource('/api/logs/stream')
+    let isMounted = true
 
+    fetch(`/api/logs?limit=${MAX_LOGS}`)
+      .then((res) => res.json())
+      .then((data: LogEntry[]) => {
+        if (isMounted) setLogs(data)
+      })
+      .catch((err) => console.error('Failed to fetch logs:', err))
+
+    const es = new EventSource('/api/logs/stream')
     es.onmessage = (event) => {
       const log: LogEntry = JSON.parse(event.data)
       setLogs((prev) => [...prev, log].slice(-MAX_LOGS))
     }
 
-    return () => es.close()
+    return () => {
+      isMounted = false
+      es.close()
+    }
   }, [])
 
   useEffect(() => {
