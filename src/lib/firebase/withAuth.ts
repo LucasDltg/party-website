@@ -2,17 +2,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { adminAuth } from './firebaseAdmin'
 
-export type AuthenticatedHandler = (
+export type AuthenticatedHandler<Context> = (
   req: NextRequest,
-  context: { params: Record<string, string> | undefined },
+  context: Context,
   user: { uid: string; email?: string },
 ) => Promise<NextResponse>
 
-export function withAuth(handler: AuthenticatedHandler) {
-  return async (
-    req: NextRequest,
-    context: { params: Record<string, string> | undefined },
-  ) => {
+export function withAuth<Context>(handler: AuthenticatedHandler<Context>) {
+  return async (req: NextRequest, context: Context) => {
     const token = req.cookies.get('token')?.value
 
     if (!token) {
@@ -22,7 +19,6 @@ export function withAuth(handler: AuthenticatedHandler) {
     try {
       const decodedToken = await adminAuth.verifyIdToken(token)
 
-      // Pass the decoded user info to your handler
       return handler(req, context, {
         uid: decodedToken.uid,
         email: decodedToken.email,
