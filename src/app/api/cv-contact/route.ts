@@ -1,26 +1,21 @@
 // app/api/contact/route.ts
-import { NextRequest, NextResponse } from 'next/server'
-import { adminAuth } from '@/lib/firebase/firebaseAdmin'
+import { NextResponse } from 'next/server'
+import { withAuth } from '@/lib/firebase/withAuth'
 
-export async function GET(req: NextRequest) {
-  const authHeader = req.headers.get('authorization')
-  const token = authHeader?.split('Bearer ')[1]
-
-  if (!token) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
-  }
-
+export const GET = withAuth(async () => {
   try {
-    await adminAuth.verifyIdToken(token)
-
     const contactData = {
       location: process.env.APP_LOCATION ?? '',
       phone: process.env.APP_PHONE_NUMBER ?? '',
       email: process.env.APP_MAIL_ADDRESS ?? '',
     }
+
     return NextResponse.json(contactData)
   } catch (err) {
-    console.error('Failed to verify token:', err)
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    console.error('Failed to get contact data:', err)
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 },
+    )
   }
-}
+})

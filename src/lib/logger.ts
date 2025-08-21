@@ -41,7 +41,7 @@ class CustomLogger {
     this.config = {
       level:
         process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
-      enableConsole: true,
+      enableConsole: false,
       ...config,
     }
   }

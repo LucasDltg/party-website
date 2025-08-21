@@ -26,10 +26,7 @@ function ContactInfoContent() {
 
       setLoading(true)
       try {
-        const token = await user.getIdToken()
-        const res = await fetch('/api/cv-contact', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        const res = await fetch('/api/cv-contact')
         if (res.ok) {
           const data: ContactData = await res.json()
           setContact(data)

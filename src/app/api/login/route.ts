@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60, // 1 hour
       path: '/',
+      sameSite: 'lax',
     })
 
     log.info('User logged in successfully')

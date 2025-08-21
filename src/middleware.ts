@@ -1,34 +1,28 @@
 // middleware.ts
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import createMiddleware from 'next-intl/middleware'
 import { routing } from '@/lib/i18n/routing'
 import { v4 as uuidv4 } from 'uuid'
 
 const intlMiddleware = createMiddleware(routing)
 
-export default async function middleware(request: NextRequest) {
-  const res = NextResponse.next()
+export default function middleware(request: NextRequest) {
+  // Run next-intl first
+  const response = intlMiddleware(request)
 
-  const sessionId = request.cookies.get('sessionId')?.value
+  let sessionId = request.cookies.get('sessionId')?.value
   if (!sessionId) {
-    const newSessionId = uuidv4()
-
-    res.cookies.set({
+    sessionId = uuidv4()
+    response.cookies.set({
       name: 'sessionId',
-      value: newSessionId,
+      value: sessionId,
       httpOnly: true,
       path: '/',
       maxAge: 60 * 60 * 24 * 30, // 30 days
     })
   }
 
-  const intlResponse = intlMiddleware(request)
-
-  if (!sessionId) {
-    intlResponse.cookies.set(res.cookies.get('sessionId')!)
-  }
-
-  return intlResponse
+  return response
 }
 
 export const config = {

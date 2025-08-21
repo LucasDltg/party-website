@@ -78,12 +78,13 @@ export async function POST(request: NextRequest) {
 
 import { pool } from '@/lib/db'
 import { LogEntry } from '@/lib/logger'
+import { withAuth } from '@/lib/firebase/withAuth'
 
 interface LogRow extends Omit<LogEntry, 'timestamp'> {
   timestamp: Date
 }
 
-export async function GET(request: NextRequest) {
+export const GET = withAuth(async (request) => {
   try {
     const limitParam = request.nextUrl.searchParams.get('limit')
     const safeLimit = Math.min(
@@ -106,4 +107,4 @@ export async function GET(request: NextRequest) {
     console.error('Failed to fetch logs:', err)
     return NextResponse.json({ error: 'Failed to fetch logs' }, { status: 500 })
   }
-}
+})

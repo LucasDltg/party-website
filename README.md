@@ -54,12 +54,14 @@ Logs are kept in memory using rolling buffer so serve admin page
 
 - Login improve (send email for verification, reset pswd, etc)
 - weird login (no check)
-- Verify token for pages with bearer token
+- Verify token for pages with cookies
+- Refresh firebase token
+- AuthGuard correct ? (no render for unauth user ?, check getServerSideProps)
 
 - Fix contact page style
 
 - improve admin dashboard + localistion of ip
 - Log people connected in RT
-- Fix Streaming Logs
+- Protect api routes
 
 - Profile for people, allow adding image, change name, see profile through /profile/{name}
