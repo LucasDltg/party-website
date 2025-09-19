@@ -78,13 +78,13 @@ export async function POST(request: NextRequest) {
 
 import { pool } from '@/lib/db'
 import { LogEntry } from '@/lib/logger'
-import { withAuth } from '@/lib/firebase/withAuth'
+import { withAPIProtected } from '@/lib/firebase/withAPIProtected'
 
 interface LogRow extends Omit<LogEntry, 'timestamp'> {
   timestamp: Date
 }
 
-export const GET = withAuth(async (request) => {
+export const GET = withAPIProtected(async (request) => {
   try {
     const limitParam = request.nextUrl.searchParams.get('limit')
     const safeLimit = Math.min(

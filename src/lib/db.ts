@@ -3,8 +3,8 @@ import mariadb from 'mariadb'
 
 export const pool = mariadb.createPool({
   host: 'localhost',
-  user: 'root',
-  password: 'Website',
+  user: 'website',
+  password: 'strong_password',
   database: 'LucasWebsite',
   connectionLimit: 5,
 })

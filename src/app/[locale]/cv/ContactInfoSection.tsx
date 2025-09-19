@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl'
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect, useState } from 'react'
-import { COMMON_WORDS } from '@/../messages/constants'
+import { COMMON_CONST } from '@/../messages/constants'
 import styles from './cv.module.css'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import AuthGuard from '@/components/AuthGuard'
@@ -76,18 +76,18 @@ function ContactInfoContent() {
       </p>
       <p className={styles.cvLinks}>
         <a
-          href={COMMON_WORDS.linkedin}
+          href={COMMON_CONST.linkedin}
           target="_blank"
           rel="noopener noreferrer"
         >
           {t('linkedin')}
         </a>
         {' / '}
-        <a href={COMMON_WORDS.url} target="_blank" rel="noopener noreferrer">
+        <a href={COMMON_CONST.url} target="_blank" rel="noopener noreferrer">
           {t('portfolio')}
         </a>
         {' / '}
-        <a href={COMMON_WORDS.github} target="_blank" rel="noopener noreferrer">
+        <a href={COMMON_CONST.github} target="_blank" rel="noopener noreferrer">
           {t('github')}
         </a>
       </p>

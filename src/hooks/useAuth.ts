@@ -4,9 +4,9 @@
 import { useEffect, useState } from 'react'
 import { auth } from '@/lib/firebase/firebaseConfig'
 import { User } from 'firebase/auth'
+import { UserRole } from '@/types/UserRole'
 
 export type AuthState = 'loading' | 'unauthenticated' | 'authenticated'
-export type UserRole = 'admin' | 'user' | 'moderator' | null
 
 export interface AuthData {
   user: User | null

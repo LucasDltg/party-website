@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useAuth, UserRole } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/useAuth'
+import { UserRole } from '@/types/UserRole'
 import { ReactNode, useEffect } from 'react'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import MainLayout from './MainLayout'

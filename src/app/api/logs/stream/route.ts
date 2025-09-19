@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import logger, { LogEntry } from '@/lib/logger'
-import { withAuth } from '@/lib/firebase/withAuth'
+import { withAPIProtected } from '@/lib/firebase/withAPIProtected'
 
 // export async function GET(req: NextRequest) {
-export const GET = withAuth(async (req) => {
+export const GET = withAPIProtected(async (req) => {
   const { readable, writable } = new TransformStream()
   const writer = writable.getWriter()
 
