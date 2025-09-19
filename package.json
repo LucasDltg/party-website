@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier --check .",
     "wformat": "prettier --write .",
-    "prepare": "command -v husky >/dev/null 2>&1 && husky install || echo 'Skipping husky install'"
+    "prepare": "command -v husky >/dev/null 2>&1 && husky || echo 'Skipping husky install'"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.6.1",
@@ -20,7 +20,7 @@
     "firebase-admin": "^13.4.0",
     "mariadb": "^3.4.5",
     "negotiator": "^1.0.0",
-    "next": "15.3.3",
+    "next": "^15.5.3",
     "next-intl": "^4.3.4",
     "postcss": "^8.5.4",
     "react": "^19.0.0",
