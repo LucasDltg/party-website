@@ -109,7 +109,8 @@
     },
     "loadingContactInfo": "Loading contact information...",
     "contactInfoMessage": "Sign in to view my contact information and get in touch.",
-    "loginToViewContact": "Sign In to View Contact Info"
+    "loginToViewContact": "Sign In to View Contact Info",
+    "noContactInfo": "No contact info available"
   },
   "Auth": {
     "loginTitle": "Login",

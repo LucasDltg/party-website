@@ -84,27 +84,33 @@ interface LogRow extends Omit<LogEntry, 'timestamp'> {
   timestamp: Date
 }
 
-export const GET = withAPIProtected(async (request) => {
-  try {
-    const limitParam = request.nextUrl.searchParams.get('limit')
-    const safeLimit = Math.min(
-      Math.max(parseInt(limitParam as string) || 10, 1),
-      1000,
-    ) // 1–1000
+export const GET = withAPIProtected(
+  async (request) => {
+    try {
+      const limitParam = request.nextUrl.searchParams.get('limit')
+      const safeLimit = Math.min(
+        Math.max(parseInt(limitParam as string) || 10, 1),
+        1000,
+      ) // 1–1000
 
-    const res = await pool.query(
-      'SELECT * FROM logs ORDER BY timestamp DESC LIMIT ?',
-      [safeLimit],
-    )
+      const res = await pool.query(
+        'SELECT * FROM logs ORDER BY timestamp DESC LIMIT ?',
+        [safeLimit],
+      )
 
-    const logs = (res as LogRow[]).map((row) => ({
-      ...row,
-      timestamp: row.timestamp.toISOString(),
-    }))
+      const logs = (res as LogRow[]).map((row) => ({
+        ...row,
+        timestamp: row.timestamp.toISOString(),
+      }))
 
-    return NextResponse.json(logs)
-  } catch (err) {
-    console.error('Failed to fetch logs:', err)
-    return NextResponse.json({ error: 'Failed to fetch logs' }, { status: 500 })
-  }
-})
+      return NextResponse.json(logs)
+    } catch (err) {
+      console.error('Failed to fetch logs:', err)
+      return NextResponse.json(
+        { error: 'Failed to fetch logs' },
+        { status: 500 },
+      )
+    }
+  },
+  { requiredRole: 'admin' },
+)

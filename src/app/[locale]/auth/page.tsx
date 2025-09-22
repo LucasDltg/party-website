@@ -102,7 +102,6 @@ export default function AuthPage() {
         }
 
         setSuccess(t('loginSuccess'))
-        router.push(getRedirectUrl())
       } else {
         await createUserWithEmailAndPassword(auth, email, password)
         const token = await getIdToken(auth.currentUser!, true)
@@ -118,7 +117,6 @@ export default function AuthPage() {
         }
 
         setSuccess(t('signupSuccess'))
-        router.push(getRedirectUrl())
       }
     } catch (err) {
       if (err instanceof Error && 'code' in err) {
@@ -135,6 +133,8 @@ export default function AuthPage() {
 
   return (
     <AuthGuard requireAuth={false} redirectTo={getRedirectUrl()}>
+      {' '}
+      {/* Redirect User if already logged in */}
       <CenteredPageLayout>
         <h2
           className="font-bold mb-6 text-center"
