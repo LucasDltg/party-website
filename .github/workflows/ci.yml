@@ -25,6 +25,10 @@ jobs:
 
       - name: Inject secrets into .env
         run: |
+          export FIREBASE_SERVICE_ACCOUNT_KEY_BASE64="${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 }}"
+          export APP_PHONE_NUMBER="${{ secrets.APP_PHONE_NUMBER }}"
+          export APP_MAIL_ADDRESS="${{ secrets.APP_MAIL_ADDRESS }}"
+          export APP_LOCATION="${{ secrets.APP_LOCATION }}"
           sed -i '/^FIREBASE_SERVICE_ACCOUNT_KEY_BASE64=/d' .env
           sed -i '/^APP_PHONE_NUMBER=/d' .env
           sed -i '/^APP_MAIL_ADDRESS=/d' .env
