@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
     branches: [main]
@@ -10,7 +9,6 @@ jobs:
   build:
     name: CI
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,24 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-
-      - name: Copy .env.example to .env
-        run: cp .env.example .env
-
-      - name: Inject secrets into .env
-        run: |
-          export FIREBASE_SERVICE_ACCOUNT_KEY_BASE64="${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 }}"
-          export APP_PHONE_NUMBER="${{ secrets.APP_PHONE_NUMBER }}"
-          export APP_MAIL_ADDRESS="${{ secrets.APP_MAIL_ADDRESS }}"
-          export APP_LOCATION="${{ secrets.APP_LOCATION }}"
-          sed -i '/^FIREBASE_SERVICE_ACCOUNT_KEY_BASE64=/d' .env
-          sed -i '/^APP_PHONE_NUMBER=/d' .env
-          sed -i '/^APP_MAIL_ADDRESS=/d' .env
-          sed -i '/^APP_LOCATION=/d' .env
-          echo "FIREBASE_SERVICE_ACCOUNT_KEY_BASE64=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 }}" >> .env
-          echo "APP_PHONE_NUMBER=${{ secrets.APP_PHONE_NUMBER }}" >> .env
-          echo "APP_MAIL_ADDRESS=${{ secrets.APP_MAIL_ADDRESS }}" >> .env
-          echo "APP_LOCATION=${{ secrets.APP_LOCATION }}" >> .env
 
       - name: Install dependencies
         run: npm ci
@@ -49,6 +29,20 @@ jobs:
 
       - name: Prettier check
         run: npm run format
+
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: Inject secrets into .env
+        run: |
+          sed -i '/^FIREBASE_SERVICE_ACCOUNT_KEY_BASE64=/d' .env
+          sed -i '/^APP_PHONE_NUMBER=/d' .env
+          sed -i '/^APP_MAIL_ADDRESS=/d' .env
+          sed -i '/^APP_LOCATION=/d' .env
+          echo "FIREBASE_SERVICE_ACCOUNT_KEY_BASE64=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 }}" >> .env
+          echo "APP_PHONE_NUMBER=${{ secrets.APP_PHONE_NUMBER }}" >> .env
+          echo "APP_MAIL_ADDRESS=${{ secrets.APP_MAIL_ADDRESS }}" >> .env
+          echo "APP_LOCATION=${{ secrets.APP_LOCATION }}" >> .env
 
       - name: Build project
         run: npm run build
