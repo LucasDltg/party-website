@@ -1,23 +1,21 @@
 'use client'
 
-import { useState, FormEvent, useEffect } from 'react'
+import { useState, FormEvent } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { useTranslations } from 'next-intl'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { auth } from '@/lib/firebase/firebaseConfig'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   getIdToken,
   AuthError,
-  onAuthStateChanged,
 } from 'firebase/auth'
 import CenteredPageLayout from '@/components/CenteredPageLayout'
 import AuthGuard from '@/components/AuthGuard'
 
 export default function AuthPage() {
   const t = useTranslations('Auth')
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
@@ -26,16 +24,15 @@ export default function AuthPage() {
   const [success, setSuccess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [suppressAuthRedirect, setSuppressAuthRedirect] = useState(false)
 
-  useEffect(() => {
+  /*useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.replace('/')
-      }
+
     })
 
     return () => unsubscribe()
-  }, [router])
+  }, [router])*/
 
   const getRedirectUrl = (): string => {
     const redirectTo = searchParams.get('redirect')
@@ -85,6 +82,7 @@ export default function AuthPage() {
     setError(null)
     setSuccess(null)
     setLoading(true)
+    setSuppressAuthRedirect(true)
 
     try {
       if (isLogin) {
@@ -128,11 +126,16 @@ export default function AuthPage() {
       }
     } finally {
       setLoading(false)
+      setSuppressAuthRedirect(false)
     }
   }
 
   return (
-    <AuthGuard requireAuth={false} redirectTo={getRedirectUrl()}>
+    <AuthGuard
+      requireAuth={false}
+      redirectTo={getRedirectUrl()}
+      suppressRedirect={suppressAuthRedirect}
+    >
       {' '}
       {/* Redirect User if already logged in */}
       <CenteredPageLayout>
@@ -161,7 +164,7 @@ export default function AuthPage() {
             autoComplete="email"
             className="px-4 py-3 border rounded-md focus:outline-none focus:ring-2"
             style={{
-              backgroundColor: '#f9fafb',
+              backgroundColor: 'var(--color-box)',
               color: 'var(--color-placeholder)',
               fontSize: 'var(--font-size-md)',
               borderColor: 'var(--color-muted)',
@@ -179,7 +182,7 @@ export default function AuthPage() {
               autoComplete={isLogin ? 'current-password' : 'new-password'}
               className="px-4 py-3 border rounded-md focus:outline-none focus:ring-2 w-full pr-10"
               style={{
-                backgroundColor: '#f9fafb',
+                backgroundColor: 'var(--color-box)',
                 color: 'var(--color-placeholder)',
                 fontSize: 'var(--font-size-md)',
                 borderColor: 'var(--color-muted)',
@@ -230,7 +233,7 @@ export default function AuthPage() {
               className="text-center p-3 rounded-md"
               style={{
                 color: 'var(--color-error)',
-                backgroundColor: 'var(--color-error-bg, #fef2f2)',
+                backgroundColor: 'var(--color-error-bg)',
                 fontSize: 'var(--font-size-sm)',
               }}
             >
@@ -242,9 +245,10 @@ export default function AuthPage() {
             <p
               className="text-center p-3 rounded-md"
               style={{
-                color: 'var(--color-success)',
-                backgroundColor: 'var(--color-success-bg, #f0fdf4)',
+                color: 'var(--foreground)',
+                backgroundColor: 'var(--background)',
                 fontSize: 'var(--font-size-sm)',
+                transition: 'var(--transition)',
               }}
             >
               {success}

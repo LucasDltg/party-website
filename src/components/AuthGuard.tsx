@@ -16,6 +16,7 @@ interface AuthGuardProps {
   redirectTo?: string
   guestView?: ReactNode
   loadingView?: ReactNode
+  suppressRedirect?: boolean
 }
 
 export default function AuthGuard({
@@ -26,13 +27,14 @@ export default function AuthGuard({
   redirectTo,
   guestView = null,
   loadingView = null,
+  suppressRedirect = false,
 }: AuthGuardProps) {
   const { authState, role, hasRole, hasAnyRole } = useAuth()
   const router = useRouter()
   const t = useTranslations('AuthGuard')
 
   useEffect(() => {
-    if (authState === 'loading') return
+    if (authState === 'loading' || suppressRedirect) return
 
     // Guest-only pages
     if (!requireAuth && authState === 'authenticated') {
@@ -69,6 +71,7 @@ export default function AuthGuard({
     hasRole,
     hasAnyRole,
     guestView,
+    suppressRedirect,
   ])
 
   // Loading / unauthorized / guest-view states
