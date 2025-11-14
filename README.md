@@ -60,8 +60,7 @@ Logs are kept in memory using rolling buffer so serve admin page
 
 - Fix contact page style
 
-- improve admin dashboard + localistion of ip
-- Log people connected in RT
+- Admin dashboard error if api timeout.
 - Protect api routes (done but if token not refreshed - error)
 
 - Profile for people, allow adding image, change name, see profile through /profile/{name}
