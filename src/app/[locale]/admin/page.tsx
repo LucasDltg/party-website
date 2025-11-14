@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { useAuth } from '@/hooks/useAuth'
 import AuthGuard from '@/components/AuthGuard'
 import { LogsPanel } from './LogsPanel'
+import { IpLogsPanel } from './IpLogsPanel'
 import MainLayout from '@/components/MainLayout'
 
 function AdminContent() {
@@ -17,7 +18,14 @@ function AdminContent() {
       <p>
         {t('welcome')} <strong>{user?.email}</strong>! {t('adminAccess')}
       </p>
-      <LogsPanel />
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-2">IP Logs</h2>
+        <IpLogsPanel />
+      </div>
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-2">Live Logs</h2>
+        <LogsPanel />
+      </div>
     </MainLayout>
   )
 }
@@ -29,8 +37,3 @@ export default function AdminPage() {
     </AuthGuard>
   )
 }
-
-// -- Get all unique server IPs in MariaDB
-// SELECT DISTINCT JSON_UNQUOTE(JSON_EXTRACT(data, '$.server.ip')) AS ip
-// FROM logs
-// WHERE JSON_EXTRACT(data, '$.server.ip') IS NOT NULL;
