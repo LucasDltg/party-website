@@ -2,6 +2,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { NextRequest } from 'next/server'
 import { pool } from './db'
+import axios from 'axios'
 
 export enum LogLevel {
   DEBUG = 0,
@@ -15,7 +16,7 @@ export interface LogEntry {
   timestamp: string
   level: LogLevel
   message: string
-  data?: Record<string, unknown>
+  data?: LogData
   context?: string
   requestId?: string
   sessionId?: string
@@ -29,6 +30,87 @@ export interface LogEntry {
 export interface LoggerConfig {
   level: LogLevel
   enableConsole: boolean
+}
+
+interface LogServerData {
+  ip?: string
+  serverTimestamp?: string
+  headers?: Record<string, string>
+}
+
+interface LogData extends Record<string, unknown> {
+  server?: LogServerData
+  [key: string]: unknown
+}
+
+function ipToBinary(ip: string): Buffer {
+  const isIPv4 = ip.includes('.')
+  if (isIPv4) {
+    return Buffer.from(ip.split('.').map((byte) => Number(byte)))
+  } else {
+    // IPv6
+    return Buffer.from(
+      ip.split(':').flatMap((part) => {
+        if (part === '') return [0, 0]
+        const num = parseInt(part, 16)
+        return [(num >> 8) & 0xff, num & 0xff]
+      }),
+    )
+  }
+}
+
+async function fetchIpApi(ip: string) {
+  try {
+    const res = await axios.get(`http://ip-api.com/json/${ip}?fields=66846719`)
+    return res.data
+  } catch (err) {
+    console.error('Failed IP-API request', err)
+    return null
+  }
+}
+
+// Insert IP location into DB if not already existing
+async function ensureIpLogged(ip: string) {
+  if (!ip) return
+
+  const ipBinary = ipToBinary(ip)
+
+  interface IpRow {
+    id: number
+  }
+
+  // Check if IP already exists
+  const rows: IpRow[] = await pool.query(
+    `SELECT id FROM ip_api_logs WHERE ip = ? LIMIT 1`,
+    [ipBinary],
+  )
+
+  if (rows.length > 0) return
+
+  // Fetch from IP-API
+  const info = await fetchIpApi('8.8.8.8') // TODO: use real IP
+  if (!info || info.status !== 'success') return
+
+  try {
+    await pool.query(
+      `INSERT INTO ip_api_logs 
+       (ip, ip_text, country_name, region_name, city_name, zip_code, latitude, longitude, isp)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        ipBinary,
+        ip,
+        info.country,
+        info.regionName,
+        info.city,
+        info.zip,
+        info.lat,
+        info.lon,
+        info.isp,
+      ],
+    )
+  } catch (err) {
+    console.error('Failed inserting ip_api_logs:', err)
+  }
 }
 
 type LogListener = (entry: LogEntry) => void
@@ -87,15 +169,22 @@ class CustomLogger {
     const json = JSON.stringify(entry)
     if (entry.level >= LogLevel.ERROR) {
       console.error(json)
-    } else {
+    } else if (this.config.enableConsole) {
       console.log(json)
     }
 
     // Notify sse listeners
     CustomLogger.listeners.forEach((listener) => listener(entry))
 
-    // Write to DB
+    // Extract IP and store it
+    const data = entry.data as LogData
+    const ip: string | null = data.server?.ip ?? null
 
+    if (ip) {
+      await ensureIpLogged(String(ip))
+    }
+
+    // Insert into logs table
     try {
       await pool.query(
         `INSERT INTO logs 
