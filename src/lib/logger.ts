@@ -88,7 +88,7 @@ async function ensureIpLogged(ip: string) {
   if (rows.length > 0) return
 
   // Fetch from IP-API
-  const info = await fetchIpApi('8.8.8.8') // TODO: use real IP
+  const info = await fetchIpApi(ip)
   if (!info || info.status !== 'success') return
 
   try {
