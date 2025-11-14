@@ -47,6 +47,7 @@ jobs:
           sed -i '/^APP_PHONE_NUMBER=/d' .env
           sed -i '/^APP_MAIL_ADDRESS=/d' .env
           sed -i '/^APP_LOCATION=/d' .env
+          sed -i '/^MARIADB_HOST=/d' .env
           sed -i '/^MARIADB_USER=/d' .env
           sed -i '/^MARIADB_DATABASE=/d' .env
           sed -i '/^MARIADB_PASSWORD=/d' .env
@@ -55,6 +56,7 @@ jobs:
           echo "APP_PHONE_NUMBER=${{ secrets.APP_PHONE_NUMBER }}" >> .env
           echo "APP_MAIL_ADDRESS=${{ secrets.APP_MAIL_ADDRESS }}" >> .env
           echo "APP_LOCATION=${{ secrets.APP_LOCATION }}" >> .env
+          echo "MARIADB_HOST=${{ secrets.MARIADB_HOST }}" >> .env
           echo "MARIADB_USER=${{ secrets.MARIADB_USER }}" >> .env
           echo "MARIADB_DATABASE=${{ secrets.MARIADB_DATABASE }}" >> .env
           echo "MARIADB_PASSWORD=${{ secrets.MARIADB_PASSWORD }}" >> .env
