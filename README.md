@@ -62,6 +62,6 @@ Logs are kept in memory using rolling buffer so serve admin page
 
 - improve admin dashboard + localistion of ip
 - Log people connected in RT
-- Protect api routes
+- Protect api routes (done but if token not refreshed - error)
 
 - Profile for people, allow adding image, change name, see profile through /profile/{name}

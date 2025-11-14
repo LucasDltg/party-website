@@ -292,7 +292,7 @@ function LogCard({ log }: { log: LogEntry }) {
                 fontFamily: 'monaco, monospace',
               }}
             >
-              {new Date(log.timestamp).toLocaleTimeString()}
+              {new Date(log.timestamp).toLocaleString()}
             </div>
           </div>
           <div style={{ fontSize: '20px' }}>{isExpanded ? '🔼' : '🔽'}</div>
