@@ -96,16 +96,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set file permissions
-        run: chmod 644 ./lucas-website-${{ env.VERSION }}.tar
+      # - name: Set file permissions
+      #   run: chmod 644 ./lucas-website-${{ env.VERSION }}.tar
 
-      - name: Deploy Docker image via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
-        with:
-          server: ${{ secrets.SFTP_HOST }}
-          username: ${{ secrets.SFTP_USERNAME }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          local_path: './lucas-website-${{ env.VERSION }}.tar'
-          remote_path: '/github/'
-          sftp_only: true
+      # - name: Deploy Docker image via SFTP
+      #   uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      #   with:
+      #     server: ${{ secrets.SFTP_HOST }}
+      #     username: ${{ secrets.SFTP_USERNAME }}
+      #     ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     port: 22
+      #     local_path: './lucas-website-${{ env.VERSION }}.tar'
+      #     remote_path: '/github/'
+      #     sftp_only: true
