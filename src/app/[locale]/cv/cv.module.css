@@ -19,12 +19,29 @@
   position: relative;
 }
 
+.cvHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
 .cvTitle {
-  font-size: 1.6rem; /* Slightly reduced font size */
-  margin-top: -20px; /* Increased negative margin to move the title up more */
-  margin-bottom: 0.2rem; /* Further reduced bottom margin */
-  text-align: center;
+  font-size: 1.6rem;
+  margin: 0;
   font-weight: 700;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.cvSelector {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .cvLocation,
@@ -96,7 +113,7 @@
     print-color-adjust: exact;
   }
 
-  .languageSelector {
+  .cvSelector {
     display: none !important;
   }
 

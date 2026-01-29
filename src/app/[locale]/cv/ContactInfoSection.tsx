@@ -47,7 +47,7 @@ function ContactInfoContent() {
     return (
       <div className={styles.contactInfo}>
         <LoadingSpinner
-          text={t('loadingContactInfo')}
+          text={t('CvAuth.loadingContactInfo')}
           containerClassName={styles.contactInfo}
           textClassName={styles.cvLocation}
         />
@@ -58,7 +58,7 @@ function ContactInfoContent() {
   if (!contact) {
     return (
       <p className={styles.cvLocation} style={{ textAlign: 'center' }}>
-        {t('noContactInfo')}
+        {t('CvAuth.noContactInfo')}
       </p>
     )
   }
@@ -66,13 +66,13 @@ function ContactInfoContent() {
   return (
     <div className={styles.contactInfo}>
       <p className={styles.cvLocation}>
-        {t('location')}: {contact.location}
+        {t('Common.location')}: {contact.location}
       </p>
       <p className={styles.cvPhone}>
-        {t('phone')}: {contact.phone}
+        {t('Common.phone')}: {contact.phone}
       </p>
       <p className={styles.cvEmail}>
-        {t('email')}: {contact.email}
+        {t('Common.email')}: {contact.email}
       </p>
       <p className={styles.cvLinks}>
         <a
@@ -80,15 +80,15 @@ function ContactInfoContent() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {t('linkedin')}
+          {t('Common.linkedin')}
         </a>
         {' / '}
         <a href={COMMON_CONST.url} target="_blank" rel="noopener noreferrer">
-          {t('portfolio')}
+          {t('Common.portfolio')}
         </a>
         {' / '}
         <a href={COMMON_CONST.github} target="_blank" rel="noopener noreferrer">
-          {t('github')}
+          {t('Common.github')}
         </a>
       </p>
     </div>
@@ -123,13 +123,13 @@ export default function ContactInfoSection() {
             marginBottom: 'var(--spacing-md)',
           }}
         >
-          {t('contactInfoMessage')}
+          {t('CvAuth.contactInfoMessage')}
         </p>
         <Link
           href={`/auth?redirect=${encodeURIComponent(pathname)}`}
           className={styles.loginButton}
         >
-          {t('loginToViewContact')}
+          {t('CvAuth.loginToViewContact')}
         </Link>
       </div>
     </div>
@@ -138,7 +138,7 @@ export default function ContactInfoSection() {
   const loadingView = (
     <div className={styles.contactInfo}>
       <LoadingSpinner
-        text={t('loadingContactInfo')}
+        text={t('CvAuth.loadingContactInfo')}
         containerClassName={styles.contactInfo}
         textClassName={styles.cvLocation}
       />

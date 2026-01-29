@@ -19,7 +19,7 @@
   "AuthGuard": {
     "loading": "Checking permissions..."
   },
-  "Cv": {
+  "CvCommon": {
     "title": "Lucas Deletang",
     "location": "Location",
     "phone": "Phone",

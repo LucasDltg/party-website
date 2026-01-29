@@ -20,97 +20,137 @@
     "loading": "Vérification des permissions..."
   },
   "Cv": {
-    "title": "Lucas Deletang",
-    "location": "Localisation",
-    "phone": "Téléphone",
-    "email": "Email",
-    "linkedin": "Linkedin: lucas-deletang",
-    "portfolio": "Portfolio: lucas.deletang.dev",
-    "github": "Github: LucasDLTG",
-    "objective": "OBJECTIF",
-    "objectiveText": "Jeune diplômé en ingénierie en <strong>Data Science</strong> et <strong>Intelligence Artificielle</strong>, à la recherche d'un <strong>premier travail</strong> dans le domaine de l'<strong>informatique</strong> / <strong>Data science</strong>, <strong>Intelligence artificielle</strong>.",
-    "education": "Formation",
-    "educationList": {
-      "0": {
-        "institution": "Institut Mines Télécom, Strasbourg",
-        "period": "2022 - 2025",
-        "degree": "Diplôme d'ingénieur en informatique et réseaux, Data Science et Intelligence Artificielle"
-      },
-      "1": {
-        "institution": "Université de Strasbourg",
-        "period": "2023 - 2025",
-        "degree": "Master en Data Science et Systèmes Complexes"
-      },
-      "2": {
-        "institution": "CPGE Prytanée National Militaire",
-        "period": "2020 - 2022",
-        "degree": "Classes préparatoires aux Grandes Écoles (CPGE) - Mathématiques et Physique"
-      }
+    "CvAuth": {
+      "loadingContactInfo": "Chargement des informations de contact...",
+      "contactInfoMessage": "Connectez-vous pour voir mes informations de contact et me contacter.",
+      "loginToViewContact": "Se connecter pour voir les infos de contact",
+      "noContactInfo": "Informations non disponibles"
     },
-    "skills": "Compétences et Langues",
-    "languages": "Langues: <strong>Français</strong> (Natif), <strong>Anglais</strong> (Courant, C1 (TOEIC)), Espagnol (Débutant)",
-    "programmingLanguages": "Langages de Programmation: <strong>C</strong>, <strong>C++</strong>, <strong>Python</strong>, R, Matlab, <strong>Next.js</strong>, <strong>JavaScript</strong>, HTML, CSS, <strong>React</strong>, Tailwind, <strong>MongoDB</strong>, SQL, Java, C#, .NET, <strong>PyTorch</strong>, Docker, OpenGL, OpenGL ES, git (CI/CD), Kafka, Opensearch, Kubernetes (bases), outils IA",
-    "skillsList": "Compétences: <strong>Machine Learning</strong>, <strong>Traitement du Langage Naturel</strong>, <strong>Deep Learning</strong>, <strong>RAG</strong>, <strong>Agent IA</strong>, <strong>LLM</strong>, Mathématiques",
-    "softskills": "Softskills : <strong>Travail d'équipe</strong>, <strong>Leadership</strong>, <strong>Adaptabilité</strong>, <strong>Curiosité intellectuelle</strong>",
-    "experience": "Expérience",
-    "experienceList": {
-      "0": {
-        "title": "<strong>Stagiaire Ingénieur</strong>",
-        "period": "Mars 2025 - Août 2025",
-        "company": "<strong>Thales Alenia Space</strong>, Cannes, France",
-        "responsibilities": [
-          "Création d'un agent IA avec le framework <strong>Smolagents</strong> permettant de faire du agentic RAG et interroger une base de données pour répondre à une question utlisateur.",
-          "Développement d'un assistant IA corrigeant en direct les requierements écrit par l'ingénieur selon une liste de règles prédéfinies."
-        ]
+    "Common": {
+      "title": "Lucas Deletang",
+      "location": "Localisation",
+      "phone": "Téléphone",
+      "email": "Email",
+      "linkedin": "Linkedin: lucas-deletang",
+      "portfolio": "Portfolio: lucas.deletang.dev",
+      "github": "Github: LucasDLTG",
+      "objective": "OBJECTIF",
+      "education": "Formation",
+      "educationList": {
+        "0": {
+          "institution": "Institut Mines Télécom, Strasbourg",
+          "period": "2022 - 2025",
+          "degree": "Diplôme d'ingénieur en informatique et réseaux, Data Science et Intelligence Artificielle"
+        },
+        "1": {
+          "institution": "Université de Strasbourg",
+          "period": "2023 - 2025",
+          "degree": "Master en Data Science et Systèmes Complexes"
+        },
+        "2": {
+          "institution": "CPGE Prytanée National Militaire",
+          "period": "2020 - 2022",
+          "degree": "Classes préparatoires aux Grandes Écoles (CPGE) - Mathématiques et Physique"
+        }
       },
-      "1": {
-        "title": "<strong>Stagiaire Data Scientist</strong>",
-        "period": "Mai 2024 - Août 2024",
-        "company": "<strong>VTEC Lasers & Sensors Ltd</strong>, Eindhoven, Pays-Bas",
-        "responsibilities": [
-          "Création d'une <strong>application Python</strong> pour visualiser les fichiers CSV et les analyser avec l'<strong>IA</strong>.",
-          "Application de <strong>techniques de vision par ordinateur</strong> pour améliorer le rendement de production des wafers.",
-          "Traitement et analyse de <strong>séries temporelles</strong> en utilisant <strong>Pandas</strong>, <strong>Numpy</strong> et <strong>Matplotlib</strong>."
-        ]
+      "experience": "Expérience",
+      "experienceList": {
+        "0": {
+          "title": "<strong>Stagiaire Ingénieur</strong>",
+          "period": "Mars 2025 - Août 2025",
+          "company": "<strong>Thales Alenia Space</strong>, Cannes, France",
+          "responsibilities": [
+            "Création d'un agent IA avec le framework <strong>Smolagents</strong> permettant de faire du agentic RAG et interroger une base de données pour répondre à une question utlisateur.",
+            "Développement d'un assistant IA corrigeant en direct les requierements écrit par l'ingénieur selon une liste de règles prédéfinies."
+          ]
+        },
+        "1": {
+          "title": "<strong>Stagiaire Data Scientist</strong>",
+          "period": "Mai 2024 - Août 2024",
+          "company": "<strong>VTEC Lasers & Sensors Ltd</strong>, Eindhoven, Pays-Bas",
+          "responsibilities": [
+            "Création d'une <strong>application Python</strong> pour visualiser les fichiers CSV et les analyser avec l'<strong>IA</strong>.",
+            "Application de <strong>techniques de vision par ordinateur</strong> pour améliorer le rendement de production des wafers.",
+            "Traitement et analyse de <strong>séries temporelles</strong> en utilisant <strong>Pandas</strong>, <strong>Numpy</strong> et <strong>Matplotlib</strong>."
+          ]
+        },
+        "2": {
+          "title": "<strong>Projet Ingénieur</strong> (Analyse des LLMs)",
+          "period": "Jan 2024 - Fév 2025",
+          "company": "<strong>Euro Information</strong>, Strasbourg, France",
+          "responsibilities": [
+            "Analyse des <strong>grands modèles de langage (LLMs)</strong> pour des instances de sexisme.",
+            "Développement et mise en œuvre d'<strong>algorithmes</strong> pour détecter le langage biaisé dans les sorties des LLMs.",
+            "Proposition de solutions pour atténuer les <strong>biais sexistes</strong> dans les LLMs."
+          ]
+        }
       },
-      "2": {
-        "title": "<strong>Projet Ingénieur</strong> (Analyse des LLMs)",
-        "period": "Jan 2024 - Fév 2025",
-        "company": "<strong>Euro Information</strong>, Strasbourg, France",
-        "responsibilities": [
-          "Analyse des <strong>grands modèles de langage (LLMs)</strong> pour des instances de sexisme.",
-          "Développement et mise en œuvre d'<strong>algorithmes</strong> pour détecter le langage biaisé dans les sorties des LLMs.",
-          "Proposition de solutions pour atténuer les <strong>biais sexistes</strong> dans les LLMs."
-        ]
-      }
+      "skills": "Compétences et Langues",
+      "languages": "Langues: <strong>Français</strong> (Natif), <strong>Anglais</strong> (Courant, C1 (TOEIC)), Espagnol (Débutant)",
+      "projects": "Quelques projets"
     },
-    "projects": "Quelques projets",
-    "projectsList": {
-      "0": {
-        "title": "<strong>Projet de Traitement du Langage Naturel</strong>",
-        "description": "L'utilisation de <strong>TF-IDF</strong> pour l'extraction de caractéristiques, combinée à un <strong>classificateur SVM</strong>, a permis d'obtenir une précision de classification supérieure à <strong>87%</strong> dans la prédiction des sujets des phrases du dataset."
+    "Specialized": {
+      "AI": {
+        "title": "CV Data Scientist",
+        "objectiveText": "Jeune diplômé en <strong>Data Science</strong> et <strong>Intelligence Artificielle</strong>, à la recherche d'un <strong>premier emploi</strong> dans le domaine <strong>Data science</strong> / <strong>Intelligence artificielle</strong>.",
+        "programmingLanguages": "Langages de Programmation: <strong>Python</strong>, R, <strong>MongoDB</strong>, SQL, <strong>PyTorch</strong>, Docker, git (CI/CD), Kafka, Opensearch, Kubernetes (bases)",
+        "skillsList": "Compétences: <strong>Machine Learning</strong>, <strong>Traitement du Langage Naturel</strong>, <strong>Deep Learning</strong>, <strong>RAG</strong>, <strong>Agent IA</strong>, <strong>LLM</strong>",
+        "softskills": "Softskills : <strong>Travail d'équipe</strong>, <strong>Leadership</strong>, <strong>Adaptabilité</strong>, <strong>Curiosité intellectuelle</strong>",
+        "projectsList": {
+          "0": {
+            "title": "<strong>Analyse de texte et classification automatique</strong>",
+            "description": "Mise en place d'un pipeline de <strong>Traitement du Langage Naturel</strong> utilisant <strong>TF-IDF</strong> pour l'extraction des caractéristiques et un <strong>classificateur SVM</strong>. Le modèle atteint une précision de plus de <strong>87%</strong> pour la prédiction des sujets des phrases dans le dataset."
+          },
+          "1": {
+            "title": "<strong>Détection de plaques d'immatriculation avec YOLOv8</strong>",
+            "description": "Affinement du <strong>modèle YOLOv8</strong> pour identifier les plaques d'immatriculation dans des images issues de caméras de surveillance. Le modèle obtient une <strong>précision de 95%</strong>, permettant une reconnaissance des plaques en temps réel, même dans des conditions d'éclairage variées."
+          },
+          "2": {
+            "title": "<strong>Projet IA pour un client e-commerce</strong>",
+            "description": "Développement d'un système de recommandation basé sur <strong>Machine Learning</strong>. L'outil analyse le comportement des utilisateurs et propose des produits personnalisés, augmentant le taux de conversion de <strong>15%</strong> sur le site."
+          }
+        }
       },
-      "1": {
-        "title": "<strong>Fine-tuning de YOLOv8</strong> pour la Détection de Plaques d'Immatriculation",
-        "description": "Affinement du <strong>modèle YOLOv8</strong> pour détecter les plaques d'immatriculation des voitures dans les images de caméras de sécurité. Atteint une <strong>précision de 95%</strong> sur un jeu de données personnalisé, permettant une <strong>reconnaissance des plaques en temps réel</strong> dans diverses conditions d'éclairage."
+      "Sofware": {
+        "title": "CV Ingénieur Logiciel",
+        "objectiveText": "Jeune diplômé en <strong>Informatique</strong> et <strong>Réseaux</strong>, à la recherche d'un <strong>premier emploi</strong> dans le domaine de l'<strong>embarqué</strong> et de la <strong>programmation logicielle</strong>.",
+        "programmingLanguages": "Langages de Programmation: <strong>C</strong>, <strong>C++</strong>, <strong>Python</strong>, <strong>Rust</strong>, SQL, Docker, git (CI/CD), Kubernetes (bases)",
+        "skillsList": "Compétences: <strong>Programmation embarquée</strong>, <strong>Bus UART/SPI/I2C</strong>, <strong>Développement microcontrôleur</strong>, <strong>Acquisition de données</strong>",
+        "softskills": "Softskills : <strong>Travail d'équipe</strong>, <strong>Adaptabilité</strong>, <strong>Curiosité intellectuelle</strong>",
+        "projects": "Quelques projets",
+        "projectsList": {
+          "0": {
+            "title": "<strong>Lecture de capteurs via I2C et SPI</strong>",
+            "description": "Programmation de microcontrôleurs pour lire des données depuis des capteurs connectés via <strong>I2C</strong> et <strong>SPI</strong>. Les informations sont collectées et affichées sur un petit écran LCD."
+          },
+          "1": {
+            "title": "<strong>Communication UART entre modules</strong>",
+            "description": "Mise en place d'une communication simple entre deux microcontrôleurs via le bus <strong>UART</strong>. Test de l’échange de messages et vérification de la stabilité de la transmission."
+          },
+          "2": {
+            "title": "<strong>Station météo connectée</strong>",
+            "description": "Création d’une petite station météo utilisant des capteurs de température, humidité et pression. Les données sont récupérées par un microcontrôleur et envoyées via Wi-Fi vers une interface simple pour suivi en temps réel."
+          }
+        }
       },
-      "2": {
-        "title": "<strong>Système de Contrôle de Voiture RC avec Raspberry Pi</strong>",
-        "description": "Développement d'un système utilisant <strong>Raspberry Pi</strong> pour capturer les entrées d'un simulateur de voiture sur ordinateur et transmettre les commandes à une voiture RC. Implémentation d'un <strong>retour vidéo en temps réel</strong> de la voiture RC vers le simulateur, créant une expérience immersive de contrôle à distance."
-      },
-      "3": {
-        "title": "<strong>Création d'un Cluster MongoDB Réparti et Fragmenté</strong>",
-        "description": "Développement d'un cluster <strong>MongoDB</strong> utilisant la technique de <strong>replicaSet</strong> et de <strong>sharding</strong> pour assurer une tolérance aux pannes et une répartition efficace des données. Le projet inclut la création d'un replicaSet avec 5 nœuds (1 primaire, 3 secondaires, 1 arbitre) ainsi que le partitionnement des données sur plusieurs shards. Cela permet de simuler un environnement distribué capable de gérer des volumes de données importants et d'assurer la continuité du service en cas de panne."
-      },
-      "4": {
-        "title": "<strong>Création d'un site web (en développement)</strong>",
-        "description": "Site web permettant de s'autentifier avec <strong>Firebase</strong>, effectuer des achats avec <strong>Stripes</strong>, stocker les informations utilisateurs dans une base de données, etc"
+      "Web": {
+        "title": "CV Développeur Web",
+        "objectiveText": "Jeune diplômé en <strong>Informatique</strong> et <strong>Développement Web</strong>, à la recherche d'un <strong>premier emploi</strong> dans le domaine du <strong>Web</strong> / <strong>Full Stack</strong>.",
+        "programmingLanguages": "Langages de Programmation: <strong>HTML</strong>, <strong>CSS</strong>, <strong>JavaScript</strong>, <strong>React</strong>, <strong>Node.js</strong>, SQL, MongoDB, Docker, git (CI/CD)",
+        "skillsList": "Compétences: <strong>Développement Front-end</strong>, <strong>Développement Back-end</strong>, <strong>API REST</strong>, <strong>Intégration et déploiement</strong>, <strong>Responsive Design</strong>",
+        "softskills": "Softskills : <strong>Travail d'équipe</strong>, <strong>Adaptabilité</strong>, <strong>Curiosité intellectuelle</strong>, <strong>Créativité</strong>",
+        "projectsList": {
+          "0": {
+            "title": "<strong>Portfolio interactif</strong>",
+            "description": "Création d'un portfolio personnel présentant mes projets et compétences. Le site utilise une stack <strong>React</strong> et <strong>Node.js</strong> et est connecté à une base de données <strong>MariaDB</strong>"
+          },
+          "1": {
+            "title": "<strong>Interfaces multiples pour serveur personnel</strong>",
+            "description": "Développement de plusieurs interfaces web pour gérer et visualiser les données d'un serveur personnel. Intégration des fonctionnalités backend avec <strong>Python</strong> et base de données <strong>MongoDB</strong>"
+          }
+        }
       }
-    },
-    "loadingContactInfo": "Chargement des informations de contact...",
-    "contactInfoMessage": "Connectez-vous pour voir mes informations de contact et me contacter.",
-    "loginToViewContact": "Se connecter pour voir les infos de contact",
-    "noContactInfo": "Informations non disponibles"
+    }
   },
   "Auth": {
     "loginTitle": "Connexion",
