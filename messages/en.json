@@ -19,98 +19,137 @@
   "AuthGuard": {
     "loading": "Checking permissions..."
   },
-  "CvCommon": {
-    "title": "Lucas Deletang",
-    "location": "Location",
-    "phone": "Phone",
-    "email": "Email",
-    "linkedin": "Linkedin: lucas-deletang",
-    "portfolio": "Portfolio: lucas.deletang.dev",
-    "github": "Github: LucasDLTG",
-    "objective": "OBJECTIVE",
-    "objectiveText": "Recent graduate in <strong>Data Science</strong> and <strong>Artificial Intelligence</strong> engineering, seeking a <strong>first job</strong> in the field of <strong>Computer Science</strong>, <strong>Data Science</strong>, or <strong>Artificial Intelligence</strong>.",
-    "education": "Education",
-    "educationList": {
-      "0": {
-        "institution": "Institut Mines Télécom, Strasbourg",
-        "period": "2022 - 2025",
-        "degree": "Engineering degree in Computer Science and Networks, Data Science and Artificial Intelligence"
-      },
-      "1": {
-        "institution": "University of Strasbourg",
-        "period": "2023 - 2025",
-        "degree": "Master's in Data Science and Complex Systems"
-      },
-      "2": {
-        "institution": "CPGE Prytanée National Militaire",
-        "period": "2020 - 2022",
-        "degree": "Preparatory Classes for Grandes Écoles (CPGE) - Mathematics and Physics"
-      }
+  "Cv": {
+    "CvAuth": {
+      "loadingContactInfo": "Loading contact information...",
+      "contactInfoMessage": "Sign in to view my contact information and get in touch.",
+      "loginToViewContact": "Sign In to View Contact Info",
+      "noContactInfo": "No contact info available"
     },
-    "skills": "Skills and Languages",
-    "languages": "Languages: <strong>French</strong> (Native), <strong>English</strong> (Fluent, C1 (TOEIC)), Spanish (Beginner)",
-    "programmingLanguages": "Programming Languages: <strong>C</strong>, <strong>C++</strong>, <strong>Python</strong>, R, Matlab, <strong>Next.js</strong>, <strong>JavaScript</strong>, HTML, CSS, <strong>React</strong>, Tailwind, <strong>MongoDB</strong>, SQL, Java, C#, .NET, <strong>PyTorch</strong>, Docker, OpenGL, OpenGL ES, git (CI/CD), Kafka, Opensearch, Kubernetes (basic), AI tools",
-    "skillsList": "Skills: <strong>Machine Learning</strong>, <strong>Natural Language Processing</strong>, <strong>Deep Learning</strong>, <strong>RAG</strong>, <strong>AI Agent</strong>, <strong>LLM</strong>, Mathematics",
-    "softskills": "Soft Skills: <strong>Teamwork</strong>, <strong>Leadership</strong>, <strong>Adaptability</strong>, <strong>Intellectual Curiosity</strong>",
-    "experience": "Experience",
-    "experienceList": {
-      "0": {
-        "title": "<strong>Engineering Intern</strong>",
-        "period": "March 2025 - August 2025",
-        "company": "<strong>Thales Alenia Space</strong>, Cannes, France",
-        "responsibilities": [
-          "Created an AI agent using the <strong>Smolagents</strong> framework, enabling agentic RAG and querying a database to answer user questions.",
-          "Developed an AI assistant that live-corrects requirements written by engineers based on a predefined rule set."
-        ]
+    "Common": {
+      "title": "Lucas Deletang",
+      "location": "Location",
+      "phone": "Phone",
+      "email": "Email",
+      "linkedin": "Linkedin: lucas-deletang",
+      "portfolio": "Portfolio: lucas.deletang.dev",
+      "github": "Github: LucasDLTG",
+      "objective": "OBJECTIVE",
+      "education": "Education",
+      "educationList": {
+        "0": {
+          "institution": "Institut Mines Télécom, Strasbourg",
+          "period": "2022 - 2025",
+          "degree": "Engineering degree in Computer Science and Networks, Data Science and Artificial Intelligence"
+        },
+        "1": {
+          "institution": "University of Strasbourg",
+          "period": "2023 - 2025",
+          "degree": "Master's in Data Science and Complex Systems"
+        },
+        "2": {
+          "institution": "CPGE Prytanée National Militaire",
+          "period": "2020 - 2022",
+          "degree": "Preparatory Classes for Grandes Écoles (CPGE) - Mathematics and Physics"
+        }
       },
-      "1": {
-        "title": "<strong>Data Science Intern</strong>",
-        "period": "May 2024 - August 2024",
-        "company": "<strong>VTEC Lasers & Sensors Ltd</strong>, Eindhoven, Netherlands",
-        "responsibilities": [
-          "Created a <strong>Python application</strong> to visualize CSV files and analyze them using <strong>AI</strong>.",
-          "Applied <strong>computer vision techniques</strong> to improve wafer production yield.",
-          "Processed and analyzed <strong>time series data</strong> using <strong>Pandas</strong>, <strong>Numpy</strong>, and <strong>Matplotlib</strong>."
-        ]
+      "experience": "Experience",
+      "experienceList": {
+        "0": {
+          "title": "<strong>Engineering Intern</strong>",
+          "period": "March 2025 - August 2025",
+          "company": "<strong>Thales Alenia Space</strong>, Cannes, France",
+          "responsibilities": [
+            "Created an AI agent using the <strong>Smolagents</strong> framework, enabling agentic RAG and querying a database to answer user questions.",
+            "Developed an AI assistant that live-corrects requirements written by engineers based on a predefined rule set."
+          ]
+        },
+        "1": {
+          "title": "<strong>Data Science Intern</strong>",
+          "period": "May 2024 - August 2024",
+          "company": "<strong>VTEC Lasers & Sensors Ltd</strong>, Eindhoven, Netherlands",
+          "responsibilities": [
+            "Created a <strong>Python application</strong> to visualize CSV files and analyze them using <strong>AI</strong>.",
+            "Applied <strong>computer vision techniques</strong> to improve wafer production yield.",
+            "Processed and analyzed <strong>time series data</strong> using <strong>Pandas</strong>, <strong>Numpy</strong>, and <strong>Matplotlib</strong>."
+          ]
+        },
+        "2": {
+          "title": "<strong>Engineering Project</strong> (LLM Analysis)",
+          "period": "Jan 2024 - Feb 2025",
+          "company": "<strong>Euro Information</strong>, Strasbourg, France",
+          "responsibilities": [
+            "Analyzed <strong>Large Language Models (LLMs)</strong> for instances of sexism.",
+            "Developed and implemented <strong>algorithms</strong> to detect biased language in LLM outputs.",
+            "Proposed solutions to mitigate <strong>gender bias</strong> in LLMs."
+          ]
+        }
       },
-      "2": {
-        "title": "<strong>Engineering Project</strong> (LLM Analysis)",
-        "period": "Jan 2024 - Feb 2025",
-        "company": "<strong>Euro Information</strong>, Strasbourg, France",
-        "responsibilities": [
-          "Analyzed <strong>Large Language Models (LLMs)</strong> for instances of sexism.",
-          "Developed and implemented <strong>algorithms</strong> to detect biased language in LLM outputs.",
-          "Proposed solutions to mitigate <strong>gender bias</strong> in LLMs."
-        ]
-      }
+      "skills": "Skills and Languages",
+      "languages": "Languages: <strong>French</strong> (Native), <strong>English</strong> (Fluent, C1 (TOEIC)), Spanish (Beginner)",
+      "projects": "Some Projects"
     },
-    "projects": "Some Projects",
-    "projectsList": {
-      "0": {
-        "title": "<strong>Natural Language Processing Project</strong>",
-        "description": "Used <strong>TF-IDF</strong> for feature extraction combined with a <strong>SVM classifier</strong> to achieve over <strong>87%</strong> classification accuracy in topic prediction from sentence data."
+    "Specialized": {
+      "AI": {
+        "title": "CV Data Scientist",
+        "objectiveText": "Recent graduate in <strong>Data Science</strong> and <strong>Artificial Intelligence</strong>, seeking a <strong>first job</strong> in <strong>Data Science</strong> / <strong>Artificial Intelligence</strong>.",
+        "programmingLanguages": "Programming Languages: <strong>Python</strong>, R, <strong>MongoDB</strong>, SQL, <strong>PyTorch</strong>, Docker, git (CI/CD), Kafka, Opensearch, Kubernetes (basic)",
+        "skillsList": "Skills: <strong>Machine Learning</strong>, <strong>Natural Language Processing</strong>, <strong>Deep Learning</strong>, <strong>RAG</strong>, <strong>AI Agent</strong>, <strong>LLM</strong>",
+        "softskills": "Soft Skills: <strong>Teamwork</strong>, <strong>Leadership</strong>, <strong>Adaptability</strong>, <strong>Intellectual Curiosity</strong>",
+        "projectsList": {
+          "0": {
+            "title": "<strong>Text Analysis and Automatic Classification</strong>",
+            "description": "Implemented a <strong>Natural Language Processing</strong> pipeline using <strong>TF-IDF</strong> for feature extraction and a <strong>SVM classifier</strong>. Achieved over <strong>87%</strong> accuracy in predicting sentence topics from the dataset."
+          },
+          "1": {
+            "title": "<strong>License Plate Detection with YOLOv8</strong>",
+            "description": "Fine-tuned the <strong>YOLOv8 model</strong> to detect license plates from surveillance camera images. Achieved <strong>95% accuracy</strong>, allowing real-time recognition even in varying lighting conditions."
+          },
+          "2": {
+            "title": "<strong>AI Project for an E-commerce Client</strong>",
+            "description": "Developed a recommendation system using <strong>Machine Learning</strong> to analyze user behavior and suggest personalized products, increasing the conversion rate by <strong>15%</strong>."
+          }
+        }
       },
-      "1": {
-        "title": "<strong>YOLOv8 Fine-tuning</strong> for License Plate Detection",
-        "description": "Fine-tuned the <strong>YOLOv8 model</strong> to detect car license plates in security camera footage. Achieved <strong>95% accuracy</strong> on a custom dataset, enabling <strong>real-time plate recognition</strong> in varied lighting conditions."
+      "Sofware": {
+        "title": "CV Software Engineer",
+        "objectiveText": "Recent graduate in <strong>Computer Science</strong> and <strong>Networks</strong>, seeking a <strong>first job</strong> in <strong>embedded systems</strong> and <strong>software development</strong>.",
+        "programmingLanguages": "Programming Languages: <strong>C</strong>, <strong>C++</strong>, <strong>Python</strong>, <strong>Rust</strong>, SQL, Docker, git (CI/CD), Kubernetes (basic)",
+        "skillsList": "Skills: <strong>Embedded Programming</strong>, <strong>UART/SPI/I2C Bus</strong>, <strong>Microcontroller Development</strong>, <strong>Data Acquisition</strong>",
+        "softskills": "Soft Skills: <strong>Teamwork</strong>, <strong>Adaptability</strong>, <strong>Intellectual Curiosity</strong>",
+        "projectsList": {
+          "0": {
+            "title": "<strong>Sensor Reading via I2C and SPI</strong>",
+            "description": "Programmed microcontrollers to read data from sensors connected via <strong>I2C</strong> and <strong>SPI</strong>. Data is collected and displayed on a small LCD screen."
+          },
+          "1": {
+            "title": "<strong>UART Communication Between Modules</strong>",
+            "description": "Set up simple communication between two microcontrollers via the <strong>UART</strong> bus. Tested message exchange and verified transmission stability."
+          },
+          "2": {
+            "title": "<strong>Connected Weather Station</strong>",
+            "description": "Created a small weather station with temperature, humidity, and pressure sensors. Data is collected by a microcontroller and sent via Wi-Fi to a simple interface for real-time monitoring."
+          }
+        }
       },
-      "2": {
-        "title": "<strong>RC Car Control System with Raspberry Pi</strong>",
-        "description": "Developed a system using <strong>Raspberry Pi</strong> to capture input from a car simulator on a computer and send commands to an RC car. Implemented <strong>real-time video feedback</strong> from the RC car to the simulator, creating an immersive remote control experience."
-      },
-      "3": {
-        "title": "<strong>Distributed and Sharded MongoDB Cluster</strong>",
-        "description": "Built a <strong>MongoDB</strong> cluster using <strong>replicaSet</strong> and <strong>sharding</strong> to ensure fault tolerance and efficient data distribution. The project includes a 5-node replicaSet (1 primary, 3 secondaries, 1 arbiter) and partitioned data across multiple shards to simulate a distributed environment capable of handling large volumes and ensuring service continuity in case of failure."
-      },
-      "4": {
-        "title": "<strong>Website Development (in progress)</strong>",
-        "description": "Website with <strong>Firebase authentication</strong>, purchasing functionality via <strong>Stripe</strong>, user data storage in a database, and more."
+      "Web": {
+        "title": "CV Web Developer",
+        "objectiveText": "Recent graduate in <strong>Computer Science</strong> and <strong>Web Development</strong>, seeking a <strong>first job</strong> in <strong>Web</strong> / <strong>Full Stack</strong>.",
+        "programmingLanguages": "Programming Languages: <strong>HTML</strong>, <strong>CSS</strong>, <strong>JavaScript</strong>, <strong>React</strong>, <strong>Node.js</strong>, SQL, MongoDB, Docker, git (CI/CD)",
+        "skillsList": "Skills: <strong>Front-end Development</strong>, <strong>Back-end Development</strong>, <strong>REST APIs</strong>, <strong>Integration and Deployment</strong>, <strong>Responsive Design</strong>",
+        "softskills": "Soft Skills: <strong>Teamwork</strong>, <strong>Adaptability</strong>, <strong>Intellectual Curiosity</strong>, <strong>Creativity</strong>",
+        "projectsList": {
+          "0": {
+            "title": "<strong>Interactive Portfolio</strong>",
+            "description": "Created a personal portfolio showcasing projects and skills. The site uses a <strong>React</strong> and <strong>Node.js</strong> stack connected to a <strong>MariaDB</strong> database."
+          },
+          "1": {
+            "title": "<strong>Multiple Interfaces for Personal Server</strong>",
+            "description": "Developed multiple web interfaces to manage and visualize personal server data. Integrated backend functionality with <strong>Python</strong> and <strong>MongoDB</strong> database."
+          }
+        }
       }
-    },
-    "loadingContactInfo": "Loading contact information...",
-    "contactInfoMessage": "Sign in to view my contact information and get in touch.",
-    "loginToViewContact": "Sign In to View Contact Info",
-    "noContactInfo": "No contact info available"
+    }
   },
   "Auth": {
     "loginTitle": "Login",
