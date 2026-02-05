@@ -166,10 +166,26 @@
 
   .cvTitle {
     font-size: 1.4rem;
+    position: static;
+    left: auto;
+    transform: none;
+    text-align: center;
+    order: 2;
   }
 
   .cvSectionTitle {
     font-size: 1.2rem;
+  }
+
+  .cvHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .cvSelector {
+    order: 1;
   }
 }
 
@@ -181,9 +197,25 @@
 
   .cvTitle {
     font-size: 1.2rem;
+    position: static;
+    left: auto;
+    transform: none;
+    text-align: center;
+    order: 2;
   }
 
   .cvSectionTitle {
     font-size: 0.9rem;
+  }
+
+  .cvHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .cvSelector {
+    order: 1;
   }
 }
