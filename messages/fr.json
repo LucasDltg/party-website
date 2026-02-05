@@ -124,8 +124,8 @@
             "description": "Programmation de microcontrôleurs pour lire des données depuis des capteurs connectés via <strong>I2C</strong> et <strong>SPI</strong>. Les informations sont collectées et affichées sur un petit écran LCD."
           },
           "1": {
-            "title": "<strong>Communication UART entre modules</strong>",
-            "description": "Mise en place d'une communication simple entre deux microcontrôleurs via le bus <strong>UART</strong>. Test de l’échange de messages et vérification de la stabilité de la transmission."
+            "title": "<strong>Création d’un compilateur C vers RISC-V</strong>",
+            "description": "Conception et implémentation d’un <strong>compilateur en C</strong> basé sur <strong>Flex</strong> pour l’analyse lexicale et <strong>Bison</strong> pour l’analyse syntaxique. Le compilateur permet de traduire un code source ressemblant au langage <strong>C</strong> vers une architecture de type <strong>RISC-V</strong>"
           },
           "2": {
             "title": "<strong>Station météo connectée</strong>",

@@ -123,8 +123,8 @@
             "description": "Programmed microcontrollers to read data from sensors connected via <strong>I2C</strong> and <strong>SPI</strong>. Data is collected and displayed on a small LCD screen."
           },
           "1": {
-            "title": "<strong>UART Communication Between Modules</strong>",
-            "description": "Set up simple communication between two microcontrollers via the <strong>UART</strong> bus. Tested message exchange and verified transmission stability."
+            "title": "<strong>Creation of a C Compiler Targeting RISC-V</strong>",
+            "description": "Design and implementation of a <strong>C compiler</strong> based on <strong>Flex</strong> for lexical analysis and <strong>Bison</strong> for syntax analysis. The compiler translates source code resembling the <strong>C language</strong> into a <strong>RISC-V</strong>-type architecture."
           },
           "2": {
             "title": "<strong>Connected Weather Station</strong>",
